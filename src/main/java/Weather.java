@@ -257,19 +257,14 @@ public class Weather {
     @Override
     public String toString() {
         return "Weather{" +
-                "coord=" + coord +
+                ", name='" + name + '\'' +
                 ", weather=" + Arrays.toString(weather.toArray()) +
-                ", base='" + base + '\'' +
                 ", main=" + main +
-                ", visibility='" + visibility + '\'' +
                 ", wind=" + wind +
                 ", clouds=" + clouds +
-                ", dt=" + dt +
+                ", clouds=" + rain +
+                ", clouds=" + snow +
                 ", sys=" + sys +
-                ", timezone=" + timezone +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", cod=" + cod +
                 '}';
     }
 
