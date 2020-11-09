@@ -1,6 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -48,6 +49,9 @@ public class mainScreenController {
 
     @FXML
     private Pagination pagination;
+
+/*    @FXML
+    private GridPane gridPane;*/
 
     ArrayList<Weather> locations = new ArrayList<>();
 
@@ -136,12 +140,24 @@ public class mainScreenController {
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {
                 Label label = new Label(locations.get(pageIndex).toString());
+                GridPane gridPane = new GridPane();
                 nameField.setText(locations.get(pageIndex).getName());
                 sysCountryField.setText(locations.get(pageIndex).getCountryCode());
                 mainTempField.setText(String.valueOf(locations.get(pageIndex).getTemp()));
                 weatherMainField.setText(locations.get(pageIndex).getWeatherMain());
                 descriptionArea.setText(locations.get(pageIndex).getWeatherDescription());
-                return new VBox(cityLabel, nameField, countryLabel, sysCountryField, temperatureLabel, mainTempField, conditionLabel, weatherMainField, descriptionLabel, descriptionArea);
+            //    gridPane.getChildren().addAll(cityLabel, nameField, countryLabel, sysCountryField, temperatureLabel, mainTempField, conditionLabel, weatherMainField, descriptionLabel, descriptionArea);
+                gridPane.add(cityLabel,0,0);
+                gridPane.add(nameField,1,0);
+                gridPane.add(countryLabel,0,1);
+                gridPane.add(sysCountryField,1,1);
+                gridPane.add(temperatureLabel,0,2);
+                gridPane.add(mainTempField,1,2);
+                gridPane.add(conditionLabel,0,3);
+                gridPane.add(weatherMainField,1,3);
+                gridPane.add(descriptionLabel,0,4);
+                gridPane.add(descriptionArea,1,4);
+                return new VBox(gridPane);
             });
             pagination.setCurrentPageIndex(locations.size()-1);
             pagination.setVisible(true);
