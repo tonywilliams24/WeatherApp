@@ -258,7 +258,7 @@ public class Weather {
     public String toString() {
         return "Weather{" +
                 ", name='" + name + '\'' +
-                ", weather=" + Arrays.toString(weather.toArray()) +
+ //               ", weather=" + Arrays.toString(weather.toArray()) +
                 ", main=" + main +
                 ", wind=" + wind +
                 ", clouds=" + clouds +

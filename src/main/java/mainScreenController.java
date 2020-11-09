@@ -53,7 +53,7 @@ public class mainScreenController {
 
     @FXML
     void submitHandler(ActionEvent event) throws IOException {
-        String[] location = inputLocationField.getText().trim().split("\\s*(\\s|,)\\s*");
+        String[] location = inputLocationField.getText().trim().split("\\s*(,\\s)\\s*");
         ArrayList<Object> paramList = new ArrayList<>();
         StringBuilder paramSB = new StringBuilder();
         Weather weather = null;
@@ -144,6 +144,7 @@ public class mainScreenController {
                 return new VBox(cityLabel, nameField, countryLabel, sysCountryField, temperatureLabel, mainTempField, conditionLabel, weatherMainField, descriptionLabel, descriptionArea);
             });
             pagination.setCurrentPageIndex(locations.size()-1);
+            pagination.setVisible(true);
 
         }
     }
@@ -153,17 +154,6 @@ public class mainScreenController {
         Label pageLabel = new Label("Test " + pageIndex+1);
         pageBox.getChildren().add(pageLabel);
         return pageBox;
-    }
-
-    @FXML
-    public void initialize(){
-        pagination.setPageCount(1);
-        pagination.setCurrentPageIndex(0);
-        pagination.setMaxPageIndicatorCount(10);
-        pagination.setPageFactory((pageIndex) -> {
-            Label label = new Label("");
-            return new VBox(label);
-        });
     }
 
 }
