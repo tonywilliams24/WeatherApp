@@ -15,19 +15,19 @@ public class mainScreenController {
     private TextField inputLocationField;
 
     @FXML
-    private TextField weatherMainField;
+    private Label weatherMainLabel;
 
     @FXML
-    private TextField nameField;
+    private Label nameLabel;
 
     @FXML
-    private TextField sysCountryField;
+    private Label sysCountryLabel;
 
     @FXML
-    private TextField mainTempField;
+    private Label mainTempLabel;
 
     @FXML
-    private TextArea descriptionArea;
+    private Label descriptionDetailLabel;
 
     @FXML
     private Label cityLabel;
@@ -127,10 +127,10 @@ public class mainScreenController {
         if(weather!=null) {
 
             /*
-            nameField.setText(weather.getName());
-            sysCountryField.setText(weather.getCountryCode());
-            mainTempField.setText(String.valueOf(weather.getTemp()));
-            weatherMainField.setText(weather.getWeatherMain());
+            nameLabel.setText(weather.getName());
+            sysCountryLabel.setText(weather.getCountryCode());
+            mainTempLabel.setText(String.valueOf(weather.getTemp()));
+            weatherMainLabel.setText(weather.getWeatherMain());
             descriptionArea.setText(weather.getWeatherDescription());
             */
 
@@ -140,11 +140,11 @@ public class mainScreenController {
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {
                 Label label = new Label(locations.get(pageIndex).toString());
-                nameField.setText(locations.get(pageIndex).getName());
-                sysCountryField.setText(locations.get(pageIndex).getCountryCode());
-                mainTempField.setText(String.valueOf(locations.get(pageIndex).getTemp()));
-                weatherMainField.setText(locations.get(pageIndex).getWeatherMain());
-                descriptionArea.setText(locations.get(pageIndex).getWeatherDescription());
+                nameLabel.setText(locations.get(pageIndex).getName());
+                sysCountryLabel.setText(locations.get(pageIndex).getCountryCode());
+                mainTempLabel.setText(String.valueOf(locations.get(pageIndex).getTemp()));
+                weatherMainLabel.setText(locations.get(pageIndex).getWeatherMain());
+                descriptionDetailLabel.setText(locations.get(pageIndex).getWeatherDescription());
                 return new VBox(gridPane);
             });
             pagination.setCurrentPageIndex(locations.size()-1);
