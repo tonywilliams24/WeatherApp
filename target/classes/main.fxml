@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <AnchorPane minWidth="400.0" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainScreenController" maxWidth="Infinity">
    <children>
       <VBox prefHeight="600.0" prefWidth="400.0" fillWidth="true" maxWidth="Infinity" alignment="CENTER">
@@ -28,29 +29,11 @@
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="400.0" text="Valid inputs:&#10;City Name (Can optionally include US State or a Country)&#10;City ID &#10;Geographic Coordinates (Latitude, Longitude)&#10;Postal Code, Country (10001, US)" />
             <Pagination fx:id="pagination" prefHeight="200.0" minWidth="360.0" visible="false" maxWidth="360" minHeight="400">
                 <fx:define>
-                    <GridPane fx:id="gridPane" hgap="20.0" prefHeight="268.0" prefWidth="300.0" style="-fx-border-color: #000000; -fx-border-radius: 5; -fx-border-width: 1;" VBox.vgrow="ALWAYS" alignment="center">
-                        <columnConstraints>
-                            <ColumnConstraints halignment="LEFT"/>
-                            <ColumnConstraints hgrow="SOMETIMES"/>
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
+                    <VBox fx:id="vbox" maxHeight="240.0" prefWidth="300.0" VBox.vgrow="ALWAYS" alignment="center">
                         <children>
-                            <Label fx:id="cityLabel" text="City: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                            <Label fx:id="nameLabel"  maxWidth="180.0" minWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                            <Label fx:id="countryLabel" text="Country: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                            <Label fx:id="sysCountryLabel"  maxWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            <Label fx:id="temperatureLabel" text="Temperature: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                            <Label fx:id="mainTempLabel"  maxWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                            <Label fx:id="conditionLabel" text="Conditon: " GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                            <Label fx:id="weatherMainLabel"  maxWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                            <Label fx:id="descriptionLabel" text="Description: " GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                            <Label fx:id="descriptionDetailLabel"  maxWidth="180.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <Label fx:id="nameLabel"/>
+                            <Label fx:id="mainTempLabel"/>
+                            <Label fx:id="descriptionDetailLabel"/>
                         </children>
                         <opaqueInsets>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -61,9 +44,11 @@
                         <VBox.margin>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </VBox.margin>
-                    </GridPane>
+                    </VBox>
+                    <ImageView fx:id="imageView" fitHeight="240" pickOnBounds="true" preserveRatio="true" visible="false" />
                 </fx:define>
             </Pagination>
+
          </children>
       </VBox>
    </children>

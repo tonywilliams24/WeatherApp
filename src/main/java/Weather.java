@@ -1,9 +1,10 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.image.Image;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,24 @@ public class Weather {
     private int id;
     private String name;
     private int cod;
+    private Image icon;
+    private String iconUrlString = "icons/##ICON##@4x.png";
+
+    public Image getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Image icon) {
+        this.icon = icon;
+    }
+
+    public String getIconUrlString() {
+        return iconUrlString;
+    }
+
+    public void setIconUrlString(String iconUrlString) {
+        this.iconUrlString = iconUrlString;
+    }
 
     Weather() {
     }
@@ -58,17 +77,17 @@ public class Weather {
         }
     }
 
-    Weather(String city, String state, String country) {
+    Weather(String city, String state, String country) throws IOException {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         weatherString = weatherString.replaceFirst("\\#\\#CITY\\#\\#",city);
         weatherString = weatherString.replaceFirst("\\#\\#STATE\\#\\#",state);
         weatherString = weatherString.replaceFirst("\\#\\#COUNTRY\\#\\#",country);
-        try {
+         try {
             setMemberVars(weatherString);
-        }
-        catch (Exception e) {
+         }
+         catch (Exception e) {
             System.out.println("Location Not Found");
-        }
+         }
     }
     Weather(int cityID) {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?id=##CITYID##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
@@ -149,6 +168,10 @@ public class Weather {
         this.name = tmp.name;
         this.cod = tmp.cod;
         System.out.println(this.main);
+        String tmpIcon = this.weather.get(0).get("icon");
+        iconUrlString = iconUrlString.replaceFirst("##ICON##",tmpIcon);
+        this.icon = new Image(iconUrlString);
+
     }
     public Map<String, Double> getCoord() {
         return coord;

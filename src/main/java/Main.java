@@ -22,7 +22,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         Scene scene = new Scene(root, 400, 600);
-//        scene.getStylesheets().add("src/main/resources/CSS.css");
+        scene.getStylesheets().add("CSS.css");
         primaryStage.setTitle("Weather App");
         primaryStage.setScene(scene);
         primaryStage.show();

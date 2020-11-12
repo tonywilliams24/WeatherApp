@@ -1,7 +1,9 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -51,7 +53,10 @@ public class mainScreenController {
     private Pagination pagination;
 
     @FXML
-    private GridPane gridPane;
+    private VBox vbox;
+
+    @FXML
+    private ImageView imageView;
 
     ArrayList<Weather> locations = new ArrayList<>();
 
@@ -120,36 +125,36 @@ public class mainScreenController {
         }
         else {
             {
-                weather = new Weather((String)paramList.get(0),(String)paramList.get(1),(String)paramList.get(2));
-                locations.add(weather);
+                try {
+                    weather = new Weather((String) paramList.get(0), (String) paramList.get(1), (String) paramList.get(2));
+                    locations.add(weather);
+                }
+                catch(Exception e) {
+
+                }
             }
         }
-        if(weather!=null) {
-
-            /*
-            nameLabel.setText(weather.getName());
-            sysCountryLabel.setText(weather.getCountryCode());
-            mainTempLabel.setText(String.valueOf(weather.getTemp()));
-            weatherMainLabel.setText(weather.getWeatherMain());
-            descriptionArea.setText(weather.getWeatherDescription());
-            */
-
+        if(weather.getWeather()!=null) {
             System.out.println(Arrays.toString(locations.toArray()));
-
+            pagination.getStyleClass().add("pagination");
+            vbox.getStyleClass().add("vbox");
             pagination.setPageCount(locations.size());
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {
-                Label label = new Label(locations.get(pageIndex).toString());
-                nameLabel.setText(locations.get(pageIndex).getName());
-                sysCountryLabel.setText(locations.get(pageIndex).getCountryCode());
-                mainTempLabel.setText(String.valueOf(locations.get(pageIndex).getTemp()));
-                weatherMainLabel.setText(locations.get(pageIndex).getWeatherMain());
+                nameLabel.setText(locations.get(pageIndex).getName() + ", " + locations.get(pageIndex).getCountryCode());
+                mainTempLabel.setText(locations.get(pageIndex).getTemp() + " ºF");
                 descriptionDetailLabel.setText(locations.get(pageIndex).getWeatherDescription());
-                return new VBox(gridPane);
+                imageView.setVisible(true);
+                imageView.setImage(locations.get(pageIndex).getIcon());
+                return new StackPane(imageView,vbox);
             });
             pagination.setCurrentPageIndex(locations.size()-1);
             pagination.setVisible(true);
 
+        }
+        else
+        {
+            locations.remove(locations.size()-1);
         }
     }
 

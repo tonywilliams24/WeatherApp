@@ -1,0 +1,14 @@
+.root {
+        -fx-background-color: #DDDDDD;
+}
+
+.vbox {
+}
+
+.vbox .text {
+    -fx-fill: aqua;
+    -fx-stroke: blue;
+    -fx-stroke-width: .5px;
+    -fx-font-size: 30px;
+    -fx-effect: dropshadow(one-pass-box, black, 0, 0, 2, 2);
+}
