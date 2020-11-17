@@ -1,14 +1,15 @@
+package Model;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Weather {
+public class Location {
 
     private Map<String, Double> coord;
     private List<Map<String, String>> weather;
@@ -19,10 +20,10 @@ public class Weather {
     private Map<String, Double> clouds;
     private Map<String, Double> rain;
     private Map<String, Double> snow;
-    private int dt;
+    private long dt;
     private Map<String, String> sys;
     private int timezone;
-    private int id;
+    private long id;
     private String name;
     private int cod;
     private Image icon;
@@ -44,9 +45,9 @@ public class Weather {
         this.iconUrlString = iconUrlString;
     }
 
-    Weather() {
+    Location() {
     }
-    Weather(String city) {
+    public Location(String city) {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         weatherString = weatherString.replaceFirst("\\#\\#CITY\\#\\#",city);
         try {
@@ -57,7 +58,7 @@ public class Weather {
         }
     }
     // Can put in a state instead of country if searching for a US city.
-    Weather(String city, String country) {
+    public Location(String city, String country) {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         weatherString = weatherString.replaceFirst("\\#\\#CITY\\#\\#",city);
         weatherString = weatherString.replaceFirst("\\#\\#COUNTRY\\#\\#",country);
@@ -77,7 +78,7 @@ public class Weather {
         }
     }
 
-    Weather(String city, String state, String country) throws IOException {
+    public Location(String city, String state, String country) throws IOException {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         weatherString = weatherString.replaceFirst("\\#\\#CITY\\#\\#",city);
         weatherString = weatherString.replaceFirst("\\#\\#STATE\\#\\#",state);
@@ -89,7 +90,7 @@ public class Weather {
             System.out.println("Location Not Found");
          }
     }
-    Weather(int cityID) {
+    public Location(int cityID) {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?id=##CITYID##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         weatherString = weatherString.replaceFirst("\\#\\#CITYID\\#\\#", String.valueOf(cityID));
         try {
@@ -99,7 +100,7 @@ public class Weather {
             System.out.println("Location Not Found");
         }
     }
-    Weather(double lat, double lon) {
+    public Location(double lat, double lon) {
         String weatherString = "http://api.openweathermap.org/data/2.5/weather?lat=##LAT##&lon=##LON##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         weatherString = weatherString.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(lat));
         weatherString = weatherString.replaceFirst("\\#\\#LON\\#\\#", String.valueOf(lon));
@@ -110,7 +111,7 @@ public class Weather {
             System.out.println("Location Not Found");
         }
     }
-    Weather(int postal, String country) {
+    public Location(int postal, String country) {
         String postalString = String.valueOf(postal);
         int postalLength = postalString.length();
         if(postalLength<5){
@@ -151,7 +152,7 @@ public class Weather {
         URL jsonURL = new URL(weatherString);
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(jsonURL);
-        Weather tmp = mapper.readValue(jsonURL, Weather.class);
+        Location tmp = mapper.readValue(jsonURL, Location.class);
         this.coord = tmp.coord;
         this.weather = tmp.weather;
         this.base = tmp.base;
@@ -229,7 +230,7 @@ public class Weather {
         this.clouds = clouds;
     }
 
-    public int getDt() {
+    public long getDt() {
         return dt;
     }
 
@@ -253,7 +254,7 @@ public class Weather {
         this.timezone = timezone;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -279,7 +280,7 @@ public class Weather {
 
     @Override
     public String toString() {
-        return "Weather{" +
+        return "Model.Weather{" +
                 ", name='" + name + '\'' +
  //               ", weather=" + Arrays.toString(weather.toArray()) +
                 ", main=" + main +
@@ -372,7 +373,7 @@ public class Weather {
 
 
     /*
-    Example Weather JSON
+    Example Model.Weather JSON
 
     {
 	"coord" : {

@@ -1,15 +1,14 @@
+import Model.Location;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
 
 public class mainScreenController {
 
@@ -58,14 +57,14 @@ public class mainScreenController {
     @FXML
     private ImageView imageView;
 
-    ArrayList<Weather> locations = new ArrayList<>();
+    ArrayList<Location> locations = new ArrayList<>();
 
     @FXML
     void submitHandler(ActionEvent event) throws IOException {
         String[] location = inputLocationField.getText().trim().split("\\s*(,\\s)\\s*");
         ArrayList<Object> paramList = new ArrayList<>();
         StringBuilder paramSB = new StringBuilder();
-        Weather weather = null;
+        Location Location = null;
         System.out.println(Arrays.toString(location));
         for(String l : location) {
             try{
@@ -87,54 +86,54 @@ public class mainScreenController {
         System.out.println(paramSB);
         if(paramList.size()==1) {
             if(paramSB.toString().equals("s")) {
-                weather = new Weather(String.valueOf(paramList.get(0)));
-                locations.add(weather);
+                Location = new Location(String.valueOf(paramList.get(0)));
+                locations.add(Location);
             }
             else if(paramSB.toString().equals("i")) {
-                weather = new Weather((int)paramList.get(0));
-                locations.add(weather);
+                Location = new Location((int)paramList.get(0));
+                locations.add(Location);
             }
             else System.out.println("Location Not Found");
         }
         else if(paramList.size()==2) {
             if(paramSB.toString().equals("ss")) {
-                weather = new Weather((String)paramList.get(0),(String)paramList.get(1));
-                locations.add(weather);
+                Location = new Location((String)paramList.get(0),(String)paramList.get(1));
+                locations.add(Location);
             }
             else if(paramSB.toString().equals("is")) {
-                weather = new Weather((int)paramList.get(0),(String)paramList.get(1));
-                locations.add(weather);
+                Location = new Location((int)paramList.get(0),(String)paramList.get(1));
+                locations.add(Location);
             }
             else if(paramSB.toString().equals("dd")) {
-                weather = new Weather((double)paramList.get(0),(double)paramList.get(1));
-                locations.add(weather);
+                Location = new Location((double)paramList.get(0),(double)paramList.get(1));
+                locations.add(Location);
             }
             else if(paramSB.toString().equals("ii")) {
-                weather = new Weather(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
-                locations.add(weather);
+                Location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                locations.add(Location);
             }
             else if(paramSB.toString().equals("id")) {
-                weather = new Weather(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
-                locations.add(weather);
+                Location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                locations.add(Location);
             }
             else if(paramSB.toString().equals("di")) {
-                weather = new Weather(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
-                locations.add(weather);
+                Location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                locations.add(Location);
             }
             else System.out.println("Location Not Found");
         }
         else {
             {
                 try {
-                    weather = new Weather((String) paramList.get(0), (String) paramList.get(1), (String) paramList.get(2));
-                    locations.add(weather);
+                    Location = new Location((String) paramList.get(0), (String) paramList.get(1), (String) paramList.get(2));
+                    locations.add(Location);
                 }
                 catch(Exception e) {
 
                 }
             }
         }
-        if(weather.getWeather()!=null) {
+        if(Location.getWeather()!=null) {
             System.out.println(Arrays.toString(locations.toArray()));
             pagination.getStyleClass().add("pagination");
             vbox.getStyleClass().add("vbox");
