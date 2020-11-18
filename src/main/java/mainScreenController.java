@@ -61,12 +61,11 @@ public class mainScreenController {
 
     @FXML
     void submitHandler(ActionEvent event) throws IOException {
-        String[] location = inputLocationField.getText().trim().split("\\s*(,\\s)\\s*");
+        String[] inputLocation = inputLocationField.getText().trim().split("\\s*(,\\s)\\s*");
         ArrayList<Object> paramList = new ArrayList<>();
         StringBuilder paramSB = new StringBuilder();
-        Location Location = null;
-        System.out.println(Arrays.toString(location));
-        for(String l : location) {
+        Location location = null;
+        for(String l : inputLocation) {
             try{
                 double num = Double.parseDouble(l);
                 if(num == Math.floor(num)) {
@@ -83,58 +82,56 @@ public class mainScreenController {
                 paramSB.append("s");
             }
         }
-        System.out.println(paramSB);
         if(paramList.size()==1) {
             if(paramSB.toString().equals("s")) {
-                Location = new Location(String.valueOf(paramList.get(0)));
-                locations.add(Location);
+                location = new Location(String.valueOf(paramList.get(0)));
+                locations.add(location);
             }
             else if(paramSB.toString().equals("i")) {
-                Location = new Location((int)paramList.get(0));
-                locations.add(Location);
+                location = new Location((int)paramList.get(0));
+                locations.add(location);
             }
-            else System.out.println("Location Not Found");
+            else System.out.println("location Not Found");
         }
         else if(paramList.size()==2) {
             if(paramSB.toString().equals("ss")) {
-                Location = new Location((String)paramList.get(0),(String)paramList.get(1));
-                locations.add(Location);
+                location = new Location((String)paramList.get(0),(String)paramList.get(1));
+                locations.add(location);
             }
             else if(paramSB.toString().equals("is")) {
-                Location = new Location((int)paramList.get(0),(String)paramList.get(1));
-                locations.add(Location);
+                location = new Location((int)paramList.get(0),(String)paramList.get(1));
+                locations.add(location);
             }
             else if(paramSB.toString().equals("dd")) {
-                Location = new Location((double)paramList.get(0),(double)paramList.get(1));
-                locations.add(Location);
+                location = new Location((double)paramList.get(0),(double)paramList.get(1));
+                locations.add(location);
             }
             else if(paramSB.toString().equals("ii")) {
-                Location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
-                locations.add(Location);
+                location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                locations.add(location);
             }
             else if(paramSB.toString().equals("id")) {
-                Location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
-                locations.add(Location);
+                location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                locations.add(location);
             }
             else if(paramSB.toString().equals("di")) {
-                Location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
-                locations.add(Location);
+                location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                locations.add(location);
             }
-            else System.out.println("Location Not Found");
+            else System.out.println("location Not Found");
         }
         else {
             {
                 try {
-                    Location = new Location((String) paramList.get(0), (String) paramList.get(1), (String) paramList.get(2));
-                    locations.add(Location);
+                    location = new Location((String) paramList.get(0), (String) paramList.get(1), (String) paramList.get(2));
+                    locations.add(location);
                 }
                 catch(Exception e) {
 
                 }
             }
         }
-        if(Location.getWeather()!=null) {
-            System.out.println(Arrays.toString(locations.toArray()));
+        if(location.getWeather()!=null) {
             pagination.getStyleClass().add("pagination");
             vbox.getStyleClass().add("vbox");
             pagination.setPageCount(locations.size());

@@ -7,10 +7,8 @@ public class Coord {
         this.lat = lat;
         this.lon = lon;
     }
-
     public Coord() {
     }
-
     public double getLat() {
         return lat;
     }
@@ -26,4 +24,13 @@ public class Coord {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+    @Override
+    public String toString() {
+        return "Coord{" +
+                "lat=" + lat +
+                ", lon=" + lon +
+                '}';
+    }
 }
+

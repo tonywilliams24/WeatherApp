@@ -1,7 +1,9 @@
 package Model;
 
 public class Snow {
-    public Snow(int h1, int h3) {
+    double h1, h3;
+
+    public Snow(double h1, double h3) {
         this.h1 = h1;
         this.h3 = h3;
     }
@@ -13,21 +15,29 @@ public class Snow {
     public Snow() {
     }
 
-    int h1, h3;
-
-    public int getH1() {
+    public double get1h() {
         return h1;
     }
 
-    public void setH1(int h1) {
+
+
+    public void set1h(double h1) {
         this.h1 = h1;
     }
 
-    public int getH3() {
+    public double get3h() {
         return h3;
     }
 
-    public void setH3(int h3) {
+    public void set3h(double h3) {
         this.h3 = h3;
+    }
+
+    @Override
+    public String toString() {
+        return "Snow{" +
+                "1h=" + h1 +
+                ", 3h=" + h3 +
+                '}';
     }
 }

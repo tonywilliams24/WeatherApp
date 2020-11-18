@@ -9,6 +9,15 @@ public class Wind {
         this.gust = gust;
     }
 
+    @Override
+    public String toString() {
+        return "Wind{" +
+                "speed=" + speed +
+                ", deg=" + deg +
+                ", gust=" + gust +
+                '}';
+    }
+
     public Wind(double speed, double deg) {
         this.speed = speed;
         this.deg = deg;

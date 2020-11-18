@@ -6,22 +6,23 @@ import javafx.scene.image.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class Location {
 
-    private Map<String, Double> coord;
-    private List<Map<String, String>> weather;
+    private Coord coord;
+    private Weather[] weather;
     private String base;
-    private Map<String, Double> main;
+    private Main main;
     private String visibility;
-    private Map<String, Double> wind;
-    private Map<String, Double> clouds;
-    private Map<String, Double> rain;
-    private Map<String, Double> snow;
+    private Wind wind;
+    private Clouds clouds;
+    private Rain rain;
+    private Snow snow;
     private long dt;
-    private Map<String, String> sys;
+    private Sys sys;
     private int timezone;
     private long id;
     private String name;
@@ -132,26 +133,26 @@ public class Location {
         }
     }
 
-    public Map<String, Double> getRain() {
+    public Rain getRain() {
         return rain;
     }
 
-    public void setRain(Map<String, Double> rain) {
+    public void setRain(Rain rain) {
         this.rain = rain;
     }
 
-    public Map<String, Double> getSnow() {
+    public Snow getSnow() {
         return snow;
     }
 
-    public void setSnow(Map<String, Double> snow) {
+    public void setSnow(Snow snow) {
         this.snow = snow;
     }
 
     private void setMemberVars(String weatherString) throws IOException {
         URL jsonURL = new URL(weatherString);
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println(jsonURL);
+        System.out.println("\n" + jsonURL);
         Location tmp = mapper.readValue(jsonURL, Location.class);
         this.coord = tmp.coord;
         this.weather = tmp.weather;
@@ -168,25 +169,25 @@ public class Location {
         this.id = tmp.id;
         this.name = tmp.name;
         this.cod = tmp.cod;
-        System.out.println(this.main);
-        String tmpIcon = this.weather.get(0).get("icon");
+        String tmpIcon = this.weather[0].getIcon();
         iconUrlString = iconUrlString.replaceFirst("##ICON##",tmpIcon);
         this.icon = new Image(iconUrlString);
+        System.out.println(this);
 
     }
-    public Map<String, Double> getCoord() {
+    public Coord getCoord() {
         return coord;
     }
 
-    public void setCoord(Map<String, Double> coord) {
+    public void setCoord(Coord coord) {
         this.coord = coord;
     }
 
-    public List<Map<String, String>> getWeather() {
+    public Weather[] getWeather() {
         return weather;
     }
 
-    public void setWeather(List<Map<String, String>> weather) {
+    public void setWeather(Weather[] weather) {
         this.weather = weather;
     }
 
@@ -198,11 +199,11 @@ public class Location {
         this.base = base;
     }
 
-    public Map<String, Double> getMain() {
+    public Main getMain() {
         return main;
     }
 
-    public void setMain(Map<String, Double> main) {
+    public void setMain(Main main) {
         this.main = main;
     }
 
@@ -214,19 +215,19 @@ public class Location {
         this.visibility = visibility;
     }
 
-    public Map<String, Double> getWind() {
+    public Wind getWind() {
         return wind;
     }
 
-    public void setWind(Map<String, Double> wind) {
+    public void setWind(Wind wind) {
         this.wind = wind;
     }
 
-    public Map<String, Double> getClouds() {
+    public Clouds getClouds() {
         return clouds;
     }
 
-    public void setClouds(Map<String, Double> clouds) {
+    public void setClouds(Clouds clouds) {
         this.clouds = clouds;
     }
 
@@ -238,11 +239,11 @@ public class Location {
         this.dt = dt;
     }
 
-    public Map<String, String> getSys() {
+    public Sys getSys() {
         return sys;
     }
 
-    public void setSys(Map<String, String> sys) {
+    public void setSys(Sys sys) {
         this.sys = sys;
     }
 
@@ -278,31 +279,12 @@ public class Location {
         this.cod = cod;
     }
 
-    @Override
-    public String toString() {
-        return "Model.Weather{" +
-                ", name='" + name + '\'' +
- //               ", weather=" + Arrays.toString(weather.toArray()) +
-                ", main=" + main +
-                ", wind=" + wind +
-                ", clouds=" + clouds +
-                ", clouds=" + rain +
-                ", clouds=" + snow +
-                ", sys=" + sys +
-                '}';
-    }
-
-    // ((k−273.15)*(9/5)+32);
-
-    public double kToF(double k) {
-        return (k-273.15)*(9/5)+32;
-    }
     // Returns Latitude and Longitude
     public double getLon() {
-        return coord.get("lon");
+        return coord.getLon();
     }
     public double getLat() {
-        return coord.get("lat");
+        return coord.getLat();
     }
     // Returns weather conditions
     public String getWeatherId() {
@@ -321,58 +303,79 @@ public class Location {
 
     private String getWeatherString(String description) {
         List<String> weatherList = new ArrayList<>();
-        for (Map m : weather) {
-            weatherList.add((String)m.get(description));
+        for (Weather w : weather) {
+            weatherList.add(w.getDescription());
         }
         return weatherList.toString().trim().replaceFirst("\\[","").replaceFirst("\\]","");
     }
     // Returns Air information (temp, humidity, etc)
     public double getTemp() {
-        return this.main.get("temp");
+        return this.main.getTemp();
     }
     public double getFeelsLike() {
-        return this.main.get("feels_like");
+        return this.main.getFeels_like();
     }
     public double getMinTemp() {
-        return this.main.get("temp_min");
+        return this.main.getTemp_min();
     }
     public double getMaxTemp() {
-        return this.main.get("temp_max");
+        return this.main.getTemp_max();
     }
     public double getPressure() {
-        return this.main.get("pressure");
+        return this.main.getPressure();
     }
     public double getHumidity() {
-        return this.main.get("humidity");
+        return this.main.getHumidity();
     }
     // Returns Wind Information
     public double getWindSpeed() {
-        return this.wind.get("speed");
+        return this.wind.getSpeed();
     }
-    public int getWindDeg() {
-        return this.wind.get("deg").intValue();
+    public double getWindDeg() {
+        return this.wind.getDeg();
     }
     public double getWindGust() {
-        return this.wind.get("gust");
+        return this.wind.getGust();
     }
     // Returns Cloudiness Percentage (in 0.00 format)
     public double getCloudPer() {
-        return this.clouds.get("all");
+        return this.clouds.getAll();
     }
     // Returns other location information
     public String getCountryCode() {
-        return this.sys.get("country");
+        return this.sys.getCountry();
     }
-    public String getSunrise() {
-        return this.sys.get("sunrise");
+    public long getSunrise() {
+        return this.sys.getSunrise();
     }
-    public String getSunSst() {
-        return this.sys.get("sunset");
+    public long getSunset() {
+        return this.sys.getSunset();
     }
 
+    @Override
+    public String toString() {
+        return "Location{" +
+                "coord=" + coord +
+                ", weather=" + Arrays.toString(weather) +
+                ", base='" + base + '\'' +
+                ", main=" + main +
+                ", visibility='" + visibility + '\'' +
+                ", wind=" + wind +
+                ", clouds=" + clouds +
+                ", rain=" + rain +
+                ", snow=" + snow +
+                ", dt=" + dt +
+                ", sys=" + sys +
+                ", timezone=" + timezone +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", cod=" + cod +
+                ", icon=" + icon +
+                ", iconUrlString='" + iconUrlString + '\'' +
+                '}';
+    }
 
-
-    /*
+/*
     Example Model.Weather JSON
 
     {
