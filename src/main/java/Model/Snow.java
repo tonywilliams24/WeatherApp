@@ -19,8 +19,6 @@ public class Snow {
         return h1;
     }
 
-
-
     public void set1h(double h1) {
         this.h1 = h1;
     }
