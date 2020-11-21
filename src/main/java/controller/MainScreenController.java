@@ -1,4 +1,10 @@
-import Model.Location;
+package controller;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import model.Location;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,9 +14,8 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class mainScreenController {
+public class MainScreenController {
 
     @FXML
     private TextField inputLocationField;
@@ -56,6 +61,8 @@ public class mainScreenController {
 
     @FXML
     private ImageView imageView;
+
+    Stage stage;
 
     ArrayList<Location> locations = new ArrayList<>();
 
@@ -161,4 +168,18 @@ public class mainScreenController {
         return pageBox;
     }
 
+    @FXML
+    public void detailedHandler(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        System.out.println(getClass().getResource("/detailed.fxml"));
+        loader.setLocation(getClass().getResource("/detailed.fxml"));
+        loader.load();
+        DetailedController dController = loader.getController();
+        dController.sendLocation(locations.get(pagination.getCurrentPageIndex()));
+        stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+        Parent scene = loader.getRoot();
+        scene.getStylesheets().add("/CSS.css");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
 }

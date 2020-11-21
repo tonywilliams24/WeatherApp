@@ -12,3 +12,14 @@
     -fx-font-size: 30px;
     -fx-effect: dropshadow(one-pass-box, black, 0, 0, 2, 2);
 }
+.button .text {
+    -fx-fill: black;
+    -fx-stroke: black;
+    -fx-stroke-width: 0px;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(one-pass-box, black, 0, 0, 0, 0);
+}
+
+.value {
+    -fx-text-fill: blue;
+}

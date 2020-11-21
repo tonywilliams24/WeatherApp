@@ -1,25 +1,23 @@
-package Model;
+package model;
 
-public class Rain {
+public class Snow {
     double h1, h3;
 
-    public Rain(double h1, double h3) {
+    public Snow(double h1, double h3) {
         this.h1 = h1;
         this.h3 = h3;
     }
 
-    public Rain(int h1) {
+    public Snow(int h1) {
         this.h1 = h1;
     }
 
-    public Rain() {
+    public Snow() {
     }
 
     public double get1h() {
         return h1;
     }
-
-
 
     public void set1h(double h1) {
         this.h1 = h1;
@@ -35,7 +33,7 @@ public class Rain {
 
     @Override
     public String toString() {
-        return "Rain{" +
+        return "Snow{" +
                 "1h=" + h1 +
                 ", 3h=" + h3 +
                 '}';

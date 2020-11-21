@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
