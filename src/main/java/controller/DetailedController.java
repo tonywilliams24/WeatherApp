@@ -13,25 +13,73 @@ import java.util.ResourceBundle;
 public class DetailedController {
 
     @FXML
+    private GridPane gridPane;
+
+    @FXML
     private Label city;
 
     @FXML
-    private Label temp;
+    private Label currentTemp;
 
     @FXML
     private Label description;
 
     @FXML
-    private Label wind;
+    private Label feelsLike;
 
     @FXML
-    private ColumnConstraints key;
+    private Label highTemp;
 
     @FXML
-    private ColumnConstraints value;
+    private Label lowTemp;
 
     @FXML
-    private GridPane gridPane;
+    private Label humidity;
+
+    @FXML
+    private Label cloud;
+
+    @FXML
+    private Label windSpeed;
+
+    @FXML
+    private Label windGust;
+
+    @FXML
+    private Label windDirection;
+
+    @FXML
+    private Label cityKey;
+
+    @FXML
+    private Label currentTempKey;
+
+    @FXML
+    private Label descriptionKey;
+
+    @FXML
+    private Label feelsLikeKey;
+
+    @FXML
+    private Label highTempKey;
+
+    @FXML
+    private Label lowTempKey;
+
+    @FXML
+    private Label humidityKey;
+
+    @FXML
+    private Label cloudKey;
+
+    @FXML
+    private Label windSpeedKey;
+
+    @FXML
+    private Label windGustKey;
+
+    @FXML
+    private Label windDirectionKey;
 
     Scene scene;
 
@@ -39,12 +87,26 @@ public class DetailedController {
    public void sendLocation(Location location) {
        gridPane.getStyleClass().add("gridPane");
        city.getStyleClass().add("value");
-       temp.getStyleClass().add("value");
+       currentTemp.getStyleClass().add("value");
        description.getStyleClass().add("value");
-       wind.getStyleClass().add("value");
+       feelsLike.getStyleClass().add("value");
+       highTemp.getStyleClass().add("value");
+       lowTemp.getStyleClass().add("value");
+       humidity.getStyleClass().add("value");
+       cloud.getStyleClass().add("value");
+       windSpeed.getStyleClass().add("value");
+       windGust.getStyleClass().add("value");
+       windDirection.getStyleClass().add("value");
        city.setText(location.getName());
-       temp.setText(Double.toString(location.getTemp()));
+       currentTemp.setText(Double.toString(location.getTemp()));
        description.setText(location.getWeatherDescription());
-       wind.setText(Double.toString(location.getWind().getSpeed()));
+       feelsLike.setText(Double.toString(location.getMain().getFeels_like()));
+       highTemp.setText(Double.toString(location.getMain().getTemp_max()));
+       lowTemp.setText(Double.toString(location.getMain().getTemp_min()));
+       humidity.setText(Double.toString(location.getMain().getHumidity()));
+       cloud.setText(Double.toString(location.getClouds().getAll()));
+       windSpeed.setText(Double.toString(location.getWind().getSpeed()));
+       windGust.setText(Double.toString(location.getWind().getGust()));
+       windDirection.setText(Double.toString(location.getWind().getDeg()));
     }
 }
