@@ -7,6 +7,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import model.Location;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class DetailedController {
 
     @FXML
@@ -32,7 +35,9 @@ public class DetailedController {
 
     Scene scene;
 
+
    public void sendLocation(Location location) {
+       gridPane.getStyleClass().add("gridPane");
        city.getStyleClass().add("value");
        temp.getStyleClass().add("value");
        description.getStyleClass().add("value");

@@ -2,7 +2,8 @@
         -fx-background-color: #DDDDDD;
 }
 
-.vbox {
+.gridPane {
+    -fx-font-size: 30px;
 }
 
 .vbox .text {
