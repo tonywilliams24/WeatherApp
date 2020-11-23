@@ -29,7 +29,7 @@
                         <children>
                             <Label fx:id="nameLabel"/>
                             <Label fx:id="mainTempLabel"/>
-                            <Label fx:id="descriptionDetailLabel"/>
+                            <Label fx:id="mainLabel"/>
                             <Button fx:id="detailedButton" text="Detailed" onAction="#detailedHandler"/>
                         </children>
                         <opaqueInsets>
