@@ -1,14 +1,12 @@
 package controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -16,9 +14,7 @@ import model.Location;
 import model.Weather;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class DetailedController {
 
@@ -122,20 +118,20 @@ public class DetailedController {
        windGust.getStyleClass().add("value");
        windDirection.getStyleClass().add("value");
        city.setText(location.getName());
-       currentTemp.setText(Double.toString(location.getTemp()));
+       currentTemp.setText(Double.toString(location.getCurrent().getTemp()));
        StringBuilder weatherSB = new StringBuilder();
-       for(Weather weather: location.getWeather()) {
+       for(Weather weather: location.getCurrent().getWeather()) {
            weatherSB.append(weather.getDescription() + "\n");
        }
        description.setText(weatherSB.toString());
-       feelsLike.setText(Double.toString(location.getMain().getFeels_like()));
-       highTemp.setText(Double.toString(location.getMain().getTemp_max()));
-       lowTemp.setText(Double.toString(location.getMain().getTemp_min()));
-       humidity.setText(Double.toString(location.getMain().getHumidity()));
-       cloud.setText(Double.toString(location.getClouds().getAll()));
-       windSpeed.setText(Double.toString(location.getWind().getSpeed()));
-       windGust.setText(Double.toString(location.getWind().getGust()));
-       windDirection.setText(Double.toString(location.getWind().getDeg()));
+       feelsLike.setText(Double.toString(location.getCurrent().getFeels_like()));
+       highTemp.setText(Double.toString(location.getDaily()[0].getTemps().getMax()));
+       lowTemp.setText(Double.toString(location.getDaily()[0].getTemps().getMin()));
+       humidity.setText(Double.toString(location.getCurrent().getHumidity()));
+       cloud.setText(Double.toString(location.getCurrent().getClouds()));
+       windSpeed.setText(Double.toString(location.getCurrent().getWind_speed()));
+       windGust.setText(Double.toString(location.getCurrent().getWind_gust()));
+       windDirection.setText(Double.toString(location.getCurrent().getWind_deg()));
     }
 
     @FXML

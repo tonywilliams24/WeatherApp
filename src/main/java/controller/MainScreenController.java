@@ -138,15 +138,15 @@ public class MainScreenController {
                 }
             }
         }
-        if(location.getWeather()!=null) {
+        if(location!=null) {
             pagination.getStyleClass().add("pagination");
             vbox.getStyleClass().add("vbox");
             pagination.setPageCount(locationList.size());
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {
-                nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountryCode());
-                mainTempLabel.setText(locationList.get(pageIndex).getTemp() + " ºF");
-                mainLabel.setText(locationList.get(pageIndex).getWeather()[0].getMain());
+                nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
+                mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " ºF");
+                mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
                 imageView.setVisible(true);
                 imageView.setImage(locationList.get(pageIndex).getIcon());
                 imageView.setOpacity(.5);
@@ -190,9 +190,9 @@ public class MainScreenController {
         pagination.setPageCount(locationList.size());
         pagination.setMaxPageIndicatorCount(10);
         pagination.setPageFactory((pageIndex) -> {
-            nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountryCode());
-            mainTempLabel.setText(locationList.get(pageIndex).getTemp() + " ºF");
-            mainLabel.setText(locationList.get(pageIndex).getWeather()[0].getMain());
+            nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
+            mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " ºF");
+            mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
             imageView.setVisible(true);
             imageView.setImage(locationList.get(pageIndex).getIcon());
             return new StackPane(imageView,vbox);
