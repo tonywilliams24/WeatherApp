@@ -21,6 +21,30 @@ public class CurrentWeatherAPI {
     private long id;
     private String name;
     private int cod;
+
+    @Override
+    public String toString() {
+        return "CurrentWeatherAPI{" +
+                "coord=" + coord +
+                ", weather=" + weather +
+                ", base='" + base + '\'' +
+                ", main=" + main +
+                ", visibility='" + visibility + '\'' +
+                ", wind=" + wind +
+                ", clouds=" + clouds +
+                ", rain=" + rain +
+                ", snow=" + snow +
+                ", dt=" + dt +
+                ", sys=" + sys +
+                ", timezone=" + timezone +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", cod=" + cod +
+                ", icon=" + icon +
+                ", iconUrlString='" + iconUrlString + '\'' +
+                '}';
+    }
+
     private Image icon;
     private String iconUrlString = "icons/##ICON##@4x.png";
 

@@ -46,4 +46,16 @@ public class Alerts {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+    @Override
+    public String toString() {
+        return "Alerts{" +
+                "sender_name='" + sender_name + '\'' +
+                ", event='" + event + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

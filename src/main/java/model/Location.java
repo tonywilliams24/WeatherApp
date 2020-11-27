@@ -5,6 +5,13 @@ import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class Location {
 
@@ -13,29 +20,18 @@ public class Location {
     private double lat;
     private double lon;
     private String timezone;
-    private String timezone_offset;
+    private long timezone_offset;
     private Current current;
     private Minutely[] minutely;
     private Hourly[] hourly;
     private Daily[] daily;
     private Alerts[] alerts;
-    private Image icon;
-    private String iconUrlString = "icons/##ICON##@4x.png";
     private String name;
     private String country;
+    private final static String iconUrlString = "icons/##ICON##@4x.png";
 
-
-    public Image getIcon() {
-        return icon;
-    }
-    public void setIcon(Image icon) {
-        this.icon = icon;
-    }
-    public String getIconUrlString() {
+    public static String getIconUrlString() {
         return iconUrlString;
-    }
-    public void setIconUrlString(String iconUrlString) {
-        this.iconUrlString = iconUrlString;
     }
 
     public double getLat() {
@@ -62,11 +58,11 @@ public class Location {
         this.timezone = timezone;
     }
 
-    public String getTimezone_offset() {
+    public long getTimezone_offset() {
         return timezone_offset;
     }
 
-    public void setTimezone_offset(String timezone_offset) {
+    public void setTimezone_offset(long timezone_offset) {
         this.timezone_offset = timezone_offset;
     }
 
@@ -237,10 +233,31 @@ public class Location {
         this.hourly = location.hourly;
         this.daily = location.daily;
         this.alerts = location.alerts;
-        String tmpIcon = this.current.getWeather()[0].getIcon();
-        iconUrlString = iconUrlString.replaceFirst("##ICON##",tmpIcon);
-        this.icon = new Image(iconUrlString);
+        this.current.setIcon(new Image(this.current.iconUrl()));
+        for(Hourly hourly: this.hourly) {
+            hourly.setIcon(new Image(hourly.iconUrl()));
+        }
+        for(Daily daily: this.daily) {
+            daily.setIcon(new Image(daily.iconUrl()));
+        }
         System.out.println(this);
+    }
 
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "lat=" + lat +
+                ", lon=" + lon +
+                ", timezone='" + timezone + '\'' +
+                ", timezone_offset='" + timezone_offset + '\'' +
+                ", current=" + current +
+                ", minutely=" + Arrays.toString(minutely) +
+                ", hourly=" + Arrays.toString(hourly) +
+                ", daily=" + Arrays.toString(daily) +
+                ", alerts=" + Arrays.toString(alerts) +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

@@ -33,11 +33,12 @@ public class Rain {
         this.h3 = h3;
     }
 
+
     @Override
     public String toString() {
         return "Rain{" +
-                "1h=" + h1 +
-                ", 3h=" + h3 +
+                "h1=" + h1 +
+                ", h3=" + h3 +
                 '}';
     }
 }

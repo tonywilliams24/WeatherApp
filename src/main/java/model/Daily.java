@@ -1,10 +1,13 @@
 package model;
 
-public class Daily extends Forcast {
+public class Daily extends Forecast {
     Temps temp;
     Temps feels_like;
     double rain;
     double snow;
+
+    public Daily() {
+    }
 
     public double getDailyRain() {
         return rain;
@@ -22,13 +25,9 @@ public class Daily extends Forcast {
         this.snow = snow;
     }
 
-    public Daily() {
-    }
-
     public Temps getTemps() {
         return temp;
     }
-
 
     public void setTemp(Temps temps) {
         this.temp = temps;
@@ -40,5 +39,15 @@ public class Daily extends Forcast {
 
     public void setFeels_like(Temps feels_like) {
         this.feels_like = feels_like;
+    }
+
+    @Override
+    public String toString() {
+        return "Daily{" +
+                "temp=" + temp +
+                ", feels_like=" + feels_like +
+                ", rain=" + rain +
+                ", snow=" + snow +
+                "} " + super.toString();
     }
 }

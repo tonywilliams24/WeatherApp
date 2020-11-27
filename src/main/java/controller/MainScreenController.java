@@ -148,7 +148,7 @@ public class MainScreenController {
                 mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " ºF");
                 mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
                 imageView.setVisible(true);
-                imageView.setImage(locationList.get(pageIndex).getIcon());
+                imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
                 imageView.setOpacity(.5);
                 return new StackPane(imageView,vbox);
             });
@@ -175,7 +175,7 @@ public class MainScreenController {
         loader.setLocation(getClass().getResource("/detailed.fxml"));
         loader.load();
         DetailedController dController = loader.getController();
-        dController.sendLocation(locationList, locationList.get(pagination.getCurrentPageIndex()));
+        dController.sendLocation(locationList.get(pagination.getCurrentPageIndex()));
         stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         scene.getStylesheets().add("/CSS.css");
@@ -194,7 +194,7 @@ public class MainScreenController {
             mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " ºF");
             mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
             imageView.setVisible(true);
-            imageView.setImage(locationList.get(pageIndex).getIcon());
+            imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
             return new StackPane(imageView,vbox);
         });
         pagination.setCurrentPageIndex(locationList.size()-1);

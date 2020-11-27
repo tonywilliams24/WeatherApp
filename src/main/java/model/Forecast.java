@@ -2,7 +2,9 @@ package model;
 
 import javafx.scene.image.Image;
 
-public abstract class Forcast {
+import java.util.Arrays;
+
+public abstract class Forecast {
 
     private long dt;
     private long sunrise;
@@ -22,7 +24,15 @@ public abstract class Forcast {
     private double pop;
     private Rain rain;
     private Snow snow;
+    private Image icon;
 
+    public Image getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Image icon) {
+        this.icon = icon;
+    }
 
     public long getDt() {
         return dt;
@@ -148,7 +158,7 @@ public abstract class Forcast {
         return rain;
     }
 
-    public Forcast(long dt, long sunrise, long sunset, double temp, double feels_like, int pressure, int humidity, double dew_point, int clouds, double uvi, double visibility, double wind_speed, double wind_gust, int wind_deg, Weather[] weather, double pop, Rain rain, Snow snow) {
+    public Forecast(long dt, long sunrise, long sunset, double temp, double feels_like, int pressure, int humidity, double dew_point, int clouds, double uvi, double visibility, double wind_speed, double wind_gust, int wind_deg, Weather[] weather, double pop, Rain rain, Snow snow) {
         this.dt = dt;
         this.sunrise = sunrise;
         this.sunset = sunset;
@@ -169,7 +179,7 @@ public abstract class Forcast {
         this.snow = snow;
     }
 
-    public Forcast() {
+    public Forecast() {
     }
 
     public double getPop() {
@@ -192,4 +202,33 @@ public abstract class Forcast {
         this.snow = snow;
     }
 
+
+    @Override
+    public String toString() {
+        return "Forecast{" +
+                "dt=" + dt +
+                ", sunrise=" + sunrise +
+                ", sunset=" + sunset +
+                ", temp=" + temp +
+                ", feels_like=" + feels_like +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", dew_point=" + dew_point +
+                ", clouds=" + clouds +
+                ", uvi=" + uvi +
+                ", visibility=" + visibility +
+                ", wind_speed=" + wind_speed +
+                ", wind_gust=" + wind_gust +
+                ", wind_deg=" + wind_deg +
+                ", weather=" + Arrays.toString(weather) +
+                ", pop=" + pop +
+                ", rain=" + rain +
+                ", snow=" + snow +
+                '}';
+    }
+
+    public String iconUrl() {
+        String icon = getWeather()[0].getIcon();
+        return Location.getIconUrlString().replaceFirst("##ICON##",icon);
+    }
 }

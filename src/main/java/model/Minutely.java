@@ -1,6 +1,6 @@
 package model;
 
-public class Minutely extends Forcast {
+public class Minutely extends Forecast {
     public Minutely() {
     }
 
@@ -12,5 +12,13 @@ public class Minutely extends Forcast {
 
     public void setPrecipitation(double precipitation) {
         this.precipitation = precipitation;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Minutely{" +
+                "precipitation=" + precipitation +
+                "} " + super.toString();
     }
 }

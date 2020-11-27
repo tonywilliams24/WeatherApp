@@ -50,4 +50,16 @@ public class Temps {
     public void setMorn(double morn) {
         this.morn = morn;
     }
+
+    @Override
+    public String toString() {
+        return "Temps{" +
+                "day=" + day +
+                ", min=" + min +
+                ", max=" + max +
+                ", night=" + night +
+                ", eve=" + eve +
+                ", morn=" + morn +
+                '}';
+    }
 }
