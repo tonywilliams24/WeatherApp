@@ -13,6 +13,13 @@
     -fx-font-size: 30px;
     -fx-effect: dropshadow(one-pass-box, black, 0, 0, 2, 2);
 }
+
+.week .text {
+    -fx-font-size: 20px;
+}
+
+
+
 .button .text {
     -fx-fill: black;
     -fx-stroke: black;

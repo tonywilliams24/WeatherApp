@@ -5,13 +5,7 @@ import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class Location {
 
@@ -28,10 +22,20 @@ public class Location {
     private Alerts[] alerts;
     private String name;
     private String country;
-    private final static String iconUrlString = "icons/##ICON##@4x.png";
+    private String iconUrl;
 
-    public static String getIconUrlString() {
-        return iconUrlString;
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
+    public final static String iconUrlString_template = "icons/##ICON##@4x.png";
+
+    public static String getIconUrlString_template() {
+        return iconUrlString_template;
     }
 
     public double getLat() {
@@ -125,7 +129,7 @@ public class Location {
     // Now currently in use as it converts location input into Lat / Lon for new API
     // To be replaced with a proper geocoding API
 
-    Location() {
+    public Location() {
     }
     public Location(String city) {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
@@ -233,7 +237,8 @@ public class Location {
         this.hourly = location.hourly;
         this.daily = location.daily;
         this.alerts = location.alerts;
-        this.current.setIcon(new Image(this.current.iconUrl()));
+        this.iconUrl = this.current.iconUrl();
+        this.current.setIcon(new Image(iconUrl));
         for(Hourly hourly: this.hourly) {
             hourly.setIcon(new Image(hourly.iconUrl()));
         }

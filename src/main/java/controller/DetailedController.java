@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -105,6 +104,9 @@ public class DetailedController {
     @FXML
     private HBox hBox;
 
+    @FXML
+    private VBox vBoxKey;
+
     ArrayList<Location> locationList;
 
 
@@ -114,11 +116,12 @@ public class DetailedController {
     Scene scene;
 
 
-   public void sendLocation(Location location) {
+   public void sendLocation(ArrayList<Location> locationList, Location location) {
+       this.locationList = locationList;
        Daily[] daily = location.getDaily();
        Current current = location.getCurrent();
        gridPane.getStyleClass().add("gridPane");
-       pane.setStyle("-fx-background-image: url('"+location.getIconUrlString()+"'); -fx-background-color: #AAAAAA; -fx-opacity: .2;");
+       pane.setStyle("-fx-background-color: #AAAAAA; -fx-opacity: .2;");
        city.getStyleClass().add("value");
        currentTemp.getStyleClass().add("value");
        description.getStyleClass().add("value");
@@ -152,7 +155,9 @@ public class DetailedController {
        for(int i=0; i<stackPanes.length; i++) {
            System.out.println(daily[i].getIcon());
            ImageView imageView = new ImageView(daily[i].getIcon());
+           imageView.setOpacity(.5);
            VBox vBox = new VBox();
+           vBox.getStyleClass().addAll("vbox","week");
            Instant instant = Instant.ofEpochSecond(daily[i].getDt());
            ZoneId zoneId = ZoneId.of(location.getTimezone());
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
@@ -160,9 +165,13 @@ public class DetailedController {
            Label maxTempLabel = new Label(Double.toString(daily[i].getTemps().getMax()));
            Label minTempLabel = new Label(Double.toString(daily[i].getTemps().getMin()));
            vBox.getChildren().addAll(dayOfWeekLabel,maxTempLabel,minTempLabel);
+           System.out.println(imageView);
+           vBoxKey.getStyleClass().addAll("vbox","week");
            stackPanes[i] = new StackPane(imageView,vBox);
        }
+
        hBox.getChildren().addAll(stackPanes);
+
     }
 
     @FXML

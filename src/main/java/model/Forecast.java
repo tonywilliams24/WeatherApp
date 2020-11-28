@@ -229,6 +229,6 @@ public abstract class Forecast {
 
     public String iconUrl() {
         String icon = getWeather()[0].getIcon();
-        return Location.getIconUrlString().replaceFirst("##ICON##",icon);
+        return Location.getIconUrlString_template().replaceFirst("##ICON##",icon);
     }
 }

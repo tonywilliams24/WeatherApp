@@ -138,7 +138,8 @@ public class MainScreenController {
                 }
             }
         }
-        if(location!=null) {
+        if(location.getCurrent()!=null) {
+            System.out.println(location);
             pagination.getStyleClass().add("pagination");
             vbox.getStyleClass().add("vbox");
             pagination.setPageCount(locationList.size());
@@ -175,7 +176,7 @@ public class MainScreenController {
         loader.setLocation(getClass().getResource("/detailed.fxml"));
         loader.load();
         DetailedController dController = loader.getController();
-        dController.sendLocation(locationList.get(pagination.getCurrentPageIndex()));
+        dController.sendLocation(locationList, locationList.get(pagination.getCurrentPageIndex()));
         stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         scene.getStylesheets().add("/CSS.css");
