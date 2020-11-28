@@ -1,4 +1,4 @@
-.root {
+.anchor {
         -fx-background-color: #DDDDDD;
 }
 
@@ -23,10 +23,6 @@
     -fx-effect: dropshadow(one-pass-box, white, 0, 0, 2, 2);
 }
 
-
-
-
-
 .button .text {
     -fx-fill: black;
     -fx-stroke: black;
@@ -37,4 +33,9 @@
 
 .value {
     -fx-text-fill: blue;
+}
+
+.scrollPane {
+    -fx-background: #DDDDDD;
+    -fx-background-color: #DDDDDD;
 }

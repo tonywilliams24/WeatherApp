@@ -186,13 +186,11 @@ public class MainScreenController {
 
     public void startPagination(ArrayList<Location> locationList) {
         this.locationList = locationList;
-        pagination.getStyleClass().add("pagination");
-        vbox.getStyleClass().add("vbox");
         pagination.setPageCount(locationList.size());
         pagination.setMaxPageIndicatorCount(10);
         pagination.setPageFactory((pageIndex) -> {
             nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
-            mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " ºF");
+            mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " \u00B0F");
             mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
             imageView.setVisible(true);
             imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());

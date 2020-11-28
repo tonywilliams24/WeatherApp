@@ -11,16 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.Current;
-import model.Daily;
-import model.Location;
-import model.Weather;
+import model.*;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -103,10 +98,16 @@ public class DetailedController {
     private Pane pane;
 
     @FXML
-    private HBox hBox;
+    private HBox dailyHBox;
 
     @FXML
-    private VBox vBoxKey;
+    private VBox dailyKeyVBox;
+
+    @FXML
+    private HBox hourlyHBox;
+
+    @FXML
+    private VBox hourlyKeyVBox;
 
     ArrayList<Location> locationList;
 
@@ -120,20 +121,8 @@ public class DetailedController {
    public void sendLocation(ArrayList<Location> locationList, Location location) {
        this.locationList = locationList;
        Daily[] daily = location.getDaily();
+       Hourly[] hourly = location.getHourly();
        Current current = location.getCurrent();
-       gridPane.getStyleClass().add("gridPane");
-       pane.setStyle("-fx-background-color: #AAAAAA; -fx-opacity: .2;");
-       city.getStyleClass().add("value");
-       currentTemp.getStyleClass().add("value");
-       description.getStyleClass().add("value");
-       feelsLike.getStyleClass().add("value");
-       highTemp.getStyleClass().add("value");
-       lowTemp.getStyleClass().add("value");
-       humidity.getStyleClass().add("value");
-       cloud.getStyleClass().add("value");
-       windSpeed.getStyleClass().add("value");
-       windGust.getStyleClass().add("value");
-       windDirection.getStyleClass().add("value");
        city.setText(location.getName());
        currentTemp.setText(Double.toString(current.getTemp()));
        StringBuilder weatherSB = new StringBuilder();
@@ -150,10 +139,8 @@ public class DetailedController {
        windGust.setText(Double.toString(current.getWind_gust()));
        windDirection.setText(Double.toString(current.getWind_deg()));
 
-       StackPane[] stackPanes = new StackPane[daily.length];
-
-
-       for(int i=0; i<stackPanes.length; i++) {
+       StackPane[] dailyStackPanes = new StackPane[daily.length];
+       for(int i=0; i<dailyStackPanes.length; i++) {
            System.out.println(daily[i].getIcon());
            ImageView imageView = new ImageView(daily[i].getIcon());
            imageView.setOpacity(.5);
@@ -166,15 +153,39 @@ public class DetailedController {
            ZoneId zoneId = ZoneId.of(location.getTimezone());
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
            Label dayOfWeekLabel = new Label(DayOfWeek.from(ldt).getDisplayName(TextStyle.FULL, Locale.US));
-           Label maxTempLabel = new Label(Double.toString(daily[i].getTemps().getMax()));
-           Label minTempLabel = new Label(Double.toString(daily[i].getTemps().getMin()));
+           Label maxTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMax())) + " \u00B0F");
+           Label minTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMin())) + " \u00B0F");
            vBox.getChildren().addAll(dayOfWeekLabel,maxTempLabel,minTempLabel);
            System.out.println(imageView);
-           vBoxKey.getStyleClass().addAll("vbox","week");
-           stackPanes[i] = new StackPane(imageView,vBox);
+           dailyStackPanes[i] = new StackPane(imageView,vBox);
        }
 
-       hBox.getChildren().addAll(stackPanes);
+       this.dailyHBox.getChildren().addAll(dailyStackPanes);
+
+
+       StackPane[] hourlyStackPanes = new StackPane[hourly.length];
+       for(int i=0; i<hourlyStackPanes.length; i++) {
+           System.out.println(hourly[i].getIcon());
+           ImageView imageView = new ImageView(hourly[i].getIcon());
+           imageView.setOpacity(.5);
+           imageView.setFitWidth(150);
+           imageView.setPreserveRatio(true);
+           VBox vBox = new VBox();
+           vBox.getStyleClass().addAll("vbox","week");
+           vBox.setAlignment(Pos.CENTER);
+           Instant instant = Instant.ofEpochSecond(hourly[i].getDt());
+           ZoneId zoneId = ZoneId.of(location.getTimezone());
+           LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
+           LocalTime lt = LocalTime.from(ldt);
+           Label timeLabel = new Label(lt.format(DateTimeFormatter.ofPattern("h a")));
+           Label tempLabel = new Label((int) Math.round(hourly[i].getTemp()) + " \u00B0F");
+           Label popLabel = new Label((int) (hourly[i].getPop() * 100) + " %");
+           vBox.getChildren().addAll(timeLabel,tempLabel,popLabel);
+           System.out.println(imageView);
+           hourlyStackPanes[i] = new StackPane(imageView,vBox);
+       }
+
+       this.hourlyHBox.getChildren().addAll(hourlyStackPanes);
 
     }
 

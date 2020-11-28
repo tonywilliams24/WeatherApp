@@ -11,7 +11,7 @@
 
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<AnchorPane minWidth="400.0" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController" maxWidth="Infinity">
+<AnchorPane minWidth="400.0" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController" maxWidth="Infinity" styleClass="anchor">
    <children>
       <VBox prefHeight="600.0" prefWidth="400.0" fillWidth="true" maxWidth="Infinity" alignment="CENTER">
          <children>
@@ -23,9 +23,9 @@
                </children>
             </HBox>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="400.0" text="Valid inputs:&#10;City Name (Can optionally include US State or a Country)&#10;City ID &#10;Geographic Coordinates (Latitude, Longitude)&#10;Postal Code (integer only), Country Code (e.g. 75000, FR)" />
-            <Pagination fx:id="pagination" prefHeight="200.0" minWidth="360.0" visible="false" maxWidth="360" minHeight="400">
+            <Pagination fx:id="pagination" prefHeight="200.0" minWidth="360.0" visible="false" maxWidth="360" minHeight="400" styleClass="pagination">
                 <fx:define>
-                    <VBox fx:id="vbox" maxHeight="240.0" prefWidth="300.0" VBox.vgrow="ALWAYS" alignment="center">
+                    <VBox fx:id="vbox" maxHeight="240.0" prefWidth="300.0" VBox.vgrow="ALWAYS" alignment="center" styleClass="vBox">
                         <children>
                             <Label fx:id="nameLabel"/>
                             <Label fx:id="mainTempLabel"/>
