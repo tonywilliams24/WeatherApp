@@ -153,8 +153,8 @@ public class DetailedController {
            ZoneId zoneId = ZoneId.of(location.getTimezone());
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
            Label dayOfWeekLabel = new Label(DayOfWeek.from(ldt).getDisplayName(TextStyle.FULL, Locale.US));
-           Label maxTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMax())) + " \u00B0F");
-           Label minTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMin())) + " \u00B0F");
+           Label maxTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMax())) + "\u00B0F");
+           Label minTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMin())) + "\u00B0F");
            vBox.getChildren().addAll(dayOfWeekLabel,maxTempLabel,minTempLabel);
            System.out.println(imageView);
            dailyStackPanes[i] = new StackPane(imageView,vBox);
@@ -178,7 +178,7 @@ public class DetailedController {
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
            LocalTime lt = LocalTime.from(ldt);
            Label timeLabel = new Label(lt.format(DateTimeFormatter.ofPattern("h a")));
-           Label tempLabel = new Label((int) Math.round(hourly[i].getTemp()) + " \u00B0F");
+           Label tempLabel = new Label((int) Math.round(hourly[i].getTemp()) + "\u00B0F");
            Label popLabel = new Label((int) (hourly[i].getPop() * 100) + " %");
            vBox.getChildren().addAll(timeLabel,tempLabel,popLabel);
            System.out.println(imageView);

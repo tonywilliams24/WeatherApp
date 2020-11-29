@@ -140,13 +140,11 @@ public class MainScreenController {
         }
         if(location.getCurrent()!=null) {
             System.out.println(location);
-            pagination.getStyleClass().add("pagination");
-            vbox.getStyleClass().add("vbox");
             pagination.setPageCount(locationList.size());
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {
                 nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
-                mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " ºF");
+                mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
                 mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
                 imageView.setVisible(true);
                 imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
@@ -190,7 +188,7 @@ public class MainScreenController {
         pagination.setMaxPageIndicatorCount(10);
         pagination.setPageFactory((pageIndex) -> {
             nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
-            mainTempLabel.setText(locationList.get(pageIndex).getCurrent().getTemp() + " \u00B0F");
+            mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
             mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
             imageView.setVisible(true);
             imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
