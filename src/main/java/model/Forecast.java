@@ -19,12 +19,51 @@ public abstract class Forecast {
     private double visibility; // check if double or int is needed
     private double wind_speed;
     private double wind_gust;
-    private int wind_deg;
+    private int wind_deg; // degrees
+    private String wind_dir; // direction (N, NE, E, SE, S, SW, W, NW)
     private Weather[] weather;
     private double pop;
     private Rain rain;
     private Snow snow;
     private Image icon;
+
+    public String getWind_dir() {
+        return wind_dir;
+    }
+
+    public void setWind_dir(String wind_dir) {
+        this.wind_dir = wind_dir;
+    }
+
+
+    // Arranged based on (the best guess of) most common winds around Bremerton, WA
+    public String degToDir(int wind_deg) {
+        if(wind_deg>=67.5 && wind_deg<=112.5){
+            return "E";
+        }
+        else if(wind_deg>22.5 && wind_deg<67.5){
+            return "NE";
+        }
+        else if(wind_deg>=337.5 && wind_deg<=22.5){
+            return "N";
+        }
+        else if(wind_deg>112.5 && wind_deg<157.5){
+            return "SE";
+        }
+        else if(wind_deg>=157.5 && wind_deg<=202.5){
+            return "S";
+        }
+        else if(wind_deg>202.5 && wind_deg<247.5){
+            return "SW";
+        }
+        else if(wind_deg>=247.5 && wind_deg<=292.5){
+            return "W";
+        }
+        else if(wind_deg>292.5 && wind_deg<337.5){
+            return "NW";
+        }
+        return null;
+    }
 
     public Image getIcon() {
         return icon;

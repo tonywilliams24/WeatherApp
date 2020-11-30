@@ -148,7 +148,7 @@ public class MainScreenController {
                 mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
                 imageView.setVisible(true);
                 imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
-                imageView.setOpacity(.5);
+//                imageView.setOpacity(.5);
                 return new StackPane(imageView,vbox);
             });
             pagination.setCurrentPageIndex(locationList.size()-1);

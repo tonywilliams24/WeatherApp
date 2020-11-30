@@ -124,26 +124,26 @@ public class DetailedController {
        Hourly[] hourly = location.getHourly();
        Current current = location.getCurrent();
        city.setText(location.getName());
-       currentTemp.setText(Double.toString(current.getTemp()));
+       currentTemp.setText((int) Math.round(current.getTemp()) + "\u00B0F");
        StringBuilder weatherSB = new StringBuilder();
        for(Weather weather: current.getWeather()) {
            weatherSB.append(weather.getDescription() + "\n");
        }
        description.setText(weatherSB.toString());
-       feelsLike.setText(Double.toString(current.getFeels_like()));
-       highTemp.setText(Double.toString(daily[0].getTemps().getMax()));
-       lowTemp.setText(Double.toString(daily[0].getTemps().getMin()));
-       humidity.setText(Double.toString(current.getHumidity()));
-       cloud.setText(Double.toString(current.getClouds()));
-       windSpeed.setText(Double.toString(current.getWind_speed()));
-       windGust.setText(Double.toString(current.getWind_gust()));
+       feelsLike.setText((int) Math.round(current.getFeels_like()) + "\u00B0F");
+       highTemp.setText((int) Math.round(daily[0].getTemps().getMax()) + "\u00B0F");
+       lowTemp.setText((int) Math.round(daily[0].getTemps().getMin()) + "\u00B0F");
+       humidity.setText(Math.round(current.getHumidity()) + "%");
+       cloud.setText(Math.round(current.getClouds()) + "%");
+       windSpeed.setText((int) Math.round(current.getWind_speed()) + " mph");
+       windGust.setText((int) Math.round(current.getWind_gust()) + " mph");
        windDirection.setText(Double.toString(current.getWind_deg()));
 
        StackPane[] dailyStackPanes = new StackPane[daily.length];
        for(int i=0; i<dailyStackPanes.length; i++) {
            System.out.println(daily[i].getIcon());
            ImageView imageView = new ImageView(daily[i].getIcon());
-           imageView.setOpacity(.5);
+//           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);
            VBox vBox = new VBox();
@@ -167,7 +167,7 @@ public class DetailedController {
        for(int i=0; i<hourlyStackPanes.length; i++) {
            System.out.println(hourly[i].getIcon());
            ImageView imageView = new ImageView(hourly[i].getIcon());
-           imageView.setOpacity(.5);
+//           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);
            VBox vBox = new VBox();
