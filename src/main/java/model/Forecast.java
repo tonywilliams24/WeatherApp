@@ -27,42 +27,36 @@ public abstract class Forecast {
     private Snow snow;
     private Image icon;
 
+    public Forecast() {
+    }
+
+    public Forecast(long dt, long sunrise, long sunset, double temp, double feels_like, int pressure, int humidity, double dew_point, int clouds, double uvi, double visibility, double wind_speed, double wind_gust, int wind_deg, Weather[] weather, double pop, Rain rain, Snow snow) {
+        this.dt = dt;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+        this.temp = temp;
+        this.feels_like = feels_like;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.dew_point = dew_point;
+        this.clouds = clouds;
+        this.uvi = uvi;
+        this.visibility = visibility;
+        this.wind_speed = wind_speed;
+        this.wind_gust = wind_gust;
+        this.wind_deg = wind_deg;
+        this.weather = weather;
+        this.pop = pop;
+        this.rain = rain;
+        this.snow = snow;
+    }
+
     public String getWind_dir() {
         return wind_dir;
     }
 
     public void setWind_dir(String wind_dir) {
         this.wind_dir = wind_dir;
-    }
-
-
-    // Arranged based on (the best guess of) most common winds around Bremerton, WA
-    public String degToDir(int wind_deg) {
-        if(wind_deg>=67.5 && wind_deg<=112.5){
-            return "E";
-        }
-        else if(wind_deg>22.5 && wind_deg<67.5){
-            return "NE";
-        }
-        else if(wind_deg>=337.5 && wind_deg<=22.5){
-            return "N";
-        }
-        else if(wind_deg>112.5 && wind_deg<157.5){
-            return "SE";
-        }
-        else if(wind_deg>=157.5 && wind_deg<=202.5){
-            return "S";
-        }
-        else if(wind_deg>202.5 && wind_deg<247.5){
-            return "SW";
-        }
-        else if(wind_deg>=247.5 && wind_deg<=292.5){
-            return "W";
-        }
-        else if(wind_deg>292.5 && wind_deg<337.5){
-            return "NW";
-        }
-        return null;
     }
 
     public Image getIcon() {
@@ -183,6 +177,7 @@ public abstract class Forecast {
 
     public void setWind_deg(int wind_deg) {
         this.wind_deg = wind_deg;
+        this.wind_dir = degToDir(this.wind_deg);
     }
 
     public Weather[] getWeather() {
@@ -195,30 +190,6 @@ public abstract class Forecast {
 
     public Rain getRain() {
         return rain;
-    }
-
-    public Forecast(long dt, long sunrise, long sunset, double temp, double feels_like, int pressure, int humidity, double dew_point, int clouds, double uvi, double visibility, double wind_speed, double wind_gust, int wind_deg, Weather[] weather, double pop, Rain rain, Snow snow) {
-        this.dt = dt;
-        this.sunrise = sunrise;
-        this.sunset = sunset;
-        this.temp = temp;
-        this.feels_like = feels_like;
-        this.pressure = pressure;
-        this.humidity = humidity;
-        this.dew_point = dew_point;
-        this.clouds = clouds;
-        this.uvi = uvi;
-        this.visibility = visibility;
-        this.wind_speed = wind_speed;
-        this.wind_gust = wind_gust;
-        this.wind_deg = wind_deg;
-        this.weather = weather;
-        this.pop = pop;
-        this.rain = rain;
-        this.snow = snow;
-    }
-
-    public Forecast() {
     }
 
     public double getPop() {
@@ -241,6 +212,36 @@ public abstract class Forecast {
         this.snow = snow;
     }
 
+    public String degToDir(int wind_deg) {
+
+        // Arranged based on (my best guess of) the most common wind directions around Bremerton, WA
+        if(wind_deg>=67.5 && wind_deg<=112.5){
+            return "E";
+        }
+        else if(wind_deg>22.5 && wind_deg<67.5){
+            return "NE";
+        }
+        else if((wind_deg>=337.5 || wind_deg<=22.5) && wind_deg>=0 && wind_deg <= 360){
+            return "N";
+        }
+        else if(wind_deg>112.5 && wind_deg<157.5){
+            return "SE";
+        }
+        else if(wind_deg>=157.5 && wind_deg<=202.5){
+            return "S";
+        }
+        else if(wind_deg>202.5 && wind_deg<247.5){
+            return "SW";
+        }
+        else if(wind_deg>=247.5 && wind_deg<=292.5){
+            return "W";
+        }
+        else if(wind_deg>292.5 && wind_deg<337.5){
+            return "NW";
+        }
+        System.out.println(wind_deg);
+        return null;
+    }
 
     @Override
     public String toString() {

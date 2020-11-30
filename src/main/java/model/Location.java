@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -135,7 +136,7 @@ public class Location {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city);
         try {
-            setMemberVars(inputLocationString);
+            currentWeatherAPI(inputLocationString);
         }
         catch (Exception e) {
             System.out.println(e);
@@ -147,14 +148,14 @@ public class Location {
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#COUNTRY\\#\\#",country);
         try {
-            setMemberVars(inputLocationString);
+            currentWeatherAPI(inputLocationString);
         }
         catch(Exception e) {
             try {
                 inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,US&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
                 inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#", city);
                 inputLocationString = inputLocationString.replaceFirst("\\#\\#STATE\\#\\#", country);
-                setMemberVars(inputLocationString);
+                currentWeatherAPI(inputLocationString);
             }
             catch (Exception e2) {
                 System.out.println(e);
@@ -167,7 +168,7 @@ public class Location {
         inputLocationString = inputLocationString.replaceFirst("\\#\\#STATE\\#\\#",state);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#COUNTRY\\#\\#",country);
          try {
-            setMemberVars(inputLocationString);
+            currentWeatherAPI(inputLocationString);
          }
          catch (Exception e) {
              System.out.println(e);
@@ -177,7 +178,7 @@ public class Location {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?id=##CITYID##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITYID\\#\\#", String.valueOf(cityID));
         try {
-            setMemberVars(inputLocationString);
+            currentWeatherAPI(inputLocationString);
         }
         catch (Exception e) {
             System.out.println(e);
@@ -188,7 +189,7 @@ public class Location {
         inputLocationString = inputLocationString.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(lat));
         inputLocationString = inputLocationString.replaceFirst("\\#\\#LON\\#\\#", String.valueOf(lon));
         try {
-            setMemberVars(inputLocationString);
+            currentWeatherAPI(inputLocationString);
         }
         catch (Exception e) {
             System.out.println(e);
@@ -208,24 +209,34 @@ public class Location {
         inputLocationString = inputLocationString.replaceFirst("\\#\\#POSTAL\\#\\#", postalString);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#COUNTRY\\#\\#", country);
         try {
-            setMemberVars(inputLocationString);
+            currentWeatherAPI(inputLocationString);
         }
         catch (Exception e) {
             System.out.println(e);
         }
     }
-    private void setMemberVars(String inputLocationString) throws IOException {
-        double inputLat, inputLon;
-        String oneCallApiUrl = "http://api.openweathermap.org/data/2.5/onecall?lat=##LAT##&lon=##LON##&units=imperial&appid=98edb87e72911500a7f165a998c7fcf2";
+
+    private CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
         URL jsonURL = new URL(inputLocationString);
         ObjectMapper mapper = new ObjectMapper();
         System.out.println("\n" + jsonURL);
         CurrentWeatherAPI currentWeatherAPI = mapper.readValue(jsonURL, CurrentWeatherAPI.class);
+        return currentWeatherAPI;
+    }
+
+    private Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
+        double inputLat, inputLon;
+        String oneCallApiUrl = "http://api.openweathermap.org/data/2.5/onecall?lat=##LAT##&lon=##LON##&units=imperial&appid=98edb87e72911500a7f165a998c7fcf2";
+        ObjectMapper mapper = new ObjectMapper();
         inputLat = currentWeatherAPI.getCoord().get("lat");
         inputLon = currentWeatherAPI.getCoord().get("lon");
         oneCallApiUrl = oneCallApiUrl.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(inputLat));
         oneCallApiUrl = oneCallApiUrl.replaceFirst("\\#\\#LON\\#\\#", String.valueOf(inputLon));
         Location location = mapper.readValue(new URL(oneCallApiUrl), Location.class);
+        return location;
+    }
+
+    private void setMemberVals(Location location, CurrentWeatherAPI currentWeatherAPI) {
         this.name = currentWeatherAPI.getName();
         this.country = currentWeatherAPI.getSys().get("country");
         this.lat = location.lat;
@@ -246,6 +257,7 @@ public class Location {
             daily.setIcon(new Image(daily.iconUrl()));
         }
         System.out.println(this);
+        System.out.println(this.current.getWind_dir());
     }
 
 
