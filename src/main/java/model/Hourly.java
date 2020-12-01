@@ -2,6 +2,8 @@ package model;
 
 public class Hourly extends Forecast {
     public Hourly() {
+
+
     }
 
     @Override

@@ -25,7 +25,6 @@ public abstract class Forecast {
     private double pop;
     private Rain rain;
     private Snow snow;
-    private Image icon;
 
     public Forecast() {
     }
@@ -57,14 +56,6 @@ public abstract class Forecast {
 
     public void setWind_dir(String wind_dir) {
         this.wind_dir = wind_dir;
-    }
-
-    public Image getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Image icon) {
-        this.icon = icon;
     }
 
     public long getDt() {
@@ -215,28 +206,21 @@ public abstract class Forecast {
     public String degToDir(int wind_deg) {
 
         // Arranged based on (my best guess of) the most common wind directions around Bremerton, WA
-        if(wind_deg>=67.5 && wind_deg<=112.5){
+        if (wind_deg >= 67.5 && wind_deg <= 112.5) {
             return "E";
-        }
-        else if(wind_deg>22.5 && wind_deg<67.5){
+        } else if (wind_deg > 22.5 && wind_deg < 67.5) {
             return "NE";
-        }
-        else if((wind_deg>=337.5 || wind_deg<=22.5) && wind_deg>=0 && wind_deg <= 360){
+        } else if ((wind_deg >= 337.5 || wind_deg <= 22.5) && wind_deg >= 0 && wind_deg <= 360) {
             return "N";
-        }
-        else if(wind_deg>112.5 && wind_deg<157.5){
+        } else if (wind_deg > 112.5 && wind_deg < 157.5) {
             return "SE";
-        }
-        else if(wind_deg>=157.5 && wind_deg<=202.5){
+        } else if (wind_deg >= 157.5 && wind_deg <= 202.5) {
             return "S";
-        }
-        else if(wind_deg>202.5 && wind_deg<247.5){
+        } else if (wind_deg > 202.5 && wind_deg < 247.5) {
             return "SW";
-        }
-        else if(wind_deg>=247.5 && wind_deg<=292.5){
+        } else if (wind_deg >= 247.5 && wind_deg <= 292.5) {
             return "W";
-        }
-        else if(wind_deg>292.5 && wind_deg<337.5){
+        } else if (wind_deg > 292.5 && wind_deg < 337.5) {
             return "NW";
         }
         System.out.println(wind_deg);
@@ -265,10 +249,5 @@ public abstract class Forecast {
                 ", rain=" + rain +
                 ", snow=" + snow +
                 '}';
-    }
-
-    public String iconUrl() {
-        String icon = getWeather()[0].getIcon();
-        return Location.getIconUrlString_template().replaceFirst("##ICON##",icon);
     }
 }

@@ -1,10 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.scene.image.Image;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -23,21 +21,6 @@ public class Location {
     private Alerts[] alerts;
     private String name;
     private String country;
-    private String iconUrl;
-
-    public String getIconUrl() {
-        return iconUrl;
-    }
-
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
-    }
-
-    public final static String iconUrlString_template = "icons/##ICON##@4x.png";
-
-    public static String getIconUrlString_template() {
-        return iconUrlString_template;
-    }
 
     public double getLat() {
         return lat;
@@ -132,70 +115,75 @@ public class Location {
 
     public Location() {
     }
-    public Location(String city) {
+    public static Location apiCalls(String city) {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city);
         try {
-            currentWeatherAPI(inputLocationString);
+            return oneCallAPI(currentWeatherAPI(inputLocationString));
         }
         catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
     // Can put in a state instead of country if searching for a US city.
-    public Location(String city, String country) {
+    public static Location apiCalls(String city, String country) {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#COUNTRY\\#\\#",country);
         try {
-            currentWeatherAPI(inputLocationString);
+            return oneCallAPI(currentWeatherAPI(inputLocationString));
         }
         catch(Exception e) {
             try {
                 inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,US&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
                 inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#", city);
                 inputLocationString = inputLocationString.replaceFirst("\\#\\#STATE\\#\\#", country);
-                currentWeatherAPI(inputLocationString);
+                return oneCallAPI(currentWeatherAPI(inputLocationString));
             }
             catch (Exception e2) {
                 System.out.println(e);
+                return null;
             }
         }
     }
-    public Location(String city, String state, String country) throws IOException {
+    public static Location apiCalls(String city, String state, String country) throws IOException {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#STATE\\#\\#",state);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#COUNTRY\\#\\#",country);
          try {
-            currentWeatherAPI(inputLocationString);
+             return oneCallAPI(currentWeatherAPI(inputLocationString));
          }
          catch (Exception e) {
              System.out.println(e);
+             return null;
          }
     }
-    public Location(int cityID) {
+    public static Location apiCalls(int cityID) {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?id=##CITYID##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#CITYID\\#\\#", String.valueOf(cityID));
         try {
-            currentWeatherAPI(inputLocationString);
+            return oneCallAPI(currentWeatherAPI(inputLocationString));
         }
         catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
-    public Location(double lat, double lon) {
+    public static Location apiCalls(double lat, double lon) {
         String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?lat=##LAT##&lon=##LON##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
         inputLocationString = inputLocationString.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(lat));
         inputLocationString = inputLocationString.replaceFirst("\\#\\#LON\\#\\#", String.valueOf(lon));
         try {
-            currentWeatherAPI(inputLocationString);
+            return oneCallAPI(currentWeatherAPI(inputLocationString));
         }
         catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
-    public Location(int postal, String country) {
+    public static Location apiCalls(int postal, String country) {
         String postalString = String.valueOf(postal);
         int postalLength = postalString.length();
         if(postalLength<5){
@@ -209,14 +197,15 @@ public class Location {
         inputLocationString = inputLocationString.replaceFirst("\\#\\#POSTAL\\#\\#", postalString);
         inputLocationString = inputLocationString.replaceFirst("\\#\\#COUNTRY\\#\\#", country);
         try {
-            currentWeatherAPI(inputLocationString);
+            return oneCallAPI(currentWeatherAPI(inputLocationString));
         }
         catch (Exception e) {
             System.out.println(e);
+            return null;
         }
     }
 
-    private CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
+    private static CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
         URL jsonURL = new URL(inputLocationString);
         ObjectMapper mapper = new ObjectMapper();
         System.out.println("\n" + jsonURL);
@@ -224,7 +213,7 @@ public class Location {
         return currentWeatherAPI;
     }
 
-    private Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
+    private static Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
         double inputLat, inputLon;
         String oneCallApiUrl = "http://api.openweathermap.org/data/2.5/onecall?lat=##LAT##&lon=##LON##&units=imperial&appid=98edb87e72911500a7f165a998c7fcf2";
         ObjectMapper mapper = new ObjectMapper();
@@ -233,33 +222,10 @@ public class Location {
         oneCallApiUrl = oneCallApiUrl.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(inputLat));
         oneCallApiUrl = oneCallApiUrl.replaceFirst("\\#\\#LON\\#\\#", String.valueOf(inputLon));
         Location location = mapper.readValue(new URL(oneCallApiUrl), Location.class);
+        location.setName(currentWeatherAPI.getName());
+        location.setCountry(currentWeatherAPI.getSys().get("country"));
         return location;
     }
-
-    private void setMemberVals(Location location, CurrentWeatherAPI currentWeatherAPI) {
-        this.name = currentWeatherAPI.getName();
-        this.country = currentWeatherAPI.getSys().get("country");
-        this.lat = location.lat;
-        this.lon = location.lon;
-        this.timezone = location.timezone;
-        this.timezone_offset = location.timezone_offset;
-        this.current = location.current;
-        this.minutely = location.minutely;
-        this.hourly = location.hourly;
-        this.daily = location.daily;
-        this.alerts = location.alerts;
-        this.iconUrl = this.current.iconUrl();
-        this.current.setIcon(new Image(iconUrl));
-        for(Hourly hourly: this.hourly) {
-            hourly.setIcon(new Image(hourly.iconUrl()));
-        }
-        for(Daily daily: this.daily) {
-            daily.setIcon(new Image(daily.iconUrl()));
-        }
-        System.out.println(this);
-        System.out.println(this.current.getWind_dir());
-    }
-
 
     @Override
     public String toString() {

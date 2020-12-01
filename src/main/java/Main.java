@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static model.Location.apiCalls;
+
 public class Main extends Application {
 
     @Override
@@ -21,14 +23,14 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-        Location bremerton = new Location("Bremerton", "US-WA");
-        Location bremertonZip = new Location(98311, "US");
-        Location bremertonID = new Location(5788054);
-        Location bremertonLatLon = new Location(47.567322,-122.632637);
-        Location miami = new Location("Miami", "US-FL");
-        Location minneapolis = new Location("Minneapolis","MN", "US");
-        Location paris = new Location("paris");
-        Location parisZip = new Location(75000,"FR"); // Paris using Postal Code
+        Location bremerton = apiCalls("Bremerton", "US-WA");
+        Location bremertonZip = apiCalls(98311, "US");
+        Location bremertonID = apiCalls(5788054);
+        Location bremertonLatLon = apiCalls(47.567322,-122.632637);
+        Location miami = apiCalls("Miami", "US-FL");
+        Location minneapolis = apiCalls("Minneapolis","MN", "US");
+        Location paris = apiCalls("paris");
+        Location parisZip = apiCalls(75000,"FR"); // Paris using Postal Code
         launch(args);
     }
 }

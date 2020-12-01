@@ -1,7 +1,24 @@
 package model;
 
+import javafx.scene.image.Image;
+
 public class Weather {
+    public final static String iconUrlString_template = "icons/##ICON##@4x.png";
     private String id, main, description, icon;
+
+    public static String getIconUrlString_template() {
+        return iconUrlString_template;
+    }
+
+    public Image getIconImage() {
+        return iconImage;
+    }
+
+    public void setIconImage(Image iconImage) {
+        this.iconImage = iconImage;
+    }
+
+    private Image iconImage;
 
     public Weather() {
     }
@@ -43,6 +60,7 @@ public class Weather {
 
     public void setIcon(String icon) {
         this.icon = icon;
+        this.setIconImage(new Image(iconUrlString_template.replaceFirst("##ICON##",this.icon)));
     }
 
     @Override

@@ -137,12 +137,12 @@ public class DetailedController {
        cloud.setText(Math.round(current.getClouds()) + "%");
        windSpeed.setText((int) Math.round(current.getWind_speed()) + " mph");
        windGust.setText((int) Math.round(current.getWind_gust()) + " mph");
-       windDirection.setText(Double.toString(current.getWind_deg()));
+       windDirection.setText(current.getWind_dir());
 
        StackPane[] dailyStackPanes = new StackPane[daily.length];
        for(int i=0; i<dailyStackPanes.length; i++) {
-           System.out.println(daily[i].getIcon());
-           ImageView imageView = new ImageView(daily[i].getIcon());
+           System.out.println(daily[i].getWeather()[0].getIconImage());
+           ImageView imageView = new ImageView(daily[i].getWeather()[0].getIconImage());
 //           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);
@@ -153,8 +153,8 @@ public class DetailedController {
            ZoneId zoneId = ZoneId.of(location.getTimezone());
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
            Label dayOfWeekLabel = new Label(DayOfWeek.from(ldt).getDisplayName(TextStyle.FULL, Locale.US));
-           Label maxTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMax())) + "\u00B0F");
-           Label minTempLabel = new Label(Integer.toString((int)Math.round(daily[i].getTemps().getMin())) + "\u00B0F");
+           Label maxTempLabel = new Label((int) Math.round(daily[i].getTemps().getMax()) + "\u00B0F");
+           Label minTempLabel = new Label((int) Math.round(daily[i].getTemps().getMin()) + "\u00B0F");
            vBox.getChildren().addAll(dayOfWeekLabel,maxTempLabel,minTempLabel);
            System.out.println(imageView);
            dailyStackPanes[i] = new StackPane(imageView,vBox);
@@ -165,8 +165,8 @@ public class DetailedController {
 
        StackPane[] hourlyStackPanes = new StackPane[hourly.length];
        for(int i=0; i<hourlyStackPanes.length; i++) {
-           System.out.println(hourly[i].getIcon());
-           ImageView imageView = new ImageView(hourly[i].getIcon());
+           System.out.println(hourly[i].getWeather()[0].getIconImage());
+           ImageView imageView = new ImageView(hourly[i].getWeather()[0].getIconImage());
 //           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);

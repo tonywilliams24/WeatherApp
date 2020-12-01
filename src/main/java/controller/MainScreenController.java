@@ -15,6 +15,8 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static model.Location.apiCalls;
+
 public class MainScreenController {
 
     @FXML
@@ -91,38 +93,38 @@ public class MainScreenController {
         }
         if(paramList.size()==1) {
             if(paramSB.toString().equals("s")) {
-                location = new Location(String.valueOf(paramList.get(0)));
+                location = apiCalls(String.valueOf(paramList.get(0)));
                 locationList.add(location);
             }
             else if(paramSB.toString().equals("i")) {
-                location = new Location((int)paramList.get(0));
+                location = apiCalls((int)paramList.get(0));
                 locationList.add(location);
             }
             else System.out.println("location Not Found");
         }
         else if(paramList.size()==2) {
             if(paramSB.toString().equals("ss")) {
-                location = new Location((String)paramList.get(0),(String)paramList.get(1));
+                location = apiCalls((String)paramList.get(0),(String)paramList.get(1));
                 locationList.add(location);
             }
             else if(paramSB.toString().equals("is")) {
-                location = new Location((int)paramList.get(0),(String)paramList.get(1));
+                location = apiCalls((int)paramList.get(0),(String)paramList.get(1));
                 locationList.add(location);
             }
             else if(paramSB.toString().equals("dd")) {
-                location = new Location((double)paramList.get(0),(double)paramList.get(1));
+                location = apiCalls((double)paramList.get(0),(double)paramList.get(1));
                 locationList.add(location);
             }
             else if(paramSB.toString().equals("ii")) {
-                location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                location = apiCalls(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
                 locationList.add(location);
             }
             else if(paramSB.toString().equals("id")) {
-                location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                location = apiCalls(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
                 locationList.add(location);
             }
             else if(paramSB.toString().equals("di")) {
-                location = new Location(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
+                location = apiCalls(((Integer)paramList.get(0)).doubleValue(),((Integer)paramList.get(1)).doubleValue());
                 locationList.add(location);
             }
             else System.out.println("location Not Found");
@@ -130,7 +132,7 @@ public class MainScreenController {
         else {
             {
                 try {
-                    location = new Location((String) paramList.get(0), (String) paramList.get(1), (String) paramList.get(2));
+                    location = apiCalls((String)paramList.get(0), (String)paramList.get(1), (String)paramList.get(2));
                     locationList.add(location);
                 }
                 catch(Exception e) {
@@ -138,7 +140,7 @@ public class MainScreenController {
                 }
             }
         }
-        if(location.getCurrent()!=null) {
+        if(location!=null) {
             System.out.println(location);
             pagination.setPageCount(locationList.size());
             pagination.setMaxPageIndicatorCount(10);
@@ -147,7 +149,7 @@ public class MainScreenController {
                 mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
                 mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
                 imageView.setVisible(true);
-                imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
+                imageView.setImage(locationList.get(pageIndex).getCurrent().getWeather()[0].getIconImage());
 //                imageView.setOpacity(.5);
                 return new StackPane(imageView,vbox);
             });
@@ -191,7 +193,7 @@ public class MainScreenController {
             mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
             mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
             imageView.setVisible(true);
-            imageView.setImage(locationList.get(pageIndex).getCurrent().getIcon());
+            imageView.setImage(locationList.get(pageIndex).getCurrent().getWeather()[0].getIconImage());
             return new StackPane(imageView,vbox);
         });
         pagination.setCurrentPageIndex(locationList.size()-1);
