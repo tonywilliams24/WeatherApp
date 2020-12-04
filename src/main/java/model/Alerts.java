@@ -1,5 +1,7 @@
 package model;
 
+// Weather Alerts Class (One Call API)
+
 public class Alerts {
     String sender_name;
     String event;

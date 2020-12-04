@@ -1,5 +1,7 @@
 package model;
 
+// Minutely Weather Class (One Call API)
+
 public class Minutely extends Forecast {
     public Minutely() {
     }

@@ -1,5 +1,7 @@
 package model;
 
+// Weather class used by Forecast class (One CAll API)
+
 import javafx.scene.image.Image;
 
 public class Weather {

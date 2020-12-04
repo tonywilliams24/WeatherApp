@@ -1,5 +1,7 @@
 package model;
 
+// Abstract class that Current / Daily / Houry / Minutely subclasses are derived from
+
 import javafx.scene.image.Image;
 
 import java.util.Arrays;
@@ -166,6 +168,7 @@ public abstract class Forecast {
         return wind_deg;
     }
 
+    // Added setting Wind Direction to Wind Degrees setter due to ObjectMapper using Setters as opposed to Constructors to set member variables and Wind Direction is NOT in API
     public void setWind_deg(int wind_deg) {
         this.wind_deg = wind_deg;
         this.wind_dir = degToDir(this.wind_deg);
@@ -204,8 +207,8 @@ public abstract class Forecast {
     }
 
     public String degToDir(int wind_deg) {
-
         // Arranged based on (my best guess of) the most common wind directions around Bremerton, WA
+        // "Make common case fast"
         if (wind_deg >= 67.5 && wind_deg <= 112.5) {
             return "E";
         } else if (wind_deg > 22.5 && wind_deg < 67.5) {

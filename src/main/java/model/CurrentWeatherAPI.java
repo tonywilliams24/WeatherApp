@@ -1,5 +1,7 @@
 package model;
 
+// Legacy weather API. Used Java "Map" objects as a shortcut to making new classes as this API is temporary
+
 import javafx.scene.image.Image;
 
 import java.util.List;

@@ -1,5 +1,7 @@
 package model;
 
+// Snow Class used by Forecast class
+
 public class Snow {
     double h1, h3;
 
@@ -19,6 +21,7 @@ public class Snow {
         return h1;
     }
 
+    // API uses "Set 1h" but java does not allow variable names that start with numbers
     public void set1h(double h1) {
         this.h1 = h1;
     }

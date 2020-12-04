@@ -1,5 +1,7 @@
 package model;
 
+// Temps class used by Daily class (One Call API)
+
 public class Temps {
     double day, min, max, night, eve, morn;
 

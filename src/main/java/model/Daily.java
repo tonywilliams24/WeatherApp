@@ -1,5 +1,7 @@
 package model;
 
+// Daily Weather Class (One Call API)
+
 public class Daily extends Forecast {
     Temps temp;
     Temps feels_like;
