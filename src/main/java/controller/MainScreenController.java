@@ -70,7 +70,8 @@ public class MainScreenController {
 
     @FXML
     void submitHandler(ActionEvent event) throws IOException {
-        String[] inputLocation = inputLocationField.getText().trim().split("\\s*(,\\s)\\s*");
+        String inputString = inputLocationField.getText().trim();
+        String[] inputLocation = inputString.split("(\\s*(,\\s)\\s*)|,");
         ArrayList<Object> paramList = new ArrayList<>();
         StringBuilder paramSB = new StringBuilder();
         Location location = null;
@@ -132,11 +133,11 @@ public class MainScreenController {
         else {
             {
                 try {
-                    location = apiCalls((String)paramList.get(0), (String)paramList.get(1), (String)paramList.get(2));
+                    location = apiCalls(inputString);
                     locationList.add(location);
                 }
                 catch(Exception e) {
-
+                    System.out.println("Input Not Recognized");
                 }
             }
         }
