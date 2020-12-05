@@ -7,8 +7,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Location {
+    private static final String apiKey = "98edb87e72911500a7f165a998c7fcf2";
+    private static final String openWeatherURL = "http://api.openweathermap.org/data/2.5";
+    private static final String currentWeatherApiPath = "/weather";
+    private static final String cityQuery = "?q=";
+    private static final String zipQuery = "?zip=";
+    private static final String idQuery = "?id=";
+    private static final String latQuery = "?lat=";
+    private static final String lonQuery = "&lon=";
+    private static final String units = "imperial";
+    private static final String oneCallApiPath = "/onecall";
+    private Map<String, String> queryMap = new HashMap<>();
+    private Map<String, String> unitsMap = new HashMap<>();
 
     // One Call API Fields
 
@@ -125,93 +139,63 @@ public class Location {
     // Need to replace String representations of URLs to actual URI/URL objects, with path, query, and fragment parameters
 
     // Returns most likely city/village/neighborhood (as determined by Open Weather API)
-    public static Location apiCalls(String city) {
-        String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-        inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city).replaceAll("\\s","\\%20"); // Replaces City placeholder and any spaces in URL
+    public static Location weatherLocation(String city) {
+        String inputLocationString = (openWeatherURL + currentWeatherApiPath + cityQuery + city + "&units=" + units + "&APPID=" + apiKey)
+            .replaceAll("\\s","\\%20"); // Replaces all spaces in URL with %20
+        return callAPIs(inputLocationString);
+    }
+
+    public static Location callAPIs(String inputLocationString) {
         try {
             return oneCallAPI(currentWeatherAPI(inputLocationString)); // Calls both APIs and returns Location object
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return null;
         }
     }
 
     // Can put in a US state instead of country
-    public static Location apiCalls(String city, String country) {
+    public static Location weatherLocation(String city, String country) {
         // For international reasons, function assumes City, Country first and then City, US-State if not found
-
-        String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-        inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city).replaceFirst("\\#\\#COUNTRY\\#\\#",country).replaceAll("\\s","\\%20");
-        try {
-            return oneCallAPI(currentWeatherAPI(inputLocationString));
-        }
-        catch(Exception e) {
-            try {
-                inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,US&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-                inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#", city).replaceFirst("\\#\\#STATE\\#\\#", country).replaceAll("\\s","\\%20");
-                return oneCallAPI(currentWeatherAPI(inputLocationString));
-            }
-            catch (Exception e2) {
-                System.out.println(e);
-                return null;
-            }
+        String inputLocationString = (openWeatherURL + currentWeatherApiPath + cityQuery + city + "," + country + "&units=" + units + "&APPID=" + apiKey)
+                .replaceAll("\\s","\\%20");
+        Location temp = callAPIs(inputLocationString);
+        if (temp!=null) return temp;
+        else {
+            inputLocationString = (openWeatherURL + currentWeatherApiPath + cityQuery + city + "," + country + ",US" + "&units=" + units + "&APPID=" + apiKey)
+                    .replaceAll("\\s", "\\%20");
+            return callAPIs(inputLocationString);
         }
     }
 
-    public static Location apiCalls(String city, String state, String country) throws IOException {
-        String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?q=##CITY##,##STATE##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-        inputLocationString = inputLocationString.replaceFirst("\\#\\#CITY\\#\\#",city).replaceFirst("\\#\\#STATE\\#\\#",state).replaceFirst("\\#\\#COUNTRY\\#\\#",country).replaceAll("\\s","\\%20");
-         try {
-             return oneCallAPI(currentWeatherAPI(inputLocationString));
-         }
-         catch (Exception e) {
-             System.out.println(e);
-             return null;
-         }
+    public static Location weatherLocation(String city, String state, String country) {
+        String inputLocationString = (openWeatherURL + currentWeatherApiPath + cityQuery + city + "," + state + "," + country + "&units=" + units + "&APPID=" + apiKey)
+            .replaceAll("\\s","\\%20");
+        return callAPIs(inputLocationString);
     }
 
     // Assumes US Zip Code first, and if not found tries City ID
-    public static Location apiCalls(int cityIdOrZip) {
-        String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?zip=##ZIP##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-        inputLocationString = inputLocationString.replaceFirst("\\#\\#ZIP\\#\\#", String.valueOf(cityIdOrZip)).replaceAll("\\s", "\\%20");
-        try {
-            return oneCallAPI(currentWeatherAPI(inputLocationString));
-        }
-        catch (Exception e) {
-            String inputLocationString2 = "http://api.openweathermap.org/data/2.5/weather?id=##CITYID##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-            inputLocationString2 = inputLocationString2.replaceFirst("\\#\\#CITYID\\#\\#", String.valueOf(cityIdOrZip));
-            inputLocationString2 = inputLocationString2.replaceAll("\\s", "\\%20");
-            try {
-                return oneCallAPI(currentWeatherAPI(inputLocationString2));
-            } catch (Exception e2) {
-                System.out.println(e2);
-                return null;
-            }
+    public static Location weatherLocation(int cityIdOrZip) throws IOException {
+        String inputLocationString = (openWeatherURL + currentWeatherApiPath + zipQuery + cityIdOrZip + "&units=" + units + "&APPID=" + apiKey)
+            .replaceAll("\\s", "\\%20");
+        Location temp = callAPIs(inputLocationString);
+        if (temp!=null) return temp;
+        else {
+            inputLocationString = (openWeatherURL + currentWeatherApiPath + idQuery + cityIdOrZip + "&units=" + units + "&APPID=" + apiKey)
+                    .replaceAll("\\s", "\\%20");
+            return callAPIs(inputLocationString);
         }
     }
 
-    public static Location apiCalls(double lat, double lon) {
-        String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?lat=##LAT##&lon=##LON##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-        inputLocationString = inputLocationString.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(lat)).replaceFirst("\\#\\#LON\\#\\#", String.valueOf(lon)).replaceAll("\\s","\\%20");
-        try {
-            return oneCallAPI(currentWeatherAPI(inputLocationString));
-        }
-        catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
+    public static Location weatherLocation(double lat, double lon) {
+        String inputLocationString = (openWeatherURL + currentWeatherApiPath + latQuery + lat + lonQuery + lon + "&units=" + units + "&APPID=" + apiKey)
+            .replaceAll("\\s","\\%20");
+        return callAPIs(inputLocationString);
     }
-    public static Location apiCalls(int postal, String country) {
-        String inputLocationString = "http://api.openweathermap.org/data/2.5/weather?zip=##POSTAL##,##COUNTRY##&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2";
-        inputLocationString = inputLocationString.replaceFirst("\\#\\#POSTAL\\#\\#", String.valueOf(postal)).replaceFirst("\\#\\#COUNTRY\\#\\#", country).replaceAll("\\s","\\%20");
-        try {
-            return oneCallAPI(currentWeatherAPI(inputLocationString));
-        }
-        catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
+    public static Location weatherLocation(int postal, String country) {
+        String inputLocationString = (openWeatherURL + currentWeatherApiPath + zipQuery + postal + "," + country + "&units=" + units + "&APPID=" + apiKey)
+            .replaceAll("\\s","\\%20");
+        return callAPIs(inputLocationString);
     }
 
     // Legacy API to be replaced by a geocoding API. Returns the full currentWeatherAPI object but is only used for Lat / Lon
@@ -219,19 +203,16 @@ public class Location {
         URL jsonURL = new URL(inputLocationString);
         ObjectMapper mapper = new ObjectMapper();
         System.out.println("\n" + jsonURL);
-        CurrentWeatherAPI currentWeatherAPI = mapper.readValue(jsonURL, CurrentWeatherAPI.class);
-        return currentWeatherAPI;
+        return mapper.readValue(jsonURL, CurrentWeatherAPI.class);
     }
 
     // Inputs currentWeatherAPI object and uses the Lat / Lon to get all weather information
     private static Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
         double inputLat, inputLon;
-        String oneCallApiUrl = "http://api.openweathermap.org/data/2.5/onecall?lat=##LAT##&lon=##LON##&units=imperial&appid=98edb87e72911500a7f165a998c7fcf2";
         ObjectMapper mapper = new ObjectMapper();
         inputLat = currentWeatherAPI.getCoord().get("lat");
         inputLon = currentWeatherAPI.getCoord().get("lon");
-        oneCallApiUrl = oneCallApiUrl.replaceFirst("\\#\\#LAT\\#\\#", String.valueOf(inputLat));
-        oneCallApiUrl = oneCallApiUrl.replaceFirst("\\#\\#LON\\#\\#", String.valueOf(inputLon));
+        String oneCallApiUrl = (openWeatherURL + oneCallApiPath + latQuery + inputLat + lonQuery + inputLon + "&units=" + units + "&appid=" + apiKey);
         Location location = mapper.readValue(new URL(oneCallApiUrl), Location.class);
         location.setName(currentWeatherAPI.getName());
         location.setCountry(currentWeatherAPI.getSys().get("country"));

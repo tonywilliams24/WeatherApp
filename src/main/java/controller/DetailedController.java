@@ -111,8 +111,6 @@ public class DetailedController {
 
     ArrayList<Location> locationList;
 
-
-
     Stage stage;
 
     Scene scene;
