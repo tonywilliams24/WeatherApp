@@ -18,6 +18,7 @@
          <children>
             <Label fx:id="city" styleClass="cityTitle" />
             <Label fx:id="description" styleClass="citySubTitle" />
+            <Label fx:id="summary" styleClass="citySubSubTitle" />
 
             <StackPane>
                <children>

@@ -7,10 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Location {
+
+    // combined URL string e.g. http://api.openweathermap.org/data/2.5/weather?zip=93744&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2
+
     private static final String apiKey = "98edb87e72911500a7f165a998c7fcf2";
     private static final String openWeatherURL = "http://api.openweathermap.org/data/2.5";
     private static final String currentWeatherApiPath = "/weather";
@@ -21,8 +22,6 @@ public class Location {
     private static final String lonQuery = "&lon=";
     private static final String units = "imperial";
     private static final String oneCallApiPath = "/onecall";
-    private Map<String, String> queryMap = new HashMap<>();
-    private Map<String, String> unitsMap = new HashMap<>();
 
     // One Call API Fields
 
@@ -37,6 +36,8 @@ public class Location {
     private Alerts[] alerts;
     private String name;
     private String country;
+    private String message;
+    private int cod;
 
     // Default Constructor
     public Location() {
@@ -175,7 +176,7 @@ public class Location {
     }
 
     // Assumes US Zip Code first, and if not found tries City ID
-    public static Location weatherLocation(int cityIdOrZip) throws IOException {
+    public static Location weatherLocation(int cityIdOrZip) {
         String inputLocationString = (openWeatherURL + currentWeatherApiPath + zipQuery + cityIdOrZip + "&units=" + units + "&APPID=" + apiKey)
             .replaceAll("\\s", "\\%20");
         Location temp = callAPIs(inputLocationString);
@@ -186,7 +187,6 @@ public class Location {
             return callAPIs(inputLocationString);
         }
     }
-
     public static Location weatherLocation(double lat, double lon) {
         String inputLocationString = (openWeatherURL + currentWeatherApiPath + latQuery + lat + lonQuery + lon + "&units=" + units + "&APPID=" + apiKey)
             .replaceAll("\\s","\\%20");
@@ -197,13 +197,27 @@ public class Location {
             .replaceAll("\\s","\\%20");
         return callAPIs(inputLocationString);
     }
-
     // Legacy API to be replaced by a geocoding API. Returns the full currentWeatherAPI object but is only used for Lat / Lon
     private static CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
         URL jsonURL = new URL(inputLocationString);
         ObjectMapper mapper = new ObjectMapper();
         System.out.println("\n" + jsonURL);
         return mapper.readValue(jsonURL, CurrentWeatherAPI.class);
+    }
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getCod() {
+        return cod;
+    }
+
+    public void setCod(int cod) {
+        this.cod = cod;
     }
 
     // Inputs currentWeatherAPI object and uses the Lat / Lon to get all weather information
@@ -216,6 +230,8 @@ public class Location {
         Location location = mapper.readValue(new URL(oneCallApiUrl), Location.class);
         location.setName(currentWeatherAPI.getName());
         location.setCountry(currentWeatherAPI.getSys().get("country"));
+        location.setCod(currentWeatherAPI.getCod());
+        location.setMessage(currentWeatherAPI.getSys().get("message"));
         return location;
     }
 

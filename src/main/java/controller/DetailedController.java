@@ -35,6 +35,9 @@ public class DetailedController {
     private Label description;
 
     @FXML
+    private Label summary;
+
+    @FXML
     private Label feelsLike;
 
     @FXML
@@ -128,6 +131,7 @@ public class DetailedController {
            weatherSB.append(weather.getDescription() + "\n");
        }
        description.setText(weatherSB.toString());
+       summary.setText("Currently " + current.getWeather()[0].getDescription() + ". It's " + (int) Math.round(current.getTemp()) + "\u00B0F" + "; the high today is forecast to be " + (int) Math.round(daily[0].getTemps().getMax()) + "\u00B0F");
        feelsLike.setText((int) Math.round(current.getFeels_like()) + "\u00B0F");
        highTemp.setText((int) Math.round(daily[0].getTemps().getMax()) + "\u00B0F");
        lowTemp.setText((int) Math.round(daily[0].getTemps().getMin()) + "\u00B0F");
@@ -141,7 +145,6 @@ public class DetailedController {
        for(int i=0; i<dailyStackPanes.length; i++) {
            System.out.println(daily[i].getWeather()[0].getIconImage());
            ImageView imageView = new ImageView(daily[i].getWeather()[0].getIconImage());
-//           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);
            VBox vBox = new VBox();

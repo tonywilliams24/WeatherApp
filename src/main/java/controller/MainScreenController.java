@@ -22,6 +22,8 @@ import static model.Location.weatherLocation;
 
 public class MainScreenController {
 
+    // Members who's properties can be found in the main.XML file
+
     @FXML
     private TextField inputLocationField;
 
@@ -78,31 +80,33 @@ public class MainScreenController {
     @FXML
     public void initialize() throws IOException {
 
-        // For testing only. Initialize method can be entirely removed
+        // For testing only. Initialize method should be entirely removed if not testing
 
-        Location bremerton = Location.weatherLocation("Bremerton", "US-WA");
+        Location bremerton = weatherLocation("Bremerton", "US-WA");
+        Location bremertonWA = weatherLocation("Bremerton", "WA");
         Location bremertonZip = weatherLocation(98311, "US");
-        Location cairo = Location.weatherLocation("Cairo", "EG");
-        Location bremertonID = Location.weatherLocation(5788054);
-        Location bremertonLatLon = Location.weatherLocation(47.567322,-122.632637);
-        Location miami = Location.weatherLocation("Miami", "US-FL");
-        Location minneapolis = Location.weatherLocation("Minneapolis","MN", "US");
-        Location paris = Location.weatherLocation("paris");
+        Location cairo = weatherLocation("Cairo", "EG");
+        Location bremertonID = weatherLocation(5788054);
+        Location bremertonLatLon = weatherLocation(47.567322,-122.632637);
+        Location miami = weatherLocation("Miami", "US-FL");
+        Location minneapolis = weatherLocation("Minneapolis","MN", "US");
+        Location paris = weatherLocation("paris");
         Location parisZip = weatherLocation(75000,"FR"); // Paris using Postal Code
-        Location piñonAcres = Location.weatherLocation("Piñon Acres");
-        Location sedroWoolley = Location.weatherLocation("Sedro-Woolley");
-        Location capeElizabethZip = Location.weatherLocation("04107, US");
-        Location holtsvilleZip = Location.weatherLocation("00501, US");
-        Location tokyo = Location.weatherLocation("tokyo");
-        Location delhi = Location.weatherLocation("delhi");
-        Location delhiLatLon = Location.weatherLocation(28.61, 77.23);
-        Location shanghai = Location.weatherLocation("shanghai");
-        Location shanghaiLatLon = Location.weatherLocation(31.228611, 121.474722);
-        Location sãoPaulo = Location.weatherLocation("São Paulo");
-        Location sãoPauloLatLon = Location.weatherLocation(-23.55, -46.633333);
-        Location sydney = Location.weatherLocation("sydney");
-        Location sydneyLatLon = Location.weatherLocation(-33.865, 151.209444);
+        Location piñonAcres = weatherLocation("Piñon Acres");
+        Location sedroWoolley = weatherLocation("Sedro-Woolley");
+        Location capeElizabethZip = weatherLocation("04107, US");
+        Location holtsvilleZip = weatherLocation("00501, US");
+        Location tokyo = weatherLocation("tokyo");
+        Location delhi = weatherLocation("delhi");
+        Location delhiLatLon = weatherLocation(28.61, 77.23);
+        Location shanghai = weatherLocation("shanghai");
+        Location shanghaiLatLon = weatherLocation(31.228611, 121.474722);
+        Location sãoPaulo = weatherLocation("São Paulo");
+        Location sãoPauloLatLon = weatherLocation(-23.55, -46.633333);
+        Location sydney = weatherLocation("sydney");
+        Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
         locationList.add(bremerton);
+        locationList.add(bremertonWA);
         locationList.add(bremertonZip);
         locationList.add(cairo);
         locationList.add(bremertonID);
@@ -127,12 +131,16 @@ public class MainScreenController {
         startPagination(locationList);
     }
 
+    // Handler for the submit button
+    // Parses user input to determine if any ints or doubles are included, and passes the parameters to the appropriate function (overloaded)
+    // Creates a Location object (which holds all weather information) and adds it to a list of Location Objects
+    // Starts pagination using list of Location objects
 
     @FXML
     void submitHandler(ActionEvent event) throws IOException {
         String inputString = inputLocationField.getText().trim(); // User input
         String[] inputLocation = inputString.split("(\\s*(,\\s)\\s*)|,"); // input is split at ", " or "," with any number of whitespace before or after
-        StringBuilder paramSB = new StringBuilder();
+        StringBuilder paramSB = new StringBuilder(); // StringBuilder to append "i" for potential int, "d" for potential double, or "s" if only string
         Location location = null;
         String paramString;
         for(String l : inputLocation) { // Checks each string in array to see if it is a potential double or integer
@@ -151,47 +159,47 @@ public class MainScreenController {
         }
         paramString = paramSB.toString();
         if(inputLocation.length==1) {
-            if(paramString.equals("s")) {
-                location = Location.weatherLocation(inputString); // Recent edit, was apiCalls(String.valueOf(paramList.get(0)));
+            if(paramString.equals("s")) { // assumes city name was input
+                location = weatherLocation(inputString);
                 locationList.add(location);
             }
-            else if(paramString.equals("i")) {
-                location = Location.weatherLocation(Integer.parseInt(inputLocation[0]));
+            else if(paramString.equals("i")) { // assumes zip code or city ID
+                location = weatherLocation(Integer.parseInt(inputLocation[0]));
                 locationList.add(location);
             }
             else System.out.println("location Not Found");
         }
         else if(inputLocation.length==2) {
-            if(paramString.equals("ss")) {
-                location = Location.weatherLocation(inputLocation[0], inputLocation[1]);
+            if(paramString.equals("ss")) { // assumes city, country or city, us-state
+                location = weatherLocation(inputLocation[0], inputLocation[1]);
                 locationList.add(location);
             }
-            else if(paramString.equals("is")) {
+            else if(paramString.equals("is")) { // assumes zip, country
                 location = weatherLocation(Integer.parseInt(inputLocation[0]), inputLocation[1]);
                 locationList.add(location);
             }
-            else if(paramString.equals("dd")) {
-                location = Location.weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            else if(paramString.equals("dd")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             }
-            else if(paramString.equals("ii")) {
-                location = Location.weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            else if(paramString.equals("ii")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             }
-            else if(paramString.equals("id")) {
-                location = Location.weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            else if(paramString.equals("id")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             }
-            else if(paramString.equals("di")) {
-                location = Location.weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            else if(paramString.equals("di")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             }
             else System.out.println("location Not Found");
         }
-        else {
+        else { // assumes all remaining cases are a string
             {
                 try {
-                    location = Location.weatherLocation(inputString);
+                    location = weatherLocation(inputString);
                     locationList.add(location);
                 }
                 catch(Exception e) {
@@ -231,6 +239,7 @@ public class MainScreenController {
         stage.show();
     }
 
+    // Starts Pagination :D
     public void startPagination(ArrayList<Location> locationList) {
         this.locationList = locationList;
         pagination.setPageCount(locationList.size());
