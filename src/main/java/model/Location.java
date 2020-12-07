@@ -3,9 +3,14 @@ package model;
  // Class used to call weather API and create objects with weather information
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.OffsetTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public class Location {
@@ -38,6 +43,7 @@ public class Location {
     private String country;
     private String message;
     private int cod;
+    public enum TimeFormat {hour, hourMin}
 
     // Default Constructor
     public Location() {
@@ -146,15 +152,6 @@ public class Location {
         return callAPIs(inputLocationString);
     }
 
-    public static Location callAPIs(String inputLocationString) {
-        try {
-            return oneCallAPI(currentWeatherAPI(inputLocationString)); // Calls both APIs and returns Location object
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
     // Can put in a US state instead of country
     public static Location weatherLocation(String city, String country) {
         // For international reasons, function assumes City, Country first and then City, US-State if not found
@@ -197,13 +194,7 @@ public class Location {
             .replaceAll("\\s","\\%20");
         return callAPIs(inputLocationString);
     }
-    // Legacy API to be replaced by a geocoding API. Returns the full currentWeatherAPI object but is only used for Lat / Lon
-    private static CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
-        URL jsonURL = new URL(inputLocationString);
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println("\n" + jsonURL);
-        return mapper.readValue(jsonURL, CurrentWeatherAPI.class);
-    }
+
     public String getMessage() {
         return message;
     }
@@ -220,6 +211,13 @@ public class Location {
         this.cod = cod;
     }
 
+    // Legacy API to be replaced by a geocoding API. Returns the full currentWeatherAPI object but is only used for Lat / Lon
+    private static CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
+        URL jsonURL = new URL(inputLocationString);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(jsonURL, CurrentWeatherAPI.class);
+    }
+
     // Inputs currentWeatherAPI object and uses the Lat / Lon to get all weather information
     private static Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
         double inputLat, inputLon;
@@ -227,12 +225,44 @@ public class Location {
         inputLat = currentWeatherAPI.getCoord().get("lat");
         inputLon = currentWeatherAPI.getCoord().get("lon");
         String oneCallApiUrl = (openWeatherURL + oneCallApiPath + latQuery + inputLat + lonQuery + inputLon + "&units=" + units + "&appid=" + apiKey);
+        System.out.println(oneCallApiUrl);
         Location location = mapper.readValue(new URL(oneCallApiUrl), Location.class);
         location.setName(currentWeatherAPI.getName());
         location.setCountry(currentWeatherAPI.getSys().get("country"));
         location.setCod(currentWeatherAPI.getCod());
         location.setMessage(currentWeatherAPI.getSys().get("message"));
         return location;
+    }
+
+    public static Location callAPIs(String inputLocationString) {
+        try {
+            return oneCallAPI(currentWeatherAPI(inputLocationString)); // Calls both APIs and returns Location object
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    public OffsetTime getTime(long epochSecond) {
+        Instant instant = Instant.ofEpochSecond(epochSecond);
+        ZoneId zoneId = ZoneId.of(this.getTimezone());
+        return OffsetTime.ofInstant(instant,zoneId);
+    }
+
+    public String getFormattedTime(long epochSecond, TimeFormat timeFormat) {
+        if(timeFormat.equals(TimeFormat.hour)) return getTime(epochSecond).format(DateTimeFormatter.ofPattern("h a"));
+        else return getTime(epochSecond).format(DateTimeFormatter.ofPattern("h:mm a"));
+    }
+
+    public void alertBox() {
+        if (this != null) {
+            for (Alerts alerts : this.getAlerts()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, alerts.getDescription());
+                alert.setTitle(alerts.getEvent());
+                alert.setHeaderText(alerts.getEvent());
+                alert.showAndWait();
+            }
+        }
     }
 
     @Override

@@ -22,6 +22,9 @@ import static model.Location.weatherLocation;
 
 public class MainScreenController {
 
+    private static boolean started;
+
+
     // Members who's properties can be found in the main.XML file
 
     @FXML
@@ -74,62 +77,17 @@ public class MainScreenController {
     // List to hold location objects once they are created
     ArrayList<Location> locationList = new ArrayList<>();
 
-    public MainScreenController() throws IOException {
+    public MainScreenController() {
+        // For testing only. Initialize method should be entirely removed if not testing
+
     }
 
     @FXML
     public void initialize() throws IOException {
-
-        // For testing only. Initialize method should be entirely removed if not testing
-
-        Location bremerton = weatherLocation("Bremerton", "US-WA");
-        Location bremertonWA = weatherLocation("Bremerton", "WA");
-        Location bremertonZip = weatherLocation(98311, "US");
-        Location cairo = weatherLocation("Cairo", "EG");
-        Location bremertonID = weatherLocation(5788054);
-        Location bremertonLatLon = weatherLocation(47.567322,-122.632637);
-        Location miami = weatherLocation("Miami", "US-FL");
-        Location minneapolis = weatherLocation("Minneapolis","MN", "US");
-        Location paris = weatherLocation("paris");
-        Location parisZip = weatherLocation(75000,"FR"); // Paris using Postal Code
-        Location piñonAcres = weatherLocation("Piñon Acres");
-        Location sedroWoolley = weatherLocation("Sedro-Woolley");
-        Location capeElizabethZip = weatherLocation("04107, US");
-        Location holtsvilleZip = weatherLocation("00501, US");
-        Location tokyo = weatherLocation("tokyo");
-        Location delhi = weatherLocation("delhi");
-        Location delhiLatLon = weatherLocation(28.61, 77.23);
-        Location shanghai = weatherLocation("shanghai");
-        Location shanghaiLatLon = weatherLocation(31.228611, 121.474722);
-        Location sãoPaulo = weatherLocation("São Paulo");
-        Location sãoPauloLatLon = weatherLocation(-23.55, -46.633333);
-        Location sydney = weatherLocation("sydney");
-        Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
-        locationList.add(bremerton);
-        locationList.add(bremertonWA);
-        locationList.add(bremertonZip);
-        locationList.add(cairo);
-        locationList.add(bremertonID);
-        locationList.add(bremertonLatLon);
-        locationList.add(miami);
-        locationList.add(minneapolis);
-        locationList.add(paris);
-        locationList.add(parisZip);
-        locationList.add(piñonAcres);
-        locationList.add(sedroWoolley);
-        locationList.add(capeElizabethZip);
-        locationList.add(holtsvilleZip);
-        locationList.add(tokyo);
-        locationList.add(delhi);
-        locationList.add(delhiLatLon);
-        locationList.add(shanghai);
-        locationList.add(shanghaiLatLon);
-        locationList.add(sãoPaulo);
-        locationList.add(sãoPauloLatLon);
-        locationList.add(sydney);
-        locationList.add(sydneyLatLon);
         startPagination(locationList);
+        started=true;
     }
+
 
     // Handler for the submit button
     // Parses user input to determine if any ints or doubles are included, and passes the parameters to the appropriate function (overloaded)
@@ -227,7 +185,6 @@ public class MainScreenController {
     @FXML
     public void detailedHandler(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        System.out.println(getClass().getResource("/detailed.fxml"));
         loader.setLocation(getClass().getResource("/detailed.fxml"));
         loader.load();
         DetailedController dController = loader.getController();
@@ -242,6 +199,56 @@ public class MainScreenController {
     // Starts Pagination :D
     public void startPagination(ArrayList<Location> locationList) {
         this.locationList = locationList;
+        if (!started) {
+            Location bremertonWA = weatherLocation("Bremerton", "WA");
+            Location bremertonZip = weatherLocation(98311, "US");
+            Location bremertonID = weatherLocation(5788054);
+            Location bremertonLatLon = weatherLocation(47.567322, -122.632637);
+            Location paris = weatherLocation("paris");
+            Location parisZip = weatherLocation(75000, "FR"); // Paris using Postal Code
+            Location piñonAcres = weatherLocation("Piñon Acres");
+            Location shanghai = weatherLocation("shanghai");
+            Location shanghaiLatLon = weatherLocation(31.228611, 121.474722);
+            Location sãoPauloLatLon = weatherLocation(-23.55, -46.633333);
+            Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
+            Location cairo = weatherLocation("Cairo", "EG");
+            Location miami = weatherLocation("Miami", "US-FL");
+            Location minneapolis = weatherLocation("Minneapolis","MN", "US");
+            Location sedroWoolley = weatherLocation("Sedro-Woolley");
+            Location capeElizabethZip = weatherLocation("04107, US");
+            Location holtsvilleZip = weatherLocation("00501, US");
+            Location tokyo = weatherLocation("tokyo");
+            Location delhi = weatherLocation("delhi");
+            Location delhiLatLon = weatherLocation(28.61, 77.23);
+            Location sãoPaulo = weatherLocation("São Paulo");
+            Location sydney = weatherLocation("sydney");
+            Location bremerton = weatherLocation("Bremerton", "US-WA");
+            Location naples = weatherLocation("Naples", "FL");
+            locationList.add(bremertonWA);
+            locationList.add(bremertonZip);
+            locationList.add(bremertonID);
+            locationList.add(bremertonLatLon);
+            locationList.add(paris);
+            locationList.add(parisZip);
+            locationList.add(piñonAcres);
+            locationList.add(shanghai);
+            locationList.add(shanghaiLatLon);
+            locationList.add(sãoPauloLatLon);
+            locationList.add(sydneyLatLon);
+            locationList.add(minneapolis);
+            locationList.add(cairo);
+            locationList.add(sedroWoolley);
+            locationList.add(capeElizabethZip);
+            locationList.add(holtsvilleZip);
+            locationList.add(tokyo);
+            locationList.add(delhi);
+            locationList.add(delhiLatLon);
+            locationList.add(sãoPaulo);
+            locationList.add(sydney);
+            locationList.add(bremerton);
+            locationList.add(miami);
+            locationList.add(naples);
+        }
         pagination.setPageCount(locationList.size());
         pagination.setMaxPageIndicatorCount(10);
         pagination.setPageFactory((pageIndex) -> {

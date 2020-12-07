@@ -2,8 +2,13 @@ package model;
 
 // Abstract class that Current / Daily / Houry / Minutely subclasses are derived from
 
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
+import java.time.Instant;
+import java.time.OffsetTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public abstract class Forecast {
@@ -226,7 +231,6 @@ public abstract class Forecast {
         } else if (wind_deg > 292.5 && wind_deg < 337.5) {
             return "NW";
         }
-        System.out.println(wind_deg);
         return null;
     }
 

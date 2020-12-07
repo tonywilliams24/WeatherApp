@@ -29,7 +29,7 @@ public class DetailedController {
     private Label city;
 
     @FXML
-    private Label currentTemp;
+    private Label sunrise;
 
     @FXML
     private Label description;
@@ -38,28 +38,25 @@ public class DetailedController {
     private Label summary;
 
     @FXML
-    private Label feelsLike;
+    private Label pop;
 
     @FXML
-    private Label highTemp;
+    private Label precipitation;
 
     @FXML
-    private Label lowTemp;
+    private Label visibility;
 
     @FXML
     private Label humidity;
 
     @FXML
-    private Label cloud;
+    private Label sunset;
 
     @FXML
     private Label windSpeed;
 
     @FXML
     private Label windGust;
-
-    @FXML
-    private Label windDirection;
 
     @FXML
     private Label cityKey;
@@ -71,13 +68,13 @@ public class DetailedController {
     private Label descriptionKey;
 
     @FXML
-    private Label feelsLikeKey;
+    private Label popKey;
 
     @FXML
-    private Label highTempKey;
+    private Label precipitationKey;
 
     @FXML
-    private Label lowTempKey;
+    private Label visibilityKey;
 
     @FXML
     private Label humidityKey;
@@ -125,21 +122,27 @@ public class DetailedController {
        Hourly[] hourly = location.getHourly();
        Current current = location.getCurrent();
        city.setText(location.getName());
-       currentTemp.setText((int) Math.round(current.getTemp()) + "\u00B0F");
+       double tempPrecip;
+
        StringBuilder weatherSB = new StringBuilder();
        for(Weather weather: current.getWeather()) {
            weatherSB.append(weather.getDescription() + "\n");
        }
        description.setText(weatherSB.toString());
        summary.setText("Currently " + current.getWeather()[0].getDescription() + ". It's " + (int) Math.round(current.getTemp()) + "\u00B0F" + "; the high today is forecast to be " + (int) Math.round(daily[0].getTemps().getMax()) + "\u00B0F");
-       feelsLike.setText((int) Math.round(current.getFeels_like()) + "\u00B0F");
-       highTemp.setText((int) Math.round(daily[0].getTemps().getMax()) + "\u00B0F");
-       lowTemp.setText((int) Math.round(daily[0].getTemps().getMin()) + "\u00B0F");
+       sunrise.setText(location.getFormattedTime(current.getSunrise(), Location.TimeFormat.hourMin));
+       sunset.setText(location.getFormattedTime(current.getSunset(), Location.TimeFormat.hourMin));
+       pop.setText((int)Math.round(hourly[0].getPop()*100) + "%");
+       if(hourly[0].getRain()!=null)
+           tempPrecip=(double)Math.round((hourly[0].getRain().get1h()*10))/10;
+       else tempPrecip=0;
+       precipitation.setText(tempPrecip + " in");
+       visibility.setText((double)Math.round(current.getVisibility()*0.06213712)/100 + " mi");
        humidity.setText(Math.round(current.getHumidity()) + "%");
-       cloud.setText(Math.round(current.getClouds()) + "%");
-       windSpeed.setText((int) Math.round(current.getWind_speed()) + " mph");
+
+       windSpeed.setText(current.getWind_dir() + " " + (int) Math.round(current.getWind_speed()) + " mph");
        windGust.setText((int) Math.round(current.getWind_gust()) + " mph");
-       windDirection.setText(current.getWind_dir());
+       location.alertBox();
 
        StackPane[] dailyStackPanes = new StackPane[daily.length];
        for(int i=0; i<dailyStackPanes.length; i++) {
@@ -153,11 +156,11 @@ public class DetailedController {
            Instant instant = Instant.ofEpochSecond(daily[i].getDt());
            ZoneId zoneId = ZoneId.of(location.getTimezone());
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
+           OffsetTime ot = OffsetTime.ofInstant(instant, zoneId);
            Label dayOfWeekLabel = new Label(DayOfWeek.from(ldt).getDisplayName(TextStyle.FULL, Locale.US));
            Label maxTempLabel = new Label((int) Math.round(daily[i].getTemps().getMax()) + "\u00B0F");
            Label minTempLabel = new Label((int) Math.round(daily[i].getTemps().getMin()) + "\u00B0F");
            vBox.getChildren().addAll(dayOfWeekLabel,maxTempLabel,minTempLabel);
-           System.out.println(imageView);
            dailyStackPanes[i] = new StackPane(imageView,vBox);
        }
 
@@ -166,7 +169,6 @@ public class DetailedController {
 
        StackPane[] hourlyStackPanes = new StackPane[hourly.length];
        for(int i=0; i<hourlyStackPanes.length; i++) {
-           System.out.println(hourly[i].getWeather()[0].getIconImage());
            ImageView imageView = new ImageView(hourly[i].getWeather()[0].getIconImage());
 //           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
@@ -174,11 +176,7 @@ public class DetailedController {
            VBox vBox = new VBox();
            vBox.getStyleClass().addAll("vbox","week");
            vBox.setAlignment(Pos.CENTER);
-           Instant instant = Instant.ofEpochSecond(hourly[i].getDt());
-           ZoneId zoneId = ZoneId.of(location.getTimezone());
-           LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
-           LocalTime lt = LocalTime.from(ldt);
-           Label timeLabel = new Label(lt.format(DateTimeFormatter.ofPattern("h a")));
+           Label timeLabel = new Label(location.getFormattedTime(hourly[i].getDt(), Location.TimeFormat.hour));
            Label tempLabel = new Label((int) Math.round(hourly[i].getTemp()) + "\u00B0F");
            Label popLabel = new Label((int) (hourly[i].getPop() * 100) + " %");
            vBox.getChildren().addAll(timeLabel,tempLabel,popLabel);
