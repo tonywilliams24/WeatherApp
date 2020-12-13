@@ -255,7 +255,7 @@ public class Location {
     }
 
     public void alertBox() {
-        if (this != null) {
+        if (alerts != null) {
             for (Alerts alerts : this.getAlerts()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, alerts.getDescription());
                 alert.setTitle(alerts.getEvent());
