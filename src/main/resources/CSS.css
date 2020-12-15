@@ -18,7 +18,7 @@
     -fx-fill: black;
     -fx-stroke: black;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(one-pass-box, white, 5, 5, 0, 0);
+    -fx-effect: dropshadow(one-pass-box, aqua, 3, 3, 0, 0);
 }
 
 .button .text {
