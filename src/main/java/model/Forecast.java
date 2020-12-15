@@ -234,6 +234,44 @@ public abstract class Forecast {
         return null;
     }
 
+    public String getWeatherDescription() {
+        StringBuilder weatherSB = new StringBuilder();
+        int weatherSBLength;
+
+        if(weather.length!=1) {
+            if(weather.length==2) return String.format("%1$s and %2$s",weather[0].getDescription(), weather[1].getDescription());
+            else {
+                for (Weather weatherObj : weather) {
+                    weatherSB.append(weatherObj.getDescription())
+                            .append(", ");
+                }
+                weatherSBLength = weatherSB.length() - 2;
+                return weatherSB.delete(weatherSBLength, weatherSBLength+2)
+                        .insert(weatherSB.lastIndexOf(", ")+1," and")
+                        .toString();
+            }
+        }
+        else return weather[0].getDescription();
+    }
+
+    public static String capitalize(String string) {
+        if(string!=null) {
+            String[] stringArray = string.split(" ");
+            if(stringArray.length!=1) {
+                StringBuilder stringBuilder = new StringBuilder(string.length());
+                for (int i = 0; i < stringArray.length; i++) {
+                    stringBuilder = stringBuilder.append(Character.toUpperCase(stringArray[i].charAt(0)))
+                            .append(stringArray[i].substring(1))
+                            .append(" ");
+                }
+                return stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString();
+            }
+            else return (Character.toUpperCase(string.charAt(0)))
+                    + (string.substring(1));
+        }
+        else return null;
+    }
+
     @Override
     public String toString() {
         return "Forecast{" +

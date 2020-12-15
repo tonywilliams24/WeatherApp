@@ -14,9 +14,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import model.Weather;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static model.Location.weatherLocation;
 
@@ -85,7 +87,7 @@ public class MainScreenController {
     @FXML
     public void initialize() throws IOException {
         startPagination(locationList);
-        started=true;
+        started = true;
     }
 
 
@@ -101,83 +103,68 @@ public class MainScreenController {
         StringBuilder paramSB = new StringBuilder(); // StringBuilder to append "i" for potential int, "d" for potential double, or "s" if only string
         Location location = null;
         String paramString;
-        for(String l : inputLocation) { // Checks each string in array to see if it is a potential double or integer
-            try{
+        for (String l : inputLocation) { // Checks each string in array to see if it is a potential double or integer
+            try {
                 double num = Double.parseDouble(l);
-                if(num == Math.floor(num)) {
+                if (num == Math.floor(num)) {
                     paramSB.append("i");
-                }
-                else {
+                } else {
                     paramSB.append("d");
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 paramSB.append("s");
             }
         }
         paramString = paramSB.toString();
-        if(inputLocation.length==1) {
-            if(paramString.equals("s")) { // assumes city name was input
+        if (inputLocation.length == 1) {
+            if (paramString.equals("s")) { // assumes city name was input
                 location = weatherLocation(inputString);
                 locationList.add(location);
-            }
-            else if(paramString.equals("i")) { // assumes zip code or city ID
+            } else if (paramString.equals("i")) { // assumes zip code or city ID
                 location = weatherLocation(Integer.parseInt(inputLocation[0]));
                 locationList.add(location);
-            }
-            else System.out.println("location Not Found");
-        }
-        else if(inputLocation.length==2) {
-            if(paramString.equals("ss")) { // assumes city, country or city, us-state
+            } else System.out.println("location Not Found");
+        } else if (inputLocation.length == 2) {
+            if (paramString.equals("ss")) { // assumes city, country or city, us-state
                 location = weatherLocation(inputLocation[0], inputLocation[1]);
                 locationList.add(location);
-            }
-            else if(paramString.equals("is")) { // assumes zip, country
+            } else if (paramString.equals("is")) { // assumes zip, country
                 location = weatherLocation(Integer.parseInt(inputLocation[0]), inputLocation[1]);
                 locationList.add(location);
-            }
-            else if(paramString.equals("dd")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            } else if (paramString.equals("dd")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
-            }
-            else if(paramString.equals("ii")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            } else if (paramString.equals("ii")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
-            }
-            else if(paramString.equals("id")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            } else if (paramString.equals("id")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
-            }
-            else if(paramString.equals("di")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]),Double.parseDouble(inputLocation[1]));
+            } else if (paramString.equals("di")) { // assumes Lat, Lon
+                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
-            }
-            else System.out.println("location Not Found");
-        }
-        else { // assumes all remaining cases are a string
+            } else System.out.println("location Not Found");
+        } else { // assumes all remaining cases are a string
             {
                 try {
                     location = weatherLocation(inputString);
                     locationList.add(location);
-                }
-                catch(Exception e) {
+                } catch (Exception e) {
                     System.out.println("Input Not Recognized");
                 }
             }
         }
-        if(location!=null) {
+        if (location != null) {
             System.out.println(location);
             startPagination(locationList);
-        }
-        else
-        {
-            locationList.remove(locationList.size()-1);
+        } else {
+            locationList.remove(locationList.size() - 1);
         }
     }
 
     public VBox createPage(int pageIndex) {
         VBox pageBox = new VBox();
-        Label pageLabel = new Label("Test " + pageIndex+1);
+        Label pageLabel = new Label("Test " + pageIndex + 1);
         pageBox.getChildren().add(pageLabel);
         return pageBox;
     }
@@ -189,7 +176,7 @@ public class MainScreenController {
         loader.load();
         DetailedController dController = loader.getController();
         dController.sendLocation(locationList, locationList.get(pagination.getCurrentPageIndex()));
-        stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
         scene.getStylesheets().add("/CSS.css");
         stage.setScene(new Scene(scene));
@@ -213,7 +200,7 @@ public class MainScreenController {
             Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
             Location cairo = weatherLocation("Cairo", "EG");
             Location miami = weatherLocation("Miami", "US-FL");
-            Location minneapolis = weatherLocation("Minneapolis","MN", "US");
+            Location minneapolis = weatherLocation("Minneapolis", "MN", "US");
             Location sedroWoolley = weatherLocation("Sedro-Woolley");
             Location capeElizabethZip = weatherLocation("04107, US");
             Location holtsvilleZip = weatherLocation("00501, US");
@@ -222,8 +209,9 @@ public class MainScreenController {
             Location delhiLatLon = weatherLocation(28.61, 77.23);
             Location sãoPaulo = weatherLocation("São Paulo");
             Location sydney = weatherLocation("sydney");
-            Location bremerton = weatherLocation("Bremerton", "US-WA");
             Location naples = weatherLocation("Naples", "FL");
+            Location bremerton = weatherLocation("Bremerton", "US-WA");
+
             locationList.add(bremertonWA);
             locationList.add(bremertonZip);
             locationList.add(bremertonID);
@@ -245,21 +233,22 @@ public class MainScreenController {
             locationList.add(delhiLatLon);
             locationList.add(sãoPaulo);
             locationList.add(sydney);
-            locationList.add(bremerton);
             locationList.add(miami);
             locationList.add(naples);
+            locationList.add(bremerton);
         }
-        pagination.setPageCount(locationList.size());
-        pagination.setMaxPageIndicatorCount(10);
-        pagination.setPageFactory((pageIndex) -> {
-            nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
-            mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
-            mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
-            imageView.setVisible(true);
-            imageView.setImage(locationList.get(pageIndex).getCurrent().getWeather()[0].getIconImage());
-            return new StackPane(imageView,vbox);
-        });
-        pagination.setCurrentPageIndex(locationList.size()-1);
-        pagination.setVisible(true);
+
+            pagination.setPageCount(locationList.size());
+            pagination.setMaxPageIndicatorCount(10);
+            pagination.setPageFactory((pageIndex) -> {
+                nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
+                mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
+                mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
+                imageView.setVisible(true);
+                imageView.setImage(locationList.get(pageIndex).getCurrent().getWeather()[0].getIconImage());
+                return new StackPane(imageView, vbox);
+            });
+            pagination.setCurrentPageIndex(locationList.size() - 1);
+            pagination.setVisible(true);
+        }
     }
-}

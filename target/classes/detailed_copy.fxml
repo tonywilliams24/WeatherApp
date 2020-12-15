@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -17,46 +18,33 @@
       <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="5.0">
          <children>
             <Label fx:id="city" styleClass="cityTitle" />
-            <StackPane>
-               <children>
-                  <Pane fx:id="pane" />
-                  <GridPane fx:id="gridPane" alignment="TOP_CENTER" prefHeight="310.0" prefWidth="800.0" styleClass="gridPane">
+            <Label fx:id="description" styleClass="citySubTitle" />
+            <Label fx:id="currentTemp" styleClass="tempTitle">
+               <padding>
+                  <Insets bottom="-5.0" left="-5.0" right="-5.0" top="-5.0" />
+               </padding></Label>
+            <Label fx:id="highLowTemp" styleClass="tempSubTitle" />
+            <Label fx:id="summary" styleClass="citySubSubTitle" />
+            <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
+               <content>
+                  <HBox fx:id="hourlyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
                      <children>
-                        <Label fx:id="currentTemp" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" />
-                        <Label fx:id="description" alignment="CENTER" prefHeight="60.0" prefWidth="400.0" styleClass="value" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="feelsLike" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="highTemp" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label fx:id="lowTemp" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label fx:id="humidity" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" />
-                        <Label fx:id="cloud" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label fx:id="windSpeed" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Label fx:id="windGust" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Label fx:id="windDirection" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <Label fx:id="currentTempKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Current Temp:" />
-                        <Label fx:id="descriptionKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Description:" GridPane.rowIndex="1" />
-                        <Label fx:id="feelsLikeKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Feels Like:" GridPane.rowIndex="2" />
-                        <Label fx:id="highTempKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="High Temp:" GridPane.rowIndex="3" />
-                        <Label fx:id="lowTempKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Low Temp:" GridPane.rowIndex="4" />
-                        <Label fx:id="humidityKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Humidity:" GridPane.columnIndex="2" />
-                        <Label fx:id="cloudKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Cloudiness:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="windSpeedKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Wind Speed:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label fx:id="windGustKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Wind Gust:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Label fx:id="windDirectionKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Wind Direction:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <VBox fx:id="hourlyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
+                           <children>
+                              <Label text="Time " />
+                              <Label text="Temp:" />
+                              <Label text="Chance Precip:" />
+                           </children>
+                        </VBox>
                      </children>
-                     <columnConstraints>
-                        <ColumnConstraints prefWidth="200.0" />
-                        <ColumnConstraints prefWidth="200.0" />
-                        <ColumnConstraints prefWidth="200.0" />
-                        <ColumnConstraints prefWidth="200.0" />
-                     </columnConstraints>
-                  </GridPane>
-               </children>
-            </StackPane>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
+                  </HBox>
+               </content>
+            </ScrollPane>
+            <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
                <content>
                   <HBox fx:id="dailyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
                      <children>
-                        <VBox fx:id="dailyKeyVBox" alignment="CENTER_LEFT" minWidth="100.0" prefHeight="200.0" prefWidth="100.0" styleClass="vbox, week">
+                        <VBox fx:id="dailyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
                            <children>
                               <Label text="Day: " />
                               <Label text="High Temp:" />
@@ -67,21 +55,43 @@
                   </HBox>
                </content>
             </ScrollPane>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
-               <content>
-                  <HBox fx:id="hourlyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
+            <StackPane>
+               <children>
+                  <Pane fx:id="pane" />
+                  <GridPane fx:id="gridPane" alignment="TOP_CENTER" prefHeight="310.0" prefWidth="800.0" styleClass="gridPane">
                      <children>
-                        <VBox fx:id="hourlyKeyVBox" alignment="CENTER_LEFT" minWidth="100.0" prefHeight="200.0" prefWidth="100.0" styleClass="vbox, week">
-                           <children>
-                              <Label text="Time " />
-                              <Label text="Temp:" />
-                              <Label text="Chance of Precip.:" />
-                           </children>
-                        </VBox>
+                        <Label fx:id="sunriseKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Sunrise:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="sunrise" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label fx:id="sunsetKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Sunset:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <Label fx:id="sunset" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Label fx:id="popKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Precip Chance:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="pop" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="humidityKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Humidity:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="humidity" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label fx:id="precipitationKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Precipitation:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="precipitation" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="windSpeedKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Wind:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="windSpeed" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label fx:id="visibilityKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Visibility:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="visibility" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="windGustKey" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" text="Gust:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label fx:id="windGust" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" styleClass="value" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                      </children>
-                  </HBox>
-               </content>
-            </ScrollPane>
+                     <columnConstraints>
+                        <ColumnConstraints prefWidth="200.0" />
+                        <ColumnConstraints prefWidth="200.0" />
+                        <ColumnConstraints prefWidth="200.0" />
+                        <ColumnConstraints prefWidth="200.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </StackPane>
             <Button fx:id="backButton" cancelButton="true" onAction="#backHandler" text="Back" />
          </children>
          <padding>

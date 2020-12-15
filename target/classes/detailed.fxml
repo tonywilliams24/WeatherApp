@@ -18,8 +18,42 @@
          <children>
             <Label fx:id="city" styleClass="cityTitle" />
             <Label fx:id="description" styleClass="citySubTitle" />
+            <Label fx:id="currentTemp" styleClass="tempTitle" >
+            <padding>
+               <Insets bottom="-20.0" left="-20.0" right="-20.0" top="-20.0" />
+            </padding></Label>
+            <Label fx:id="highLowTemp" styleClass="tempSubTitle" />
             <Label fx:id="summary" styleClass="citySubSubTitle" />
-
+            <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
+               <content>
+                  <HBox fx:id="hourlyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
+                     <children>
+                        <VBox fx:id="hourlyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
+                           <children>
+                              <Label text="Time " />
+                              <Label text="Temp:" />
+                              <Label text="Chance Precip:" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </ScrollPane>
+            <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
+               <content>
+                  <HBox fx:id="dailyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
+                     <children>
+                        <VBox fx:id="dailyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
+                           <children>
+                              <Label text="Day: " />
+                              <Label text="High Temp:" />
+                              <Label text="Low Temp: " />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </ScrollPane>
             <StackPane>
                <children>
                   <Pane fx:id="pane" />
@@ -51,36 +85,6 @@
                   </GridPane>
                </children>
             </StackPane>
-            <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
-               <content>
-                  <HBox fx:id="hourlyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
-                     <children>
-                        <VBox fx:id="hourlyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
-                           <children>
-                              <Label text="Time " />
-                              <Label text="Temp:" />
-                              <Label text="Chance Precip:" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </content>
-            </ScrollPane>
-            <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
-               <content>
-                  <HBox fx:id="dailyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
-                     <children>
-                        <VBox fx:id="dailyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
-                           <children>
-                              <Label text="Day: " />
-                              <Label text="High Temp:" />
-                              <Label text="Low Temp: " />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </content>
-            </ScrollPane>
             <Button fx:id="backButton" cancelButton="true" onAction="#backHandler" text="Back" />
          </children>
          <padding>
