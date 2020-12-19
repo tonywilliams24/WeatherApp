@@ -2,13 +2,6 @@ package model;
 
 // Abstract class that Current / Daily / Houry / Minutely subclasses are derived from
 
-import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-
-import java.time.Instant;
-import java.time.OffsetTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public abstract class Forecast {
@@ -23,6 +16,8 @@ public abstract class Forecast {
     private double dew_point;
     private int clouds;
     private double uvi;
+    private String uviColor;
+    private String uviRisk;
     private double visibility; // check if double or int is needed
     private double wind_speed;
     private double wind_gust;
@@ -143,6 +138,8 @@ public abstract class Forecast {
 
     public void setUvi(double uvi) {
         this.uvi = uvi;
+        this.uviColor = uviToColor(this.uvi);
+        this.uviRisk = uviToRisk(this.uvi);
     }
 
     public double getVisibility() {
@@ -211,6 +208,14 @@ public abstract class Forecast {
         this.snow = snow;
     }
 
+    public String getUviRisk() {
+        return uviRisk;
+    }
+
+    public void setUviRisk(String uviRisk) {
+        this.uviRisk = uviRisk;
+    }
+
     public String degToDir(int wind_deg) {
         // Arranged based on (my best guess of) the most common wind directions around Bremerton, WA
         // "Make common case fast"
@@ -254,15 +259,68 @@ public abstract class Forecast {
         else return weather[0].getDescription();
     }
 
+    public String getUviColor() {
+        return uviColor;
+    }
+
+    public void setUviColor(String uviColor) {
+        this.uviColor = uviColor;
+    }
+
+    public String uviToColor(double uvi) {
+        if(uvi<0){
+            return "black";
+        }
+        else if(uvi<2.5) {
+            return "green";
+        }
+        else if(uvi<5.5) {
+            return "yellow";
+        }
+        else if(uvi<7.5) {
+            return "orange";
+        }
+        else if(uvi<10.5) {
+            return "red";
+        }
+        else {
+            return "violet";
+        }
+    }
+
+    public String uviToRisk(double uvi) {
+        if(uvi<2.5) {
+            return "Low";
+        }
+        else if(uvi<5.5) {
+            return "Moderate";
+        }
+        else if(uvi<7.5) {
+            return "High";
+        }
+        else if(uvi<10.5) {
+            return "Very High";
+        }
+        else {
+            return "Extreme";
+        }
+    }
+
     public static String capitalize(String string) {
         if(string!=null) {
             String[] stringArray = string.split(" ");
             if(stringArray.length!=1) {
                 StringBuilder stringBuilder = new StringBuilder(string.length());
                 for (int i = 0; i < stringArray.length; i++) {
-                    stringBuilder = stringBuilder.append(Character.toUpperCase(stringArray[i].charAt(0)))
-                            .append(stringArray[i].substring(1))
-                            .append(" ");
+                    if(!stringArray[i].equals("and")) {
+                        stringBuilder = stringBuilder.append(Character.toUpperCase(stringArray[i].charAt(0)))
+                                                     .append(stringArray[i].substring(1))
+                                                     .append(" ");
+                    }
+                    else {
+                        stringBuilder = stringBuilder.append(stringArray[i])
+                                                     .append(" ");
+                    }
                 }
                 return stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString();
             }

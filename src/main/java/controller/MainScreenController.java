@@ -186,56 +186,60 @@ public class MainScreenController {
     // Starts Pagination :D
     public void startPagination(ArrayList<Location> locationList) {
         this.locationList = locationList;
-        if (!started) {
-            Location bremertonWA = weatherLocation("Bremerton", "WA");
-            Location bremertonZip = weatherLocation(98311, "US");
-            Location bremertonID = weatherLocation(5788054);
-            Location bremertonLatLon = weatherLocation(47.567322, -122.632637);
-            Location paris = weatherLocation("paris");
-            Location parisZip = weatherLocation(75000, "FR"); // Paris using Postal Code
-            Location piñonAcres = weatherLocation("Piñon Acres");
-            Location shanghai = weatherLocation("shanghai");
-            Location shanghaiLatLon = weatherLocation(31.228611, 121.474722);
-            Location sãoPauloLatLon = weatherLocation(-23.55, -46.633333);
-            Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
-            Location cairo = weatherLocation("Cairo", "EG");
-            Location miami = weatherLocation("Miami", "US-FL");
-            Location minneapolis = weatherLocation("Minneapolis", "MN", "US");
-            Location sedroWoolley = weatherLocation("Sedro-Woolley");
-            Location capeElizabethZip = weatherLocation("04107, US");
-            Location holtsvilleZip = weatherLocation("00501, US");
-            Location tokyo = weatherLocation("tokyo");
-            Location delhi = weatherLocation("delhi");
-            Location delhiLatLon = weatherLocation(28.61, 77.23);
-            Location sãoPaulo = weatherLocation("São Paulo");
+
+        if (!started) { // For testing purposes only
+//            Location bremertonWA = weatherLocation("Bremerton", "WA");
+//            Location bremertonZip = weatherLocation(98311, "US");
+//            Location bremertonID = weatherLocation(5788054);
+//            Location bremertonLatLon = weatherLocation(47.567322, -122.632637);
+//            Location paris = weatherLocation("paris");
+//            Location parisZip = weatherLocation(75000, "FR"); // Paris using Postal Code
+//            Location piñonAcres = weatherLocation("Piñon Acres");
+//            Location shanghai = weatherLocation("shanghai");
+//            Location shanghaiLatLon = weatherLocation(31.228611, 121.474722);
+//            Location sãoPauloLatLon = weatherLocation(-23.55, -46.633333);
+//            Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
+//            Location cairo = weatherLocation("Cairo", "EG");
+//            Location miami = weatherLocation("Miami", "US-FL");
+//            Location minneapolis = weatherLocation("Minneapolis", "MN", "US");
+//            Location sedroWoolley = weatherLocation("Sedro-Woolley");
+//            Location capeElizabethZip = weatherLocation("04107, US");
+//            Location holtsvilleZip = weatherLocation("00501, US");
+//            Location tokyo = weatherLocation("tokyo");
+//            Location delhi = weatherLocation("delhi");
+//            Location delhiLatLon = weatherLocation(28.61, 77.23);
+//            Location sãoPaulo = weatherLocation("São Paulo");
+//            Location naples = weatherLocation("Naples", "FL");
             Location sydney = weatherLocation("sydney");
-            Location naples = weatherLocation("Naples", "FL");
+            Location nome = weatherLocation("Nome", "US-AK");
             Location bremerton = weatherLocation("Bremerton", "US-WA");
 
-            locationList.add(bremertonWA);
-            locationList.add(bremertonZip);
-            locationList.add(bremertonID);
-            locationList.add(bremertonLatLon);
-            locationList.add(paris);
-            locationList.add(parisZip);
-            locationList.add(piñonAcres);
-            locationList.add(shanghai);
-            locationList.add(shanghaiLatLon);
-            locationList.add(sãoPauloLatLon);
-            locationList.add(sydneyLatLon);
-            locationList.add(minneapolis);
-            locationList.add(cairo);
-            locationList.add(sedroWoolley);
-            locationList.add(capeElizabethZip);
-            locationList.add(holtsvilleZip);
-            locationList.add(tokyo);
-            locationList.add(delhi);
-            locationList.add(delhiLatLon);
-            locationList.add(sãoPaulo);
+//            locationList.add(bremertonWA);
+//            locationList.add(bremertonZip);
+//            locationList.add(bremertonID);
+//            locationList.add(bremertonLatLon);
+//            locationList.add(paris);
+//            locationList.add(parisZip);
+//            locationList.add(piñonAcres);
+//            locationList.add(shanghai);
+//            locationList.add(shanghaiLatLon);
+//            locationList.add(sãoPauloLatLon);
+//            locationList.add(sydneyLatLon);
+//            locationList.add(minneapolis);
+//            locationList.add(cairo);
+//            locationList.add(sedroWoolley);
+//            locationList.add(capeElizabethZip);
+//            locationList.add(holtsvilleZip);
+//            locationList.add(tokyo);
+//            locationList.add(delhi);
+//            locationList.add(delhiLatLon);
+//            locationList.add(sãoPaulo);
+//            locationList.add(miami);
+//            locationList.add(naples);
+            locationList.add(nome);
             locationList.add(sydney);
-            locationList.add(miami);
-            locationList.add(naples);
             locationList.add(bremerton);
+
         }
 
             pagination.setPageCount(locationList.size());

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -117,6 +118,12 @@ public class DetailedController {
     @FXML
     private VBox hourlyKeyVBox;
 
+    @FXML
+    private Slider uviBar;
+
+    @FXML
+    private Label uvi;
+
     ArrayList<Location> locationList;
 
     Stage stage;
@@ -170,7 +177,7 @@ public class DetailedController {
            dailyStackPanes[i] = new StackPane(imageView,vBox);
        }
 
-       this.dailyHBox.getChildren().addAll(dailyStackPanes);
+       dailyHBox.getChildren().addAll(dailyStackPanes);
 
 
        StackPane[] hourlyStackPanes = new StackPane[hourly.length];
@@ -190,8 +197,11 @@ public class DetailedController {
            hourlyStackPanes[i] = new StackPane(imageView,vBox);
        }
 
-       this.hourlyHBox.getChildren().addAll(hourlyStackPanes);
-
+       hourlyHBox.getChildren().addAll(hourlyStackPanes);
+       uvi.setText(String.format("%1$.1f - %2$s",current.getUvi(),current.getUviRisk()));
+       uvi.setStyle("thumb-color: " + current.getUviColor());
+       uviBar.setValue(current.getUvi());
+       uviBar.setStyle("thumb-color: " + current.getUviColor());
     }
 
     @FXML
