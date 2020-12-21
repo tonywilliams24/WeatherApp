@@ -7,19 +7,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Location;
+import model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import model.Weather;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static model.Forecast.capitalize;
 import static model.Location.weatherLocation;
 
 public class MainScreenController {
@@ -73,6 +73,18 @@ public class MainScreenController {
 
     @FXML
     private ImageView imageView;
+
+    @FXML
+    private Label city;
+
+    @FXML
+    private Label highLowTemp;
+
+    @FXML
+    private Label currentTemp;
+
+    @FXML
+    private Label description;
 
     Stage stage;
 
@@ -245,11 +257,18 @@ public class MainScreenController {
             pagination.setPageCount(locationList.size());
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {
-                nameLabel.setText(locationList.get(pageIndex).getName() + ", " + locationList.get(pageIndex).getCountry());
-                mainTempLabel.setText((int) Math.round(locationList.get(pageIndex).getCurrent().getTemp()) + "\u00B0F");
-                mainLabel.setText(locationList.get(pageIndex).getCurrent().getWeather()[0].getMain());
+                Location location = locationList.get(pageIndex);
+                Current current = location.getCurrent();
+                Daily[] daily = location.getDaily();
+                Temps dailyTemps = daily[0].getTemps();
+                double dailyMaxTemp = dailyTemps.getMax();
+                double dailyMinTemp = dailyTemps.getMin();
+                city.setText(location.getName() + ", " + location.getCountry());
+                description.setText(capitalize(current.getWeatherDescription()));
+                currentTemp.setText(String.format("%1$.0f\u00B0", current.getTemp()));
+                highLowTemp.setText(String.format("H: %1$.0f\u00B0  L: %2$.0f\u00B0", dailyMaxTemp, dailyMinTemp));
                 imageView.setVisible(true);
-                imageView.setImage(locationList.get(pageIndex).getCurrent().getWeather()[0].getIconImage());
+                imageView.setImage(location.getCurrent().getWeather()[0].getIconImage());
                 return new StackPane(imageView, vbox);
             });
             pagination.setCurrentPageIndex(locationList.size() - 1);

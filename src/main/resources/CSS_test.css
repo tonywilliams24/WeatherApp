@@ -1,0 +1,90 @@
+.root {
+    thumb-color: white;
+}
+
+.anchor {
+    -fx-background-color: #DDDDDD;
+}
+
+.gridPane {
+    -fx-font-size: 23px;
+}
+
+.week .text {
+    -fx-font-size: 20px;
+    -fx-stroke-width: .5px;
+    -fx-fill: black;
+    -fx-stroke: black;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(one-pass-box, white, 5, 5, 0, 0);
+}
+
+.button .text {
+    -fx-fill: black;
+    -fx-stroke: black;
+    -fx-stroke-width: 0px;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(one-pass-box, black, 0, 0, 0, 0);
+}
+
+.value {
+    -fx-text-fill: blue;
+}
+
+.scrollPane {
+
+}
+
+.cityTitle {
+    -fx-text-fill: aqua;
+    -fx-font-size: 30px;
+    -fx-effect: dropshadow(one-pass-box, black, 5, 5, 0, 0);
+}
+
+.citySubTitle {
+    -fx-text-fill: aqua;
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(one-pass-box, black, 5, 5, 0, 0);
+}
+
+.summary {
+    -fx-text-fill: black;
+    -fx-font-size: 22px;
+    -fx-effect: dropshadow(one-pass-box, aqua, 1, 1, 0, 0);
+}
+
+.tempTitle {
+    -fx-text-fill: aqua;
+    -fx-font-size: 100px;
+    -fx-effect: dropshadow(one-pass-box, black, 5, 5, 0, 0);
+}
+
+.tempSubTitle {
+    -fx-text-fill: aqua;
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(one-pass-box, black, 4, 4, 0, 0);
+}
+
+.uvi {
+    -fx-font-size: 20px;
+    -fx-stroke-width: .5px;
+    -fx-fill: black;
+    -fx-stroke: black;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(one-pass-box, thumb-color, 2, 2, 0, 0);
+}
+
+.uviBar .track {
+    -fx-background-color: linear-gradient(to right, green 0%, yellow 25%, orange 50%, red 75%, violet 100%);
+}
+
+.uviBar .thumb {
+    -fx-background-color: thumb-color;
+    -fx-border-color: white;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+}
+
+.separator {
+    -fx-background-color: black;
+}

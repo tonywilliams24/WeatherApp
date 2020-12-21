@@ -25,11 +25,15 @@
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="400.0" text="Valid inputs:&#10;City Name (Can optionally include US State or a Country)&#10;City ID &#10;Geographic Coordinates (Latitude, Longitude)&#10;Postal Code (integer only), Country Code (e.g. 75000, FR)" />
             <Pagination fx:id="pagination" prefHeight="200.0" minWidth="360.0" visible="true" maxWidth="360" minHeight="400" styleClass="pagination">
                 <fx:define>
-                    <VBox fx:id="vbox" maxHeight="240.0" prefWidth="300.0" VBox.vgrow="ALWAYS" alignment="center" styleClass="vbox">
+                    <VBox fx:id="vbox" maxHeight="240.0" prefWidth="300.0" VBox.vgrow="ALWAYS" alignment="center">
                         <children>
-                            <Label fx:id="nameLabel"/>
-                            <Label fx:id="mainTempLabel"/>
-                            <Label fx:id="mainLabel"/>
+                            <Label fx:id="city" styleClass="cityTitle" />
+                            <Label fx:id="description" styleClass="citySubTitle" />
+                            <Label fx:id="currentTemp" styleClass="tempTitle" >
+                                <padding>
+                                    <Insets bottom="-20.0" left="-20.0" right="-20.0" top="-20.0" />
+                                </padding></Label>
+                            <Label fx:id="highLowTemp" styleClass="tempSubTitle" />
                             <Button fx:id="detailedButton" text="Detailed" onAction="#detailedHandler"/>
                         </children>
                         <opaqueInsets>

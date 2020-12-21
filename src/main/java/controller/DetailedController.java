@@ -9,12 +9,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -29,22 +34,10 @@ public class DetailedController {
     private GridPane gridPane;
 
     @FXML
-    private Label city;
-
-    @FXML
     private Label sunrise;
 
     @FXML
-    private Label description;
-
-    @FXML
     private Label summary;
-
-    @FXML
-    private Label currentTemp;
-
-    @FXML
-    private Label highLowTemp;
 
     @FXML
     private Label pop;
@@ -124,6 +117,9 @@ public class DetailedController {
     @FXML
     private Label uvi;
 
+    @FXML
+    private ImageView imageView;
+
     ArrayList<Location> locationList;
 
     Stage stage;
@@ -142,11 +138,7 @@ public class DetailedController {
        double tempPrecip=0;
        if(hourly[0].getRain()!=null)
            tempPrecip=(double)Math.round((hourly[0].getRain().get1h()*10))/10;
-       city.setText(location.getName());
-       description.setText(capitalize(current.getWeatherDescription()));
-       currentTemp.setText(String.format("%1$.0f\u00B0", current.getTemp()));
-       highLowTemp.setText(String.format("H: %1$.0f\u00B0  L: %2$.0f\u00B0", dailyMaxTemp, dailyMinTemp));
-       summary.setText("Currently " + current.getWeatherDescription() + ". It's " + (int) Math.round(current.getTemp()) + "\u00B0" + "; the high today was forecast to be " + (int) Math.round(dailyMaxTemp) + "\u00B0.");
+       summary.setText(String.format("It's currently %1$.0f\u00B0 with %2$s; the high today was forecast to be %3$.0f\u00B0.",current.getTemp(),current.getWeatherDescription(),dailyMaxTemp));
        sunrise.setText(location.getFormattedTime(current.getSunrise(), Location.TimeFormat.hourMin));
        sunset.setText(location.getFormattedTime(current.getSunset(), Location.TimeFormat.hourMin));
        pop.setText((int)Math.round(hourly[0].getPop()*100) + "%");
@@ -164,15 +156,23 @@ public class DetailedController {
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);
            VBox vBox = new VBox();
-           vBox.getStyleClass().addAll("vbox","week");
-           vBox.setAlignment(Pos.CENTER);
+           Label dayOfWeekLabel = new Label();
+           Label maxTempLabel = new Label();
+           Label minTempLabel = new Label();
+
            Instant instant = Instant.ofEpochSecond(daily[i].getDt());
            ZoneId zoneId = ZoneId.of(location.getTimezone());
            LocalDateTime ldt = LocalDateTime.ofInstant(instant, zoneId);
            OffsetTime ot = OffsetTime.ofInstant(instant, zoneId);
-           Label dayOfWeekLabel = new Label(DayOfWeek.from(ldt).getDisplayName(TextStyle.FULL, Locale.US));
-           Label maxTempLabel = new Label((int) Math.round(temps.getMax()) + "\u00B0");
-           Label minTempLabel = new Label((int) Math.round(temps.getMin()) + "\u00B0");
+
+           vBox.getStyleClass().addAll("vbox","week");
+           vBox.setAlignment(Pos.CENTER);
+           dayOfWeekLabel.getStyleClass().add("dailyLabel");
+           dayOfWeekLabel.setText(DayOfWeek.from(ldt).getDisplayName(TextStyle.FULL, Locale.US));
+           maxTempLabel.getStyleClass().add("dailyLabel");
+           maxTempLabel.setText(String.format("%1$.0f\u00B0",temps.getMax()));
+           minTempLabel.getStyleClass().add("dailyLabel");
+           minTempLabel.setText(String.format("%1$.0f\u00B0",temps.getMin()));
            vBox.getChildren().addAll(dayOfWeekLabel,maxTempLabel,minTempLabel);
            dailyStackPanes[i] = new StackPane(imageView,vBox);
        }
@@ -183,17 +183,26 @@ public class DetailedController {
        StackPane[] hourlyStackPanes = new StackPane[hourly.length];
        for(int i=0; i<hourlyStackPanes.length; i++) {
            ImageView imageView = new ImageView(hourly[i].getWeather()[0].getIconImage());
-//           imageView.setOpacity(.5);
            imageView.setFitWidth(150);
            imageView.setPreserveRatio(true);
            VBox vBox = new VBox();
+           Label timeLabel = new Label();
+           Label tempLabel = new Label();
+           Label popLabel = new Label();
+
+
            vBox.getStyleClass().addAll("vbox","week");
            vBox.setAlignment(Pos.CENTER);
-           Label timeLabel = new Label(location.getFormattedTime(hourly[i].getDt(), Location.TimeFormat.hour));
-           Label tempLabel = new Label((int) Math.round(hourly[i].getTemp()) + "\u00B0");
-           Label popLabel = new Label((int) (hourly[i].getPop() * 100) + " %");
+
+           timeLabel.setText(location.getFormattedTime(hourly[i].getDt(), Location.TimeFormat.hour));
+           timeLabel.getStyleClass().add("hourlyLabel");
+           tempLabel.setText(String.format("%1$.0f\u00B0",hourly[i].getTemp()));
+           tempLabel.getStyleClass().add("hourlyLabel");
+           popLabel.setText(String.format("%1$.0f\u00B0",hourly[i].getPop() * 100));
+           popLabel.getStyleClass().add("hourlyLabel");
+
            vBox.getChildren().addAll(timeLabel,tempLabel,popLabel);
-           System.out.println(imageView);
+
            hourlyStackPanes[i] = new StackPane(imageView,vBox);
        }
 
@@ -202,6 +211,7 @@ public class DetailedController {
        uvi.setStyle("thumb-color: " + current.getUviColor());
        uviBar.setValue(current.getUvi());
        uviBar.setStyle("thumb-color: " + current.getUviColor());
+       imageView.setImage(new Image(Paths.get("src/main/resources/backgrounds/rain.gif").toUri().toString()));
     }
 
     @FXML
