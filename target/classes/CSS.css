@@ -12,16 +12,16 @@
 
 .label {
     -fx-text-fill: black;
-    -fx-effect: dropshadow(one-pass-box, white, 3, 3, 0, 0);
+    -fx-effect: dropshadow(one-pass-box, white, 2, 2, 0, 0);
     -fx-font-weight: bold;
 }
 
 .dailyLabel {
-    -fx-font-size: 22px;
+    -fx-font-size: 20px;
 }
 
 .hourlyLabel {
-    -fx-font-size: 22px;
+    -fx-font-size: 20px;
 }
 
 .button .text {
@@ -35,9 +35,13 @@
     -fx-text-fill: blue;
 }
 
-.scrollPane {
+.scroll-pane {
     -fx-background: transparent;
     -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color:transparent;
 }
 
 .cityTitle {
@@ -53,7 +57,8 @@
 }
 
 .summary {
-    -fx-font-size: 22px;
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(one-pass-box, white, 2, 2, 0, 0);
 }
 
 .tempTitle {
