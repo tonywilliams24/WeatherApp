@@ -136,6 +136,7 @@ public class DetailedController {
        double dailyMaxTemp = dailyTemps.getMax();
        double dailyMinTemp = dailyTemps.getMin();
        double tempPrecip=0;
+       String background = String.format("src/main/resources/backgrounds/%1$s.gif",current.getWeather()[0].getIcon());
        if(hourly[0].getRain()!=null)
            tempPrecip=(double)Math.round((hourly[0].getRain().get1h()*10))/10;
        summary.setText(String.format("It's currently %1$.0f\u00B0 with %2$s; the high today was forecast to be %3$.0f\u00B0.",current.getTemp(),current.getWeatherDescription(),dailyMaxTemp));
@@ -211,7 +212,8 @@ public class DetailedController {
        uvi.setStyle("thumb-color: " + current.getUviColor());
        uviBar.setValue(current.getUvi());
        uviBar.setStyle("thumb-color: " + current.getUviColor());
-       imageView.setImage(new Image(Paths.get("src/main/resources/backgrounds/rain.gif").toUri().toString()));
+       System.out.println(background);
+       imageView.setImage(new Image(Paths.get(background).toUri().toString()));
     }
 
     @FXML
