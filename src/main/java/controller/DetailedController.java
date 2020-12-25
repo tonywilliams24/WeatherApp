@@ -12,26 +12,17 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static model.Forecast.capitalize;
-
 public class DetailedController {
-
-    @FXML
-    private GridPane gridPane;
 
     @FXML
     private Label sunrise;
