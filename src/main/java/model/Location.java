@@ -17,28 +17,18 @@ public class Location {
 
     // combined URL string e.g. http://api.openweathermap.org/data/2.5/weather?zip=93744&units=imperial&APPID=98edb87e72911500a7f165a998c7fcf2
 
-    private static final String apiKey = "98edb87e72911500a7f165a998c7fcf2";
-    private static final String openWeatherURL = "http://api.openweathermap.org/data/2.5";
-    private static final String currentWeatherApiPath = "/weather";
-    private static final String cityQuery = "?q=";
-    private static final String zipQuery = "?zip=";
-    private static final String idQuery = "?id=";
-    private static final String latQuery = "?lat=";
-    private static final String lonQuery = "&lon=";
-    private static final String units = "imperial";
-    private static final String oneCallApiPath = "/onecall";
+    public static final String apiKey = "98edb87e72911500a7f165a998c7fcf2";
+    public static final StringBuilder openWeatherURL = new StringBuilder("http://api.openweathermap.org/data/2.5");
+    public static final String currentWeatherApiPath = "/weather";
+    public static final String cityQuery = "?q=";
+    public static final String zipQuery = "?zip=";
+    public static final String idQuery = "?id=";
+    public static final String latQuery = "?lat=";
+    public static final String lonQuery = "&lon=";
+    public static final String units = "imperial";
+    public static final String oneCallApiPath = "/onecall";
 
-    // One Call API Fields
-
-    private double lat;
-    private double lon;
-    private String timezone;
-    private long timezone_offset;
-    private Current current;
-    private Minutely[] minutely;
-    private Hourly[] hourly;
-    private Daily[] daily;
-    private Alerts[] alerts;
+    private OneCallAPI oneCallAPI;
     private String name;
     private String country;
     private String message;
@@ -49,78 +39,15 @@ public class Location {
     public Location() {
     }
 
+    public Location(CurrentWeatherAPI currentWeatherAPI, OneCallAPI oneCallAPI) {
+        this.oneCallAPI = oneCallAPI;
+        this.name = currentWeatherAPI.getName();
+        this.country = currentWeatherAPI.getSys().get("country");
+        this.cod = currentWeatherAPI.getCod();
+        this.message = currentWeatherAPI.getSys().get("message");
+    }
+
     // Getters and Setters
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
-    }
-
-    public String getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(String timezone) {
-        this.timezone = timezone;
-    }
-
-    public long getTimezone_offset() {
-        return timezone_offset;
-    }
-
-    public void setTimezone_offset(long timezone_offset) {
-        this.timezone_offset = timezone_offset;
-    }
-
-    public Current getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Current current) {
-        this.current = current;
-    }
-
-    public Minutely[] getMinutely() {
-        return minutely;
-    }
-
-    public void setMinutely(Minutely[] minutely) {
-        this.minutely = minutely;
-    }
-
-    public Hourly[] getHourly() {
-        return hourly;
-    }
-
-    public void setHourly(Hourly[] hourly) {
-        this.hourly = hourly;
-    }
-
-    public Daily[] getDaily() {
-        return daily;
-    }
-
-    public void setDaily(Daily[] daily) {
-        this.daily = daily;
-    }
-
-    public Alerts[] getAlerts() {
-        return alerts;
-    }
-
-    public void setAlerts(Alerts[] alerts) {
-        this.alerts = alerts;
-    }
 
     public String getName() {
         return name;
@@ -137,7 +64,6 @@ public class Location {
     public void setCountry(String country) {
         this.country = country;
     }
-
 
     // Static functions that will make the appropriate API Call based on input data and returns a location object
     // Two APIs are used. The first "Current Weather API" takes a location as input (city, postal code, etc.) and returns Lat / Lon location.
@@ -212,14 +138,15 @@ public class Location {
     }
 
     // Legacy API to be replaced by a geocoding API. Returns the full currentWeatherAPI object but is only used for Lat / Lon
-    private static CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
+    public static CurrentWeatherAPI currentWeatherAPI(String inputLocationString) throws IOException {
+        System.out.println(inputLocationString);
         URL jsonURL = new URL(inputLocationString);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(jsonURL, CurrentWeatherAPI.class);
     }
 
     // Inputs currentWeatherAPI object and uses the Lat / Lon to get all weather information
-    private static Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
+    public static Location oneCallAPI(CurrentWeatherAPI currentWeatherAPI) throws IOException {
         double inputLat, inputLon;
         ObjectMapper mapper = new ObjectMapper();
         inputLat = currentWeatherAPI.getCoord().get("lat");
@@ -241,44 +168,5 @@ public class Location {
             System.out.println(e);
             return null;
         }
-    }
-
-    public OffsetTime getTime(long epochSecond) {
-        Instant instant = Instant.ofEpochSecond(epochSecond);
-        ZoneId zoneId = ZoneId.of(this.getTimezone());
-        return OffsetTime.ofInstant(instant,zoneId);
-    }
-
-    public String getFormattedTime(long epochSecond, TimeFormat timeFormat) {
-        if(timeFormat.equals(TimeFormat.hour)) return getTime(epochSecond).format(DateTimeFormatter.ofPattern("h a"));
-        else return getTime(epochSecond).format(DateTimeFormatter.ofPattern("h:mm a"));
-    }
-
-    public void alertBox() {
-        if (alerts != null) {
-            for (Alerts alerts : this.getAlerts()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, alerts.getDescription());
-                alert.setTitle(alerts.getEvent());
-                alert.setHeaderText(alerts.getEvent());
-                alert.showAndWait();
-            }
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "lat=" + lat +
-                ", lon=" + lon +
-                ", timezone='" + timezone + '\'' +
-                ", timezone_offset='" + timezone_offset + '\'' +
-                ", current=" + current +
-                ", minutely=" + Arrays.toString(minutely) +
-                ", hourly=" + Arrays.toString(hourly) +
-                ", daily=" + Arrays.toString(daily) +
-                ", alerts=" + Arrays.toString(alerts) +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
     }
 }

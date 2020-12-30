@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,26 +14,25 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.media.MediaView?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="anchor" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetailedController">
+<AnchorPane prefHeight="720.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetailedController">
    <children>
       <StackPane>
          <children>
-            <MediaView fitHeight="600.0" fitWidth="800.0" preserveRatio="false" />
-            <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="15.0">
+            <ImageView fx:id="imageView" fitHeight="720.0" fitWidth="615.0" preserveRatio="false" />
+            <VBox alignment="TOP_CENTER" maxHeight="720.0" maxWidth="615.0" spacing="15.0" StackPane.alignment="CENTER">
                <children>
-                  <Label fx:id="summary" styleClass="summary" />
+                  <Label fx:id="summary" minHeight="65" styleClass="summary" wrapText="true" />
                   <Separator />
-                  <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
+                  <ScrollPane minHeight="125.0" prefWidth="200.0" vbarPolicy="NEVER">
                      <content>
-                        <HBox fx:id="hourlyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
+                        <HBox fx:id="hourlyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="615.0" spacing="10">
                            <children>
-                              <VBox fx:id="hourlyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
+                              <VBox fx:id="hourlyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0">
                                  <children>
-                                    <Label text="Time " />
-                                    <Label text="Temp:" />
-                                    <Label text="Chance Precip:" />
+                                    <Label styleClass="hourlyLabel" text="Time " />
+                                    <Label styleClass="hourlyLabel" text="Temp:" />
+                                    <Label styleClass="hourlyLabel" text="Chance Precip:" />
                                  </children>
                               </VBox>
                            </children>
@@ -40,15 +40,15 @@
                      </content>
                   </ScrollPane>
                   <Separator />
-                  <ScrollPane minHeight="125.0" prefWidth="200.0" styleClass="scrollPane" vbarPolicy="NEVER">
+                  <ScrollPane minHeight="125.0" prefWidth="200.0" vbarPolicy="NEVER">
                      <content>
-                        <HBox fx:id="dailyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="10">
+                        <HBox fx:id="dailyHBox" alignment="CENTER" prefHeight="100.0" prefWidth="615.0" spacing="10">
                            <children>
-                              <VBox fx:id="dailyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0" styleClass="vbox, week">
+                              <VBox fx:id="dailyKeyVBox" alignment="CENTER_LEFT" minWidth="135.0" prefHeight="200.0">
                                  <children>
-                                    <Label text="Day: " />
-                                    <Label text="High Temp:" />
-                                    <Label text="Low Temp: " />
+                                    <Label styleClass="dailyLabel" text="Day: " />
+                                    <Label styleClass="dailyLabel" text="High Temp:" />
+                                    <Label styleClass="dailyLabel" text="Low Temp: " />
                                  </children>
                               </VBox>
                            </children>
@@ -58,13 +58,13 @@
                   <Separator />
                   <VBox alignment="CENTER">
                      <children>
-                        <Label styleClass="week" text="UVI Index" />
+                        <Label styleClass="summary" text="UVI Index" />
                         <Label fx:id="uvi" styleClass="uvi" />
                         <Slider fx:id="uviBar" blockIncrement="1.0" disable="true" majorTickUnit="2.0" max="13.0" maxWidth="500" min="0.0" styleClass="uviBar" />
                      </children>
                   </VBox>
                   <Separator />
-                  <GridPane fx:id="gridPane" alignment="TOP_CENTER" prefHeight="310.0" prefWidth="800.0" styleClass="gridPane">
+                  <GridPane fx:id="gridPane" alignment="TOP_CENTER" prefHeight="310.0" prefWidth="615.0" styleClass="detailText">
                      <children>
                         <Label fx:id="sunriseKey" alignment="CENTER" prefHeight="50.0" prefWidth="200.0" text="Sunrise:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <Label fx:id="sunrise" alignment="CENTER" prefHeight="50.0" prefWidth="200.0" styleClass="value" GridPane.columnIndex="1" GridPane.rowIndex="0" />

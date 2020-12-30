@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -127,7 +126,7 @@ public class DetailedController {
        double dailyMaxTemp = dailyTemps.getMax();
        double dailyMinTemp = dailyTemps.getMin();
        double tempPrecip=0;
-       String background = String.format("src/main/resources/backgrounds/%1$s.gif",current.getWeather()[0].getIcon());
+       String background = String.format("backgrounds/%1$s.gif",current.getWeather()[0].getIcon());
        if(hourly[0].getRain()!=null)
            tempPrecip=(double)Math.round((hourly[0].getRain().get1h()*10))/10;
        summary.setText(String.format("It's currently %1$.0f\u00B0 with %2$s; the high today was forecast to be %3$.0f\u00B0.",current.getTemp(),current.getWeatherDescription(),dailyMaxTemp));
@@ -204,7 +203,7 @@ public class DetailedController {
        uviBar.setValue(current.getUvi());
        uviBar.setStyle("thumb-color: " + current.getUviColor());
        System.out.println(background);
-       imageView.setImage(new Image(Paths.get(background).toUri().toString()));
+       imageView.setImage(new Image(background));
     }
 
     @FXML

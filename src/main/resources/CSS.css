@@ -57,7 +57,7 @@
 }
 
 .summary {
-    -fx-font-size: 20px;
+    -fx-font-size: 24px;
     -fx-effect: dropshadow(one-pass-box, white, 2, 2, 0, 0);
 }
 

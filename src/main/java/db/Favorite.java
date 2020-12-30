@@ -1,6 +1,6 @@
 package db;
 
-public class Favorites {
+public class Favorite {
 
     private String cityName;
     private String stateCode;
@@ -9,6 +9,9 @@ public class Favorites {
     private String zipCode;
     private double lat;
     private double lon;
+
+    public Favorite() {
+    }
 
     public String getCityName() {
         return cityName;
@@ -64,5 +67,18 @@ public class Favorites {
 
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    @Override
+    public String toString() {
+        return "Favorite{" +
+                "cityName='" + cityName + '\'' +
+                ", stateCode='" + stateCode + '\'' +
+                ", countryCode='" + countryCode + '\'' +
+                ", cityId='" + cityId + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                '}';
     }
 }
