@@ -8,8 +8,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static model.Location.weatherLocation;
-
 public class Main extends Application {
 
     ArrayList<Location> locationList = new ArrayList<>();

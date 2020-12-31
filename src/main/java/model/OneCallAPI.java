@@ -1,14 +1,9 @@
 package model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Instant;
-import java.time.OffsetTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 import static model.Location.*;
 
@@ -96,32 +91,10 @@ public class OneCallAPI {
         this.alerts = alerts;
     }
 
-    public OffsetTime getTime(long epochSecond) {
-        Instant instant = Instant.ofEpochSecond(epochSecond);
-        ZoneId zoneId = ZoneId.of(this.getTimezone());
-        return OffsetTime.ofInstant(instant,zoneId);
-    }
-
-    public String getFormattedTime(long epochSecond, Location.TimeFormat timeFormat) {
-        if(timeFormat.equals(Location.TimeFormat.hour)) return getTime(epochSecond).format(DateTimeFormatter.ofPattern("h a"));
-        else return getTime(epochSecond).format(DateTimeFormatter.ofPattern("h:mm a"));
-    }
-
-    public void alertBox() {
-        if (alerts != null) {
-            for (Alerts alerts : this.getAlerts()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, alerts.getDescription());
-                alert.setTitle(alerts.getEvent());
-                alert.setHeaderText(alerts.getEvent());
-                alert.showAndWait();
-            }
-        }
-    }
-
     // Inputs currentWeatherAPI object and uses the Lat / Lon to get all weather information
-    private static OneCallAPI oneCallAPI(double lat, double lon) throws IOException {
+    static public OneCallAPI callOneCallAPI(double lat, double lon) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String oneCallApiUrl = (openWeatherURL).append(oneCallApiPath)
+        String oneCallApiUrl = openWeatherURL().append(oneCallApiPath)
                                                 .append(latQuery)
                                                 .append(lat)
                                                 .append(lonQuery)

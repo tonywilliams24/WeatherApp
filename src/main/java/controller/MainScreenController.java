@@ -17,11 +17,9 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static db.DbConnection.getFavorites;
 import static model.Forecast.capitalize;
-import static model.Location.weatherLocation;
 
 public class MainScreenController {
 
@@ -131,36 +129,36 @@ public class MainScreenController {
         paramString = paramSB.toString();
         if (inputLocation.length == 1) {
             if (paramString.equals("s")) { // assumes city name was input
-                location = weatherLocation(inputString);
+                location = new Location(inputString);
                 locationList.add(location);
             } else if (paramString.equals("i")) { // assumes zip code or city ID
-                location = weatherLocation(Integer.parseInt(inputLocation[0]));
+                location = new Location(Integer.parseInt(inputLocation[0]));
                 locationList.add(location);
             } else System.out.println("location Not Found");
         } else if (inputLocation.length == 2) {
             if (paramString.equals("ss")) { // assumes city, country or city, us-state
-                location = weatherLocation(inputLocation[0], inputLocation[1]);
+                location = new Location(inputLocation[0], inputLocation[1]);
                 locationList.add(location);
             } else if (paramString.equals("is")) { // assumes zip, country
-                location = weatherLocation(Integer.parseInt(inputLocation[0]), inputLocation[1]);
+                location = new Location(Integer.parseInt(inputLocation[0]), inputLocation[1]);
                 locationList.add(location);
             } else if (paramString.equals("dd")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
+                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             } else if (paramString.equals("ii")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
+                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             } else if (paramString.equals("id")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
+                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             } else if (paramString.equals("di")) { // assumes Lat, Lon
-                location = weatherLocation(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
+                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
                 locationList.add(location);
             } else System.out.println("location Not Found");
         } else { // assumes all remaining cases are a string
             {
                 try {
-                    location = weatherLocation(inputString);
+                    location = new Location(inputString);
                     locationList.add(location);
                 } catch (Exception e) {
                     System.out.println("Input Not Recognized");
@@ -197,38 +195,38 @@ public class MainScreenController {
     }
 
     // Starts Pagination :D
-    public void startPagination(ArrayList<Location> locationList) {
+    public void startPagination(ArrayList<Location> locationList) throws IOException {
         this.locationList = locationList;
 
         if (!started) { // For testing purposes only
 
             System.out.println(getFavorites());
-//            Location bremertonWA = weatherLocation("Bremerton", "WA");
-//            Location bremertonZip = weatherLocation(98311, "US");
-//            Location bremertonID = weatherLocation(5788054);
-//            Location bremertonLatLon = weatherLocation(47.567322, -122.632637);
-//            Location paris = weatherLocation("paris");
-//            Location parisZip = weatherLocation(75000, "FR"); // Paris using Postal Code
-//            Location piñonAcres = weatherLocation("Piñon Acres");
-//            Location shanghai = weatherLocation("shanghai");
-//            Location shanghaiLatLon = weatherLocation(31.228611, 121.474722);
-//            Location sãoPauloLatLon = weatherLocation(-23.55, -46.633333);
-//            Location sydneyLatLon = weatherLocation(-33.865, 151.209444);
+//            Location bremertonWA = new Location("Bremerton", "WA");
+//            Location bremertonZip = new Location(98311, "US");
+//            Location bremertonID = new Location(5788054);
+//            Location bremertonLatLon = new Location(47.567322, -122.632637);
+//            Location paris = new Location("paris");
+//            Location parisZip = new Location(75000, "FR"); // Paris using Postal Code
+//            Location piñonAcres = new Location("Piñon Acres");
+//            Location shanghai = new Location("shanghai");
+//            Location shanghaiLatLon = new Location(31.228611, 121.474722);
+//            Location sãoPauloLatLon = new Location(-23.55, -46.633333);
+//            Location sydneyLatLon = new Location(-33.865, 151.209444);
 
-//            Location miami = weatherLocation("Miami", "US-FL");
-//            Location minneapolis = weatherLocation("Minneapolis", "MN", "US");
-//            Location sedroWoolley = weatherLocation("Sedro-Woolley");
-//            Location capeElizabethZip = weatherLocation("04107, US");
-//            Location holtsvilleZip = weatherLocation("00501, US");
-//            Location tokyo = weatherLocation("tokyo");
-//            Location delhi = weatherLocation("delhi");
-//            Location delhiLatLon = weatherLocation(28.61, 77.23);
-//            Location sãoPaulo = weatherLocation("São Paulo");
-//            Location naples = weatherLocation("Naples", "FL");
-            Location cairo = weatherLocation("Cairo", "EG");
-            Location sydney = weatherLocation("sydney");
-            Location nome = weatherLocation("Nome", "US-AK");
-            Location bremerton = weatherLocation("Bremerton", "US-WA");
+//            Location miami = new Location("Miami", "US-FL");
+//            Location minneapolis = new Location("Minneapolis", "MN", "US");
+//            Location sedroWoolley = new Location("Sedro-Woolley");
+//            Location capeElizabethZip = new Location("04107, US");
+//            Location holtsvilleZip = new Location("00501, US");
+//            Location tokyo = new Location("tokyo");
+//            Location delhi = new Location("delhi");
+//            Location delhiLatLon = new Location(28.61, 77.23);
+//            Location sãoPaulo = new Location("São Paulo");
+//            Location naples = new Location("Naples", "FL");
+            Location cairo = new Location("Cairo", "EG");
+            Location sydney = new Location("sydney");
+            Location nome = new Location("Nome", "US-AK");
+            Location bremerton = new Location("Bremerton", "US-WA");
 
 //            locationList.add(bremertonWA);
 //            locationList.add(bremertonZip);
