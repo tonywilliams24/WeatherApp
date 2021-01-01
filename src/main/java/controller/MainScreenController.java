@@ -3,6 +3,7 @@ package controller;
 // Controller for the starting screen of the app
 // XML located at src/main/resources/main.fxml
 
+import db.Favorite;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static db.DbConnection.getFavorites;
@@ -199,8 +201,28 @@ public class MainScreenController {
         this.locationList = locationList;
 
         if (!started) { // For testing purposes only
-
-            System.out.println(getFavorites());
+            ArrayList<Favorite> favorites = new ArrayList<>(getFavorites());
+            if(favorites != null) {
+                for(Favorite favorite: favorites) {
+                    String name = favorite.getName();
+                    String country = favorite.getCountry();
+                    Double lat = favorite.getLat();
+                    Double lon = favorite.getLon();
+                    if(lat!=null && lon!=null) {
+                        if (name != null && country != null) {
+                            locationList.add(new Location(name, country, lat, lon));
+                        }
+                        else {
+                            locationList.add(new Location(lat, lon));
+                        }
+                    }
+                    else {
+                        System.out.println("Location not found:" + favorite);
+                    }
+                }
+            }
+            else {
+                System.out.println(getFavorites());
 //            Location bremertonWA = new Location("Bremerton", "WA");
 //            Location bremertonZip = new Location(98311, "US");
 //            Location bremertonID = new Location(5788054);
@@ -223,11 +245,10 @@ public class MainScreenController {
 //            Location delhiLatLon = new Location(28.61, 77.23);
 //            Location sãoPaulo = new Location("São Paulo");
 //            Location naples = new Location("Naples", "FL");
-            Location cairo = new Location("Cairo", "EG");
-            Location sydney = new Location("sydney");
-            Location nome = new Location("Nome", "US-AK");
-            Location bremerton = new Location("Bremerton", "US-WA");
-
+                Location cairo = new Location("Cairo", "EG");
+                Location sydney = new Location("sydney");
+                Location nome = new Location("Nome", "US-AK");
+                Location bremerton = new Location("Bremerton", "US-WA");
 //            locationList.add(bremertonWA);
 //            locationList.add(bremertonZip);
 //            locationList.add(bremertonID);
@@ -250,13 +271,12 @@ public class MainScreenController {
 //            locationList.add(sãoPaulo);
 //            locationList.add(miami);
 //            locationList.add(naples);
-            locationList.add(cairo);
-            locationList.add(nome);
-            locationList.add(sydney);
-            locationList.add(bremerton);
-
+                locationList.add(cairo);
+                locationList.add(nome);
+                locationList.add(sydney);
+                locationList.add(bremerton);
+            }
         }
-
             pagination.setPageCount(locationList.size());
             pagination.setMaxPageIndicatorCount(10);
             pagination.setPageFactory((pageIndex) -> {

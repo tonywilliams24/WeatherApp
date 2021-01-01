@@ -71,25 +71,25 @@ public class Location {
 
     // Returns most likely city/village/neighborhood (as determined by Open Weather API)
     public Location(String city) throws IOException {
-        this(CurrentWeatherAPI.callCurrentWeatherAPI(city));
+        this(callCurrentWeatherAPI(city));
     }
 
     // Can put in a US state instead of country
     public Location(String city, String country) throws IOException {
-        this(CurrentWeatherAPI.callCurrentWeatherAPI(city, country));
+        this(callCurrentWeatherAPI(city, country));
     }
 
     public Location(String city, String state, String country) throws IOException {
-        this(CurrentWeatherAPI.callCurrentWeatherAPI(city, state, country));
+        this(callCurrentWeatherAPI(city, state, country));
     }
 
     // Assumes US Zip Code first, and if not found tries City ID
     public Location(int cityIdOrZip) throws IOException {
-        this(CurrentWeatherAPI.callCurrentWeatherAPI(cityIdOrZip));
+        this(callCurrentWeatherAPI(cityIdOrZip));
     }
 
     public Location(double lat, double lon) throws IOException {
-        this(CurrentWeatherAPI.callCurrentWeatherAPI(lat, lon));
+        this(callCurrentWeatherAPI(lat, lon));
     }
 
     public Location(int postal, String country) throws IOException {

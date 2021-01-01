@@ -2,55 +2,28 @@ package db;
 
 public class Favorite {
 
-    private String cityName;
-    private String stateCode;
-    private String countryCode;
-    private String cityId;
-    private String zipCode;
+    private String name;
+    private String country;
     private double lat;
     private double lon;
 
     public Favorite() {
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getName() {
+        return name;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getStateCode() {
-        return stateCode;
+    public String getCountry() {
+        return country;
     }
 
-    public void setStateCode(String stateCode) {
-        this.stateCode = stateCode;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public String getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(String cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public double getLat() {
@@ -72,11 +45,8 @@ public class Favorite {
     @Override
     public String toString() {
         return "Favorite{" +
-                "cityName='" + cityName + '\'' +
-                ", stateCode='" + stateCode + '\'' +
-                ", countryCode='" + countryCode + '\'' +
-                ", cityId='" + cityId + '\'' +
-                ", zipCode='" + zipCode + '\'' +
+                "cityName='" + name + '\'' +
+                ", countryCode='" + country + '\'' +
                 ", lat=" + lat +
                 ", lon=" + lon +
                 '}';
