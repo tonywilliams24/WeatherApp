@@ -2,13 +2,17 @@ package model;
 
  // Class used to call weather API and create objects with weather information
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.istack.internal.NotNull;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import static model.CurrentWeatherAPI.callCurrentWeatherAPI;
 import static model.OneCallAPI.callOneCallAPI;
@@ -47,7 +51,7 @@ public class Location {
     public Location() {
     }
 
-    public Location(String name, String country, double lat, double lon) throws IOException {
+    public Location(String name, String country, double lat, double lon) {
         this.name = name;
         this.country = country;
         this.lat = lat;
@@ -62,37 +66,38 @@ public class Location {
         this.alerts = oneCallAPI.getAlerts();
     }
 
-    public Location(CurrentWeatherAPI currentWeatherAPI) throws IOException {
+    public Location(@NotNull CurrentWeatherAPI currentWeatherAPI) {
         this(currentWeatherAPI.getName(),
                 currentWeatherAPI.getSys().get("country"),
                 currentWeatherAPI.getCoord().get("lat"),
                 currentWeatherAPI.getCoord().get("lon"));
+        System.out.println(currentWeatherAPI.getWeather().getClass());
     }
 
     // Returns most likely city/village/neighborhood (as determined by Open Weather API)
-    public Location(String city) throws IOException {
+    public Location(String city) {
         this(callCurrentWeatherAPI(city));
     }
 
     // Can put in a US state instead of country
-    public Location(String city, String country) throws IOException {
+    public Location(String city, String country) {
         this(callCurrentWeatherAPI(city, country));
     }
 
-    public Location(String city, String state, String country) throws IOException {
+    public Location(String city, String state, String country) {
         this(callCurrentWeatherAPI(city, state, country));
     }
 
     // Assumes US Zip Code first, and if not found tries City ID
-    public Location(int cityIdOrZip) throws IOException {
+    public Location(int cityIdOrZip) {
         this(callCurrentWeatherAPI(cityIdOrZip));
     }
 
-    public Location(double lat, double lon) throws IOException {
+    public Location(double lat, double lon) {
         this(callCurrentWeatherAPI(lat, lon));
     }
 
-    public Location(int postal, String country) throws IOException {
+    public Location(int postal, String country) {
         this(callCurrentWeatherAPI(postal, country));
     }
 
@@ -191,6 +196,31 @@ public class Location {
     }
 
     //
+
+    public static Object callAPI(String urlString, Class pojo) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(new URL(urlString), pojo);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object callAPI(String[] urlString, Class pojo) {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<Exception> eArray = new ArrayList<>();
+        for (String s : urlString) {
+            try {
+                return mapper.readValue(new URL(s), pojo);
+            } catch (Exception e) {
+                eArray.add(e);
+            }
+        }
+        for(Exception e: eArray) e.printStackTrace();
+        return null;
+    }
 
     public OffsetTime getTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);

@@ -92,8 +92,8 @@ public class OneCallAPI {
     }
 
     // Inputs currentWeatherAPI object and uses the Lat / Lon to get all weather information
-    static public OneCallAPI callOneCallAPI(double lat, double lon) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    static public OneCallAPI callOneCallAPI(double lat, double lon) {
+
         String oneCallApiUrl = openWeatherURL().append(oneCallApiPath)
                                                 .append(latQuery)
                                                 .append(lat)
@@ -104,6 +104,6 @@ public class OneCallAPI {
                                                 .append("&appid=")
                                                 .append(apiKey).toString();
         System.out.println(oneCallApiUrl);
-        return mapper.readValue(new URL(oneCallApiUrl), OneCallAPI.class);
+        return (OneCallAPI) callAPI(oneCallApiUrl, OneCallAPI.class);
     }
 }

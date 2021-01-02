@@ -7,8 +7,7 @@ import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static model.Location.*;
 
@@ -28,6 +27,8 @@ public class CurrentWeatherAPI {
     private long id;
     private String name;
     private int cod;
+
+    public enum INPUT {blank}
 
     @Override
     public String toString() {
@@ -58,130 +59,140 @@ public class CurrentWeatherAPI {
     public CurrentWeatherAPI() {
     }
 
+    public CurrentWeatherAPI(INPUT blank) {
+        Map emptyMap = Collections.emptyMap();
+        List emptyList = Collections.emptyList();
+        this.coord = emptyMap;
+        this.weather = emptyList;
+        this.base = "";
+        this.main = emptyMap;
+        this.visibility = "";
+        this.wind = emptyMap;
+        this.clouds = emptyMap;
+        this.rain = emptyMap;
+        this.snow = emptyMap;
+        this.dt = -1;
+        this.sys = emptyMap;
+        this.timezone = -1;
+        this.id = -1;
+        this.name = "";
+        this.cod=-1;
+
+    }
+
     // Returns most likely city/village/neighborhood (as determined by Open Weather API)
-    public static CurrentWeatherAPI callCurrentWeatherAPI(String city) throws IOException {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(String city) {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
-                .append(cityQuery)
-                .append(city)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s","\\%20"); // Replaces all spaces in URL with %20
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(urlString), CurrentWeatherAPI.class);
+                                            .append(cityQuery)
+                                            .append(city)
+                                            .append("&units=")
+                                            .append(units)
+                                            .append("&APPID=")
+                                            .append(apiKey)
+                                            .toString()
+                                            .replaceAll("\\s","\\%20"); // Replaces all spaces in URL with %20
+        return (CurrentWeatherAPI) callAPI(urlString, CurrentWeatherAPI.class);
     }
 
     // Can put in a US state instead of country
-    public static CurrentWeatherAPI callCurrentWeatherAPI(String city, String country) throws IOException {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(String city, String country) {
         String[] strings = new String[2];
         // For international reasons, function assumes City, Country first and then City, US-State if not found
         strings[0] = openWeatherURL().append(currentWeatherApiPath)
-                .append(cityQuery)
-                .append(city)
-                .append(",")
-                .append(country)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s","\\%20");
+                                        .append(cityQuery)
+                                        .append(city)
+                                        .append(",")
+                                        .append(country)
+                                        .append("&units=")
+                                        .append(units)
+                                        .append("&APPID=")
+                                        .append(apiKey)
+                                        .toString()
+                                        .replaceAll("\\s","\\%20");
         strings[1] = openWeatherURL().append(currentWeatherApiPath)
-                .append(cityQuery)
-                .append(city)
-                .append(",")
-                .append(country) // State
-                .append(",US")
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s","\\%20");
-
-        ObjectMapper mapper = new ObjectMapper();
-        CurrentWeatherAPI currentWeatherAPI = mapper.readValue(new URL(strings[0]), CurrentWeatherAPI.class);
-        if(currentWeatherAPI!=null) return currentWeatherAPI;
-        return mapper.readValue(new URL(strings[1]), CurrentWeatherAPI.class);
+                                        .append(cityQuery)
+                                        .append(city)
+                                        .append(",")
+                                        .append(country) // State
+                                        .append(",US")
+                                        .append("&units=")
+                                        .append(units)
+                                        .append("&APPID=")
+                                        .append(apiKey)
+                                        .toString()
+                                        .replaceAll("\\s","\\%20");
+        return (CurrentWeatherAPI) callAPI(strings, CurrentWeatherAPI.class);
     }
 
-    public static CurrentWeatherAPI callCurrentWeatherAPI(String city, String state, String country) throws IOException {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(String city, String state, String country) {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
-                .append(cityQuery)
-                .append(city)
-                .append(",")
-                .append(state)
-                .append(",")
-                .append(country)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s","\\%20");
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(urlString), CurrentWeatherAPI.class);
+                                            .append(cityQuery)
+                                            .append(city)
+                                            .append(",")
+                                            .append(state)
+                                            .append(",")
+                                            .append(country)
+                                            .append("&units=")
+                                            .append(units)
+                                            .append("&APPID=")
+                                            .append(apiKey)
+                                            .toString()
+                                            .replaceAll("\\s","\\%20");
+        return (CurrentWeatherAPI) callAPI(urlString, CurrentWeatherAPI.class);
     }
 
     // Assumes US Zip Code first, and if not found tries City ID
-    public static CurrentWeatherAPI callCurrentWeatherAPI(int cityIdOrZip) throws IOException {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(int cityIdOrZip) {
         String[] strings = new String[2];
         strings[0] = openWeatherURL().append(currentWeatherApiPath)
-                .append(zipQuery)
-                .append(cityIdOrZip)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s", "\\%20");
+                                        .append(zipQuery)
+                                        .append(cityIdOrZip)
+                                        .append("&units=")
+                                        .append(units)
+                                        .append("&APPID=")
+                                        .append(apiKey)
+                                        .toString()
+                                        .replaceAll("\\s", "\\%20");
         strings[1] = openWeatherURL().append(currentWeatherApiPath)
-                .append(idQuery)
-                .append(cityIdOrZip)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s", "\\%20");
-        ObjectMapper mapper = new ObjectMapper();
-        CurrentWeatherAPI currentWeatherAPI = mapper.readValue(new URL(strings[0]), CurrentWeatherAPI.class);
-        if(currentWeatherAPI!=null) return currentWeatherAPI;
-        return mapper.readValue(new URL(strings[1]), CurrentWeatherAPI.class);
+                                        .append(idQuery)
+                                        .append(cityIdOrZip)
+                                        .append("&units=")
+                                        .append(units)
+                                        .append("&APPID=")
+                                        .append(apiKey)
+                                        .toString()
+                                        .replaceAll("\\s", "\\%20");
+        return (CurrentWeatherAPI) callAPI(strings, CurrentWeatherAPI.class);
     }
 
-    public static CurrentWeatherAPI callCurrentWeatherAPI(double lat, double lon) throws IOException {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(double lat, double lon) {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
-                .append(latQuery)
-                .append(lat)
-                .append(lonQuery)
-                .append(lon)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s","\\%20");
+                                            .append(latQuery)
+                                            .append(lat)
+                                            .append(lonQuery)
+                                            .append(lon)
+                                            .append("&units=")
+                                            .append(units)
+                                            .append("&APPID=")
+                                            .append(apiKey)
+                                            .toString()
+                                            .replaceAll("\\s","\\%20");
 
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(urlString), CurrentWeatherAPI.class);
+        return (CurrentWeatherAPI) callAPI(urlString, CurrentWeatherAPI.class);
     }
-    public static CurrentWeatherAPI callCurrentWeatherAPI(int postal, String country) throws IOException {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(int postal, String country) {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
-                .append(zipQuery)
-                .append(postal)
-                .append(",")
-                .append(country)
-                .append("&units=")
-                .append(units)
-                .append("&APPID=")
-                .append(apiKey)
-                .toString()
-                .replaceAll("\\s","\\%20");
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new URL(urlString), CurrentWeatherAPI.class);
+                                            .append(zipQuery)
+                                            .append(postal)
+                                            .append(",")
+                                            .append(country)
+                                            .append("&units=")
+                                            .append(units)
+                                            .append("&APPID=")
+                                            .append(apiKey)
+                                            .toString()
+                                            .replaceAll("\\s","\\%20");
+        return (CurrentWeatherAPI) callAPI(urlString, CurrentWeatherAPI.class);
     }
 
 

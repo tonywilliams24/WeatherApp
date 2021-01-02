@@ -31,7 +31,6 @@ public class DbConnection {
     }
 
     public static Connection createNewDbConnection() {
-
         try{
             connection = DriverManager.getConnection(dbhost, username, password);
         }
@@ -40,6 +39,7 @@ public class DbConnection {
         }
         return connection;
     }
+
     public static ArrayList<Favorite> getFavorites() {
         ArrayList<Favorite> favoriteList = new ArrayList<>();
         try(Connection connection = createNewDbConnection();
@@ -60,6 +60,7 @@ public class DbConnection {
             return null;
         }
     }
+
     public static int insertIntoFavorites(String name, String country, Double lat, Double lon){
         try(Connection connection = createNewDbConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_favorites)){

@@ -93,7 +93,7 @@ public class MainScreenController {
     ArrayList<Location> locationList = new ArrayList<>();
 
     public MainScreenController() {
-        // For testing only. Initialize method should be entirely removed if not testing
+        // For testing only. Initialize method should be entirely removed ifnot testing
 
     }
 
@@ -105,74 +105,56 @@ public class MainScreenController {
 
 
     // Handler for the submit button
-    // Parses user input to determine if any ints or doubles are included, and passes the parameters to the appropriate function (overloaded)
+    // Parses user input to determine ifany ints or doubles are included, and passes the parameters to the appropriate function (overloaded)
     // Creates a Location object (which holds all weather information) and adds it to a list of Location Objects
     // Starts pagination using list of Location objects
 
     @FXML
     void submitHandler(ActionEvent event) throws IOException {
         String inputString = inputLocationField.getText().trim(); // User input
-        String[] inputLocation = inputString.split("(\\s*(,\\s)\\s*)|,"); // input is split at ", " or "," with any number of whitespace before or after
-        StringBuilder paramSB = new StringBuilder(); // StringBuilder to append "i" for potential int, "d" for potential double, or "s" if only string
+        String[] inputWords = inputString.split("(\\s*(,\\s)\\s*)|,"); // input is split at ", " or "," with any number of whitespace before or after
+        StringBuilder dataTypesSB = new StringBuilder(); // StringBuilder to append "i" for potential int, "d" for potential double, or "s" ifonly string
         Location location = null;
-        String paramString;
-        for (String l : inputLocation) { // Checks each string in array to see if it is a potential double or integer
+        String dataTypesString;
+        for (String l : inputWords) { // Checks each string in array to see ifit is a potential double or integer
             try {
                 double num = Double.parseDouble(l);
-                if (num == Math.floor(num)) {
-                    paramSB.append("i");
-                } else {
-                    paramSB.append("d");
-                }
+                if(num == Math.floor(num)) dataTypesSB.append("i");
+                else dataTypesSB.append("f");
             } catch (Exception e) {
-                paramSB.append("s");
+                dataTypesSB.append("s");
             }
         }
-        paramString = paramSB.toString();
-        if (inputLocation.length == 1) {
-            if (paramString.equals("s")) { // assumes city name was input
-                location = new Location(inputString);
-                locationList.add(location);
-            } else if (paramString.equals("i")) { // assumes zip code or city ID
-                location = new Location(Integer.parseInt(inputLocation[0]));
-                locationList.add(location);
-            } else System.out.println("location Not Found");
-        } else if (inputLocation.length == 2) {
-            if (paramString.equals("ss")) { // assumes city, country or city, us-state
-                location = new Location(inputLocation[0], inputLocation[1]);
-                locationList.add(location);
-            } else if (paramString.equals("is")) { // assumes zip, country
-                location = new Location(Integer.parseInt(inputLocation[0]), inputLocation[1]);
-                locationList.add(location);
-            } else if (paramString.equals("dd")) { // assumes Lat, Lon
-                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
-                locationList.add(location);
-            } else if (paramString.equals("ii")) { // assumes Lat, Lon
-                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
-                locationList.add(location);
-            } else if (paramString.equals("id")) { // assumes Lat, Lon
-                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
-                locationList.add(location);
-            } else if (paramString.equals("di")) { // assumes Lat, Lon
-                location = new Location(Double.parseDouble(inputLocation[0]), Double.parseDouble(inputLocation[1]));
-                locationList.add(location);
-            } else System.out.println("location Not Found");
+        dataTypesString = dataTypesSB.toString();
+        if(inputWords.length == 1) {
+            if(dataTypesString.equals("s")) location = new Location(inputString); // assumes city name was input
+            else if(dataTypesString.equals("i")) location = new Location(Integer.parseInt(inputWords[0])); // assumes zip code or city ID
+            else System.out.println("location Not Found");
+        } else if(inputWords.length == 2) {
+            if(dataTypesString.equals("ss")) location = new Location(inputWords[0], inputWords[1]); // assumes city, country or city, us-state
+            else if(dataTypesString.equals("is"))
+                location = new Location(Integer.parseInt(inputWords[0]), inputWords[1]); // assumes zip, country
+            else if(dataTypesString.equals("ff"))
+                location = new Location(Double.parseDouble(inputWords[0]), Double.parseDouble(inputWords[1])); // assumes Lat, Lon
+            else if(dataTypesString.equals("ii"))
+                location = new Location(Double.parseDouble(inputWords[0]), Double.parseDouble(inputWords[1])); // assumes Lat, Lon
+            else if(dataTypesString.equals("if"))
+                location = new Location(Double.parseDouble(inputWords[0]), Double.parseDouble(inputWords[1])); // assumes Lat, Lon
+            else if(dataTypesString.equals("fi"))
+                location = new Location(Double.parseDouble(inputWords[0]), Double.parseDouble(inputWords[1])); // assumes Lat, Lon
+            else System.out.println("location Not Found");
         } else { // assumes all remaining cases are a string
-            {
                 try {
                     location = new Location(inputString);
-                    locationList.add(location);
                 } catch (Exception e) {
                     System.out.println("Input Not Recognized");
                 }
-            }
         }
-        if (location != null) {
-            System.out.println(location);
+        if(location != null) {
+            locationList.add(location);
             startPagination(locationList);
-        } else {
-            locationList.remove(locationList.size() - 1);
         }
+//        locationList.add(new Location((CurrentWeatherAPI) null));
     }
 
     public VBox createPage(int pageIndex) {
@@ -200,7 +182,7 @@ public class MainScreenController {
     public void startPagination(ArrayList<Location> locationList) throws IOException {
         this.locationList = locationList;
 
-        if (!started) { // For testing purposes only
+        if(!started) { // For testing purposes only
             ArrayList<Favorite> favorites = new ArrayList<>(getFavorites());
             if(favorites != null) {
                 for(Favorite favorite: favorites) {
@@ -209,7 +191,7 @@ public class MainScreenController {
                     Double lat = favorite.getLat();
                     Double lon = favorite.getLon();
                     if(lat!=null && lon!=null) {
-                        if (name != null && country != null) {
+                        if(name != null && country != null) {
                             locationList.add(new Location(name, country, lat, lon));
                         }
                         else {
