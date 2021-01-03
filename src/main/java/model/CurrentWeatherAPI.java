@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -57,6 +58,7 @@ public class CurrentWeatherAPI {
     private String iconUrlString = "icons/##ICON##@4x.png";
 
     public CurrentWeatherAPI() {
+
     }
 
     public CurrentWeatherAPI(INPUT blank) {
@@ -77,11 +79,13 @@ public class CurrentWeatherAPI {
         this.id = -1;
         this.name = "";
         this.cod=-1;
+        coord.put("lat",91.0);
+        coord.put("lon",181.0);
 
     }
 
     // Returns most likely city/village/neighborhood (as determined by Open Weather API)
-    public static CurrentWeatherAPI callCurrentWeatherAPI(String city) {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(String city)  {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
                                             .append(cityQuery)
                                             .append(city)
@@ -124,7 +128,7 @@ public class CurrentWeatherAPI {
         return (CurrentWeatherAPI) callAPI(strings, CurrentWeatherAPI.class);
     }
 
-    public static CurrentWeatherAPI callCurrentWeatherAPI(String city, String state, String country) {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(String city, String state, String country)  {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
                                             .append(cityQuery)
                                             .append(city)
@@ -165,7 +169,7 @@ public class CurrentWeatherAPI {
         return (CurrentWeatherAPI) callAPI(strings, CurrentWeatherAPI.class);
     }
 
-    public static CurrentWeatherAPI callCurrentWeatherAPI(double lat, double lon) {
+    public static CurrentWeatherAPI callCurrentWeatherAPI(double lat, double lon)  {
         String urlString = openWeatherURL().append(currentWeatherApiPath)
                                             .append(latQuery)
                                             .append(lat)

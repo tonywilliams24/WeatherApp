@@ -7,6 +7,8 @@ import com.sun.istack.internal.NotNull;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetTime;
@@ -197,18 +199,26 @@ public class Location {
 
     //
 
-    public static Object callAPI(String urlString, Class pojo) {
+    public static Object callAPI(String urlString, Class<?> pojo) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(new URL(urlString), pojo);
         }
         catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            System.out.println(e);
+            try {
+                Constructor constructor = pojo.getConstructor();
+                System.out.println(constructor);
+                return constructor.newInstance();
+            }
+            catch(Exception e1) {
+                System.out.println(e1);
+                return null;
+            }
         }
     }
 
-    public static Object callAPI(String[] urlString, Class pojo) {
+    public static Object callAPI(String[] urlString, Class<?> pojo) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Exception> eArray = new ArrayList<>();
         for (String s : urlString) {
