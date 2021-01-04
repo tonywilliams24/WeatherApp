@@ -83,12 +83,16 @@
 }
 
 .uviBar .track {
-    -fx-background-color: linear-gradient(to right, green 0%, yellow 25%, orange 50%, red 75%, violet 100%);
+    -fx-background-color: linear-gradient(to right, green, yellow, orange, red, violet);
+    -fx-effect: dropshadow(one-pass-box, black, 4, 4, 0, 0);
+    -fx-background-radius: 10;
+
 }
 
 .uviBar .thumb {
     -fx-background-color: thumb-color;
-    -fx-border-color: white;
+    -fx-effect: dropshadow(one-pass-box, thumb-color, 2, 2, 0, 0);
+    -fx-border-color: black;
     -fx-border-radius: 10;
     -fx-border-width: 2;
 }

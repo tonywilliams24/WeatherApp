@@ -2,7 +2,9 @@ package db;
 
 import model.Location;
 
-public class Favorite implements Comparable<Favorite> {
+import java.util.Objects;
+
+public class Favorite {
 
     private String name;
     private String country;
@@ -69,9 +71,15 @@ public class Favorite implements Comparable<Favorite> {
     }
 
     @Override
-    public int compareTo(Favorite o) {
-        double latDiff = (this.lat - o.lat);
-        if(latDiff != 0) return (int)latDiff;
-        else return (int) (this.lon - o.lon);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Favorite favorite = (Favorite) o;
+        return Double.compare(favorite.lat, lat) == 0 && Double.compare(favorite.lon, lon) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lat, lon);
     }
 }

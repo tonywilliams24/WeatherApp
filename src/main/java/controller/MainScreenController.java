@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static db.DbConnection.getFavorites;
-import static db.DbConnection.insertIntoFavorites;
+import static db.DbConnection.*;
 import static model.Forecast.capitalize;
 
 public class MainScreenController {
@@ -67,7 +66,13 @@ public class MainScreenController {
     private Label descriptionLabel;
 
     @FXML
-    private Button submit;
+    private Button submitButton;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private Pagination pagination;
@@ -113,7 +118,7 @@ public class MainScreenController {
     // Starts pagination using list of Location objects
 
     @FXML
-    void submitHandler(ActionEvent event) throws IOException {
+    void submitHandler(ActionEvent event) {
         String inputString = inputLocationField.getText().trim(); // User input
         String[] inputWords = inputString.split("(\\s*(,\\s)\\s*)|,"); // input is split at ", " or "," with any number of whitespace before or after
         StringBuilder dataTypesSB = new StringBuilder(); // StringBuilder to append "i" for potential int, "d" for potential double, or "s" ifonly string
@@ -153,7 +158,7 @@ public class MainScreenController {
                     System.out.println("Input Not Recognized");
                 }
         }
-        if(location.getLat()!=91.0) {
+        if(location!= null && location.getLat()!=91.0) {
             locationList.add(location);
             inputLocationField.setStyle("-fx-border-color: lime");
             startPagination(locationList);
@@ -187,11 +192,28 @@ public class MainScreenController {
     public void saveHandler(ActionEvent actionEvent) {
         Favorite favorite = new Favorite(locationList.get(pagination.getCurrentPageIndex()));
         HashSet<Favorite> favorites = getFavorites();
-        if(!favorites.contains(favorite)) insertIntoFavorites(favorite);
+        int row=-2;
+        System.out.println(favorite);
+        System.out.println(favorites.contains(favorite));
+        if(favorites.isEmpty() || !favorites.contains(favorite)) row = insertIntoFavorites(favorite);
+        if(row<0) System.out.println("Error, favorite not inserted\n" + row);
+    }
+
+    @FXML
+    public void deleteHandler(ActionEvent actionEvent) {
+        Location location = locationList.get(pagination.getCurrentPageIndex());
+        Favorite favorite = new Favorite(location);
+        HashSet<Favorite> favorites = getFavorites();
+        int row = -2;
+        if (favorites.contains(favorite)) row = deleteFromFavorites(favorite);
+        if (row >= 0) {
+            locationList.remove(location);
+            startPagination(locationList);
+        } else System.out.println("Error, favorite not deleted\n" + row);
     }
 
     // Starts Pagination :D
-    public void startPagination(ArrayList<Location> locationList) throws IOException {
+    public void startPagination(ArrayList<Location> locationList) {
         this.locationList = locationList;
 
         if(!started) { // For testing purposes only
@@ -202,11 +224,12 @@ public class MainScreenController {
                     String country = favorite.getCountry();
                     double lat = favorite.getLat();
                     double lon = favorite.getLon();
-                    if(name != null && country != null) {
-                        locationList.add(new Location(name, country, lat, lon));
-                    }
-                    else {
-                        locationList.add(new Location(lat, lon));
+                    if (lat <= 90.0 && lat >= -90.0  && lon <= 180.0 && lon >= -180.0) {
+                        if (!name.equals("") && !country.equals("")) {
+                            locationList.add(new Location(name, country, lat, lon));
+                        } else {
+                            locationList.add(new Location(lat, lon));
+                        }
                     }
                 }
             }
@@ -281,6 +304,8 @@ public class MainScreenController {
                 highLowTemp.setText(String.format("H: %1$.0f\u00B0  L: %2$.0f\u00B0", dailyMaxTemp, dailyMinTemp));
                 imageView.setVisible(true);
                 imageView.setImage(location.getCurrent().getWeather()[0].getIconImage());
+                Favorite favorite = new Favorite(location);
+                HashSet<Favorite> favorites = getFavorites();
                 return new StackPane(imageView, vbox);
             });
             pagination.setCurrentPageIndex(locationList.size() - 1);

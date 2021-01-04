@@ -19,7 +19,7 @@
                     <children>
                         <Label text="Please enter location:" />
                         <TextField fx:id="inputLocationField" />
-                        <Button fx:id="submit" defaultButton="true" mnemonicParsing="false" onAction="#submitHandler" text="Submit" />
+                        <Button fx:id="submitButton" defaultButton="true" mnemonicParsing="false" onAction="#submitHandler" text="Submit" />
                     </children>
                 </HBox>
                 <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="400.0" text="Valid inputs:&#10;City Name (Can optionally include US State or a Country)&#10;City ID &#10;Geographic Coordinates (Latitude, Longitude)&#10;Postal Code (integer only), Country Code (e.g. 75000, FR)" />
@@ -36,6 +36,7 @@
                                 <Label fx:id="highLowTemp" styleClass="tempSubTitle" />
                                 <Button fx:id="detailedButton" text="Detailed" onAction="#detailedHandler"/>
                                 <Button fx:id="saveButton" text="Save" onAction="#saveHandler"/>
+                                <Button fx:id="deleteButton" text="Delete" onAction="#deleteHandler"/>
                             </children>
                             <opaqueInsets>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
