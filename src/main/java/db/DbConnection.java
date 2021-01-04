@@ -1,9 +1,12 @@
 package db;
 
+import model.Location;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
 
 public class DbConnection {
@@ -14,7 +17,7 @@ public class DbConnection {
     private static final String dbhost = properties.getProperty("db.host");
     private static final String username = properties.getProperty("db.username");
     private static final String password = properties.getProperty("db.password");
-    private static final String SQL_SELECT_favorites = "SELECT * FROM favorites";
+    private static final String SQL_SELECT_favorites = "SELECT * FROM favorites ORDER BY lat, lon";
     private static final String SQL_INSERT_favorites = "INSERT INTO favorites (name, country, lat, lon) VALUES (?,?,?)";
 
     public static Properties getConnectionData() {
@@ -40,8 +43,8 @@ public class DbConnection {
         return connection;
     }
 
-    public static ArrayList<Favorite> getFavorites() {
-        ArrayList<Favorite> favoriteList = new ArrayList<>();
+    public static HashSet<Favorite> getFavorites() {
+        HashSet<Favorite> favoriteSet = new HashSet<>();
         try(Connection connection = createNewDbConnection();
             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_favorites);
@@ -51,9 +54,11 @@ public class DbConnection {
                 favorite.setCountry(resultSet.getString("country"));
                 favorite.setLat(Double.parseDouble(resultSet.getString("lat")));
                 favorite.setLon(Double.parseDouble(resultSet.getString("lon")));
-                favoriteList.add(favorite);
+                favoriteSet.add(favorite);
             }
-            return favoriteList;
+            return favoriteSet;
+
+
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -62,6 +67,44 @@ public class DbConnection {
     }
 
     public static int insertIntoFavorites(String name, String country, Double lat, Double lon){
+        try(Connection connection = createNewDbConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_favorites)){
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2,country);
+            preparedStatement.setDouble(3,lat);
+            preparedStatement.setDouble(4,lon);
+            return preparedStatement.executeUpdate();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int insertIntoFavorites(Location location){
+        String name = location.getName();
+        String country = location.getCountry();
+        double lat = location.getLat();
+        double lon = location.getLon();
+        try(Connection connection = createNewDbConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_favorites)){
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2,country);
+            preparedStatement.setDouble(3,lat);
+            preparedStatement.setDouble(4,lon);
+            return preparedStatement.executeUpdate();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int insertIntoFavorites(Favorite favorite){
+        String name = favorite.getName();
+        String country = favorite.getCountry();
+        double lat = favorite.getLat();
+        double lon = favorite.getLon();
         try(Connection connection = createNewDbConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_favorites)){
             preparedStatement.setString(1,name);

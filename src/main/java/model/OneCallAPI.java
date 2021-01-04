@@ -19,6 +19,21 @@ public class OneCallAPI {
     private Daily[] daily;
     private Alerts[] alerts;
 
+    public OneCallAPI(Location.INPUT input) {
+        this.lat = 91.0;
+        this.lon = 181.0;
+        this.timezone = "";
+        this.timezone_offset = -1;
+        this.current = null;
+        this.minutely = null;
+        this.hourly = null;
+        this.daily = null;
+        this.alerts = null;
+    }
+
+    public OneCallAPI() {
+    }
+
     public double getLat() {
         return lat;
     }

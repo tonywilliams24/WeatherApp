@@ -19,8 +19,11 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static db.DbConnection.getFavorites;
+import static db.DbConnection.insertIntoFavorites;
 import static model.Forecast.capitalize;
 
 public class MainScreenController {
@@ -150,10 +153,12 @@ public class MainScreenController {
                     System.out.println("Input Not Recognized");
                 }
         }
-        if(location != null) {
+        if(location.getLat()!=91.0) {
             locationList.add(location);
+            inputLocationField.setStyle("-fx-border-color: lime");
             startPagination(locationList);
         }
+        else inputLocationField.setStyle("-fx-border-color: red");
 //        locationList.add(new Location((CurrentWeatherAPI) null));
     }
 
@@ -178,28 +183,30 @@ public class MainScreenController {
         stage.show();
     }
 
+    @FXML
+    public void saveHandler(ActionEvent actionEvent) {
+        Favorite favorite = new Favorite(locationList.get(pagination.getCurrentPageIndex()));
+        HashSet<Favorite> favorites = getFavorites();
+        if(!favorites.contains(favorite)) insertIntoFavorites(favorite);
+    }
+
     // Starts Pagination :D
     public void startPagination(ArrayList<Location> locationList) throws IOException {
         this.locationList = locationList;
 
         if(!started) { // For testing purposes only
-            ArrayList<Favorite> favorites = new ArrayList<>(getFavorites());
+            HashSet<Favorite> favorites = getFavorites();
             if(favorites != null) {
                 for(Favorite favorite: favorites) {
                     String name = favorite.getName();
                     String country = favorite.getCountry();
-                    Double lat = favorite.getLat();
-                    Double lon = favorite.getLon();
-                    if(lat!=null && lon!=null) {
-                        if(name != null && country != null) {
-                            locationList.add(new Location(name, country, lat, lon));
-                        }
-                        else {
-                            locationList.add(new Location(lat, lon));
-                        }
+                    double lat = favorite.getLat();
+                    double lon = favorite.getLon();
+                    if(name != null && country != null) {
+                        locationList.add(new Location(name, country, lat, lon));
                     }
                     else {
-                        System.out.println("Location not found:" + favorite);
+                        locationList.add(new Location(lat, lon));
                     }
                 }
             }
@@ -279,4 +286,4 @@ public class MainScreenController {
             pagination.setCurrentPageIndex(locationList.size() - 1);
             pagination.setVisible(true);
         }
-    }
+}

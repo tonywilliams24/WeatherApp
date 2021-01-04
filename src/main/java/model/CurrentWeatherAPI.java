@@ -29,7 +29,6 @@ public class CurrentWeatherAPI {
     private String name;
     private int cod;
 
-    public enum INPUT {blank}
 
     @Override
     public String toString() {
@@ -61,10 +60,10 @@ public class CurrentWeatherAPI {
 
     }
 
-    public CurrentWeatherAPI(INPUT blank) {
+    public CurrentWeatherAPI(Location.INPUT input) {
         Map emptyMap = Collections.emptyMap();
         List emptyList = Collections.emptyList();
-        this.coord = emptyMap;
+        this.coord = new LinkedHashMap();
         this.weather = emptyList;
         this.base = "";
         this.main = emptyMap;
@@ -81,7 +80,6 @@ public class CurrentWeatherAPI {
         this.cod=-1;
         coord.put("lat",91.0);
         coord.put("lon",181.0);
-
     }
 
     // Returns most likely city/village/neighborhood (as determined by Open Weather API)

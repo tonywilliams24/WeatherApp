@@ -15,6 +15,7 @@ import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static model.CurrentWeatherAPI.callCurrentWeatherAPI;
 import static model.OneCallAPI.callOneCallAPI;
@@ -48,6 +49,8 @@ public class Location {
     private Alerts[] alerts;
 
     public enum TimeFormat {hour, hourMin}
+    public enum INPUT {blank}
+
 
     // Default Constructor
     public Location() {
@@ -200,16 +203,14 @@ public class Location {
     //
 
     public static Object callAPI(String urlString, Class<?> pojo) {
+        ObjectMapper mapper = new ObjectMapper();
         try {
-            ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(new URL(urlString), pojo);
         }
         catch (Exception e) {
-            System.out.println(e);
+            System.out.printf("Error with: %1$s API Call\n%2$s%n",pojo,e);
             try {
-                Constructor constructor = pojo.getConstructor();
-                System.out.println(constructor);
-                return constructor.newInstance();
+                return pojo.getConstructor(Location.INPUT.class).newInstance(Location.INPUT.blank);
             }
             catch(Exception e1) {
                 System.out.println(e1);
@@ -221,15 +222,23 @@ public class Location {
     public static Object callAPI(String[] urlString, Class<?> pojo) {
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Exception> eArray = new ArrayList<>();
-        for (String s : urlString) {
+        for (String url : urlString) {
             try {
-                return mapper.readValue(new URL(s), pojo);
-            } catch (Exception e) {
+                return mapper.readValue(new URL(url), pojo);
+            }
+            catch (Exception e) {
                 eArray.add(e);
             }
         }
-        for(Exception e: eArray) e.printStackTrace();
-        return null;
+        System.out.printf("Error with: %1$s API Call\n%2$s%n", pojo, Arrays.toString(eArray.toArray()));
+        try {
+            return pojo.getConstructor(Location.INPUT.class).newInstance(Location.INPUT.blank);
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+            System.out.println("Returning \"NULL\" instance of " + pojo);
+            return null;
+        }
     }
 
     public OffsetTime getTime(long epochSecond) {
