@@ -48,8 +48,7 @@
                     <Button fx:id="saveButton" text="Save to Favorites" onAction="#saveHandler"/>
                     <Button fx:id="deleteButton" text="Delete from Favorites" onAction="#deleteHandler"/>
                 </VBox>
-                <ImageView fx:id="imageView" fitHeight="240" pickOnBounds="true" preserveRatio="true"
-                           visible="false"/>
+                <ImageView fx:id="imageView" fitHeight="240" pickOnBounds="true" preserveRatio="true" visible="false"/>
             </fx:define>
         </Pagination>
 

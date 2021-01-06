@@ -164,7 +164,6 @@ public class MainScreenController {
             startPagination(locationList);
         }
         else inputLocationField.setStyle("-fx-border-color: red");
-//        locationList.add(new Location((CurrentWeatherAPI) null));
     }
 
     public VBox createPage(int pageIndex) {
@@ -218,7 +217,8 @@ public class MainScreenController {
 
         if(!started) { // For testing purposes only
             HashSet<Favorite> favorites = getFavorites();
-            if(favorites != null) {
+            System.out.println(favorites);
+            if(!favorites.isEmpty()) {
                 for(Favorite favorite: favorites) {
                     String name = favorite.getName();
                     String country = favorite.getCountry();
